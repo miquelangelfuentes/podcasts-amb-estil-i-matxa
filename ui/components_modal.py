@@ -312,6 +312,15 @@ class InstallGuideModal(ctk.CTkToplevel):
                 "  Pont de connexió que utilitza les veus al núvol de Microsoft (Joana i Enric). Ocupa 0 MB al disc, però requereix connexió constant a internet."
             ),
             (
+                "☁️ Limitacions d'ús de Microsoft Neural ca-ES (Online)",
+                "Tot i que és una alternativa ràpida que no requereix espai de disc (0 MB locals), presenta limitacions clau:\n\n"
+                "• Connexió permanent requerida: Si cau la xarxa Wi-Fi o no hi ha internet, la síntesi no funcionarà.\n"
+                "• Privadesa de les dades: El guió s'envia a servidors de Microsoft al núvol; no és apte per a dades personals o privades protegides pel RGPD.\n"
+                "• Límits de peticions (Rate Limiting): Microsoft aplica límits de volum de peticions per IP; sol·licituds consecutives molt intenses poden retornar errors de bloqueig temporal (HTTP 429 Too Many Requests).\n"
+                "• Sense garantia de servei (SLA): L'endpoint gratuït pot patir canvis d'accés o talls sobtats sense previ avís per part de Microsoft.\n"
+                "• Varietats limitades: Només disposa de 2 veus (Joana i Enric) en català central, sense opció de dialectes balears o valencians."
+            ),
+            (
                 "📜 Llicències i suport institucional",
                 "Tots els models integrats han estat desenvolupats amb fons públics pel Barcelona Supercomputing Center (BSC-LT) i la Generalitat de Catalunya a través del Projecte AINA, amb llicències obertes aptes per a docència, divulgació i ús institucional."
             )
@@ -713,15 +722,21 @@ class ComponentsManagerModal(ctk.CTkToplevel):
             import requests
             requests.head("https://azure.microsoft.com", timeout=3)
             messagebox.showinfo(
-                "Servei al núvol operatiu",
-                "El servei de veu al núvol (Microsoft Neural ca-ES) està connectat i disponible.\n\n"
-                "ℹ️ Aquest servei no necessita descarregar cap fitxer al disc dur perquè la síntesi es realitza directament a través d'internet (0 MB de descàrrega local)."
+                "Estat del servei al núvol — Limitacions d'ús",
+                "✅ Connexió amb el servei Microsoft Neural ca-ES establerta amb èxit.\n\n"
+                "ℹ️ LIMITACIONS D'ÚS GRATUÏT I CONDICIONS:\n"
+                "• Connexió requerida: Cal internet permanent (no funciona offline).\n"
+                "• Privadesa: El contingut del text s'envia als servidors de Microsoft.\n"
+                "• Límits de peticions (Rate Limiting): Sessions amb centenars de frases seguides a gran velocitat poden ser blocades temporalment per IP (error HTTP 429 Too Many Requests).\n"
+                "• Sense garantia de servei (SLA): És un endpoint públic d'accés lliure; Microsoft pot canviar els paràmetres o la disponibilitat sense previ avís.\n"
+                "• Varietats dialectals: Només inclou 2 veus (Joana i Enric) en català central estàndard.\n\n"
+                "💡 Recomanació: Per a total privadesa, ús sense internet i 16 varietats dialectals, utilitza Matxa-TTS v2 multiaccent (100% Offline)."
             )
         except Exception as e:
             messagebox.showwarning(
                 "Sense connexió al núvol",
-                f"No s'ha pogut establir connexió amb el servei al núvol: {e}\n\n"
-                "Pots utilitzar Matxa-TTS v2 multiaccent, que funciona 100% offline sense internet."
+                f"No s'ha pogut connectar amb el servei al núvol: {e}\n\n"
+                "Pots continuar treballant amb normalitat utilitzant Matxa-TTS v2 multiaccent, que funciona 100% offline sense connexió ni límits externs."
             )
 
     def _on_delete_click(self, key: str):

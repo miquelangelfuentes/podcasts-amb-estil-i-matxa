@@ -62,7 +62,7 @@ class ModelDownloader:
             "provider": "Microsoft Edge Cloud",
             "repo_id": "microsoft/edge-tts-catalan",
             "files": {},
-            "desc": "Servei de veus Joana i Enric al núvol. No requereix espai a disc; requereix connexió a internet.",
+            "desc": "Servei al núvol (veus Joana i Enric). Ocupa 0 MB locals però envia el text a Microsoft i requereix internet constant. Subjecte a límits de peticions (rate limiting) i sense SLA.",
             "expected_size_mb": 0.0,
             "category": "Servei al núvol (Online)",
             "is_cloud": True
