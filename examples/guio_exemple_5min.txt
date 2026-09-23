@@ -1,0 +1,67 @@
+[TITOL: Pòdcasts amb Estil i Matxa: Com funciona i com s'ha construït]
+[DESCRIPCIO: Episodi especial de 5 minuts on la Veu presentadora, la Veu 1 i la Veu 2 expliquen el funcionament de l'aplicació pas a pas, les seves opcions d'una, dues o tres veus, i l'arquitectura tecnològica oberta amb StyleTTS 2, Matxa-TTS v2 multiaccent i alVoCat.]
+[FORMAT: Stereo 160kbps]
+[PAUSA_DEFECTE: 350ms]
+[PAUSA_INTERLOCUTOR: 700ms]
+
+[LOCUTORS]
+- Veu presentadora: Conducció del pòdcast, to serè i acadèmic (Central)
+- Veu 1: Primera veu convidada, experta en tecnologia educativa i didàctica (Central)
+- Veu 2: Segona veu convidada, docent de secundària i formador de professorat (Central)
+
+[CONFIGURACIO_LOCUTORS]
+Veu presentadora: veu=jordi pan=0% velocitat=0.96 pitch=-1
+Veu 1: veu=ona pan=-25% velocitat=1.0 pitch=0
+Veu 2: veu=pau pan=+25% velocitat=1.02 pitch=0
+
+---
+
+Veu presentadora: Benvingudes i benvinguts a un episodi especial dedicat a la creació de continguts sonors en la nostra llengua. Avui presentem «Pòdcasts amb Estil i Matxa», una eina creada específicament per transformar la manera com els docents i creadors generem materials d'àudio d'alta qualitat. Us deixem amb els nostres amfitrions, la Veu 1 i la Veu 2.
+
+[PAUSA: 800ms]
+
+Veu 1: Moltíssimes gràcies per acompanyar-me avui! Estic molt feliç de poder compartir amb tota la comunitat educativa una eina que resol un dels grans reptes que teníem: produir pòdcasts pedagògics en català amb una qualitat de veu natural, rica en accents i sense dependre de plataformes de pagament ni connexions externes.
+
+Veu 2: L'entusiasme és compartit! Com a docents, sovint ens trobem amb una gran paradoxa. Sabem que el format pòdcast connecta magníficament amb l'alumnat, però enregistrar-nos, equivocar-nos, editar pistes d'àudio i netejar el soroll ens requeria hores i hores de feina que senzillament no tenim a la nostra jornada.
+
+[PAUSA: 500ms]
+
+Veu 1: Exactament. I aquí és on neix «Pòdcasts amb Estil i Matxa». L'aplicació està pensada perquè qualsevol docent pugui crear un pòdcast professional en pocs minuts. Comença amb un senzill guió de text on definim els locutors i el diàleg. A més, l'aplicació permet triar flexiblement entre tres estructures: un monòleg d'una sola veu amb la Veu presentadora al centre, una conversa dinàmica de dues veus sense presentador com la nostra, o bé una tertúlia completa de tres veus amb presentadora i dos col·laboradors.
+
+[PAUSA: 500ms]
+
+Veu 2: I el control sobre l'àudio és totalment intuïtiu. Per a cada veu podem triar el dialecte que més s'escaigui: català central, balear amb l'Olga i en Quim, valencià amb en Lluc i la Gina, o nord-occidental amb en Pere i l'Emma. A més, podem escoltar una mostra instantània de cada veu prement el botó de mostra, i configurar la posició en l'espai estèreo. Fixeu-vos que als auriculars la Veu 1 sona a l'esquerra i la Veu 2 a la dreta, recreant l'atmosfera real d'un estudi de ràdio.
+
+[PAUSA: 600ms]
+
+Veu 1: Un altre aspecte essencial és que l'aplicació funciona de manera cent per cent local, al teu propi ordinador Windows, sense enviar cap text ni enregistrament a internet. Això garanteix una privadesa absoluta de les dades de docents i alumnes, sense quotes de subscripció i sense cap límit de durada. Podem generar des d'una càpsula breu de dos minuts fins a una lliçó magistral d'una hora sencera.
+
+Veu 2: I ara de ben segur que molts companys i companyes es demanen: com s'ha construït aquesta aplicació? Quina tecnologia hi ha al darrere d'aquesta naturalitat? Doncs és el resultat d'aprofitar el millor de la recerca oberta en intel·ligència artificial feta a Catalunya.
+
+[PAUSA: 750ms]
+
+Veu 1: El sistema ofereix dos grans motors de síntesi que podem alternar lliurement segons les nostres necessitats: Matxa-TTS versió dos i StyleTTS 2. El primer, Matxa-TTS v2, és un model acústic desenvolupat pel Barcelona Supercomputing Center, el BSC-LT. Es basa en la tècnica de flow matching i transport òptim, entrenat amb centenars d'hores de veu catalana procedents de corpus oberts com LaFresCat, ReFresCat i EnVeuAlta. Això és el que li permet capturar amb tanta precisió les peculiaritats fonètiques de cada variant dialectal.
+
+[PAUSA: 500ms]
+
+Veu 2: I d'altra banda, disposem també del motor StyleTTS 2 Català! StyleTTS 2 és un model neuronal basat en difusió d'estil que destaca per la seva expressivitat i modelatge de la prosòdia. A més, StyleTTS 2 incorpora una funcionalitat molt potent: el clonatge de veu sota demanda. Amb només un arxiu d'àudio de referència de deu o quinze segons d'un docent o convidat, l'aplicació pot aprendre el timbre vocal i generar el guió amb aquesta nova veu personalitzada!
+
+[PAUSA: 600ms]
+
+Veu 1: Aquest conjunt es complementa amb alVoCat, el vocoder i normalitzador neuronal desenvolupat en el marc del Projecte AINA. alVoCat realitza dues tasques crítiques: d'una banda, analitza el text català i normalitza xifres, dates com l'any dos mil vint-i-sis, percentatges i sigles de forma impecable. De l'altra, reconstrueix la forma d'ona d'àudio a vint-i-dos quilohertzs amb una claredat cristal·lina i sense artefactes.
+
+[PAUSA: 600ms]
+
+Veu 2: Tècnicament, l'aplicació està optimitzada per a ordinadors personals: utilitza càrrega sota demanda, és a dir lazy loading, de manera que els models de xarxes neuronals només es carreguen a la memòria RAM quan realment es demana una generació. D'aquesta manera l'aplicació s'obre en un instant i no sobrecarrega el sistema operatiu. També reserva fils de la CPU perquè la pantalla mai quedi congelada mentre es calcula l'àudio.
+
+Veu 1: I en acabar la síntesi, el processador d'àudio acobla automàticament els canals estèreo, afegeix les pauses i aplica una masterització professional segons la norma EBU R128 a menys setze LUFS, exportant directament a un fitxer MP3 a cent seixanta quilobits per segon, la màxima fidelitat estàndard per a la freqüència de vint-i-dos quilohertzs d'alVoCat, llest per compartir al Classroom, al Moodle o a les plataformes del centre educatiu.
+
+[PAUSA: 700ms]
+
+Veu 2: Tot el projecte és programari lliure sota llicència AGPL versió tres per al codi, i Creative Commons Reconeixement Compartir Igual quatre punt zero per als materials didàctics i guions.
+
+Veu 1: Una tecnologia puntera, oberta, respectuosa amb la nostra llengua i dissenyada per fer la docència més accessible, rica i motivadora.
+
+[PAUSA: 600ms]
+
+Veu presentadora: Moltes gràcies per acompanyar-nos en aquest viatge tecnològic i educatiu. Esperem que «Pòdcasts amb Estil i Matxa» esdevingui una eina fonamental a les vostres aules. Fins al proper episodi!

@@ -1,0 +1,232 @@
+"""
+Script de prova per verificar:
+1. Sincronització de locutors i panning amb el text del guió (amb Presentador).
+2. Opcions de 1 veu (monòleg), 2 veus (diàleg sense presentador) i 3 veus (amb presentador).
+3. Catàleg de veus amb descripcions i conversió bidireccional de labels.
+4. Generador i reproductor de mostres de veu (VoicePreviewManager).
+5. Tema verd matxa pastel i accessibilitat.
+6. Guió complet de mostra de 5 minuts.
+"""
+
+import sys
+import os
+import re
+
+# Afegir arrel del projecte
+project_root = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, project_root)
+
+from ui.theme import MatchaTheme
+from core.script_parser import ScriptParser
+from core.voice_preview import VoicePreviewManager
+from core.matxa_tts_engine import MatxaTTSCatalanEngine
+from core.tts_engine import StyleTTS2CatalanEngine
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
+def test_voice_descriptions():
+    print("--- 1. Provant descripcions de veus ---")
+    from ui.main_window import MainWindow
+    matxa_descs = MainWindow.MATXA_VOICE_DESCRIPTIONS
+    style_descs = MainWindow.STYLETTS_VOICE_DESCRIPTIONS
+
+    assert len(matxa_descs) == 16, f"Esperades 16 veus a Matxa-TTS, obtingudes {len(matxa_descs)}"
+    assert "elia" in matxa_descs
+    assert "Central" in matxa_descs["elia"]
+    assert "quim" in matxa_descs
+    assert "Balear" in matxa_descs["quim"]
+    assert "lluc" in matxa_descs
+    assert "Valencià" in matxa_descs["lluc"]
+    assert "emma" in matxa_descs
+    assert "Nord-occidental" in matxa_descs["emma"]
+    assert "jordi" in matxa_descs
+    assert "Septentrional" in matxa_descs["jordi"]
+
+    print("[OK] Totes les 16 veus de Matxa-TTS tenen descripció dialectal correcta.")
+
+    assert len(style_descs) >= 8, f"Esperades almenys 8 veus a StyleTTS, obtingudes {len(style_descs)}"
+    assert "lluc" in style_descs and "Balear" in style_descs["lluc"]
+    assert "pere" in style_descs and "Valencià" in style_descs["pere"]
+    print("[OK] Totes les veus de StyleTTS tenen descripció correcta (incloent-hi Central, Balear i Valencià).")
+
+
+def test_script_synchronization():
+    print("\n--- 2. Provant sincronització de veus amb Veu presentadora i etiquetes inclusives ---")
+    script_text = """[TITOL: Podcast de Prova]
+[VEUS]
+- Veu presentadora: Conducció institucional
+- Veu 1: Investigadora
+
+[CONFIGURACIO_VEUS]
+Veu presentadora: veu=jordi pan=0% velocitat=0.96 pitch=-1
+Veu 1: veu=elia pan=-25% velocitat=1.0 pitch=0
+
+---
+
+Veu presentadora: Benvinguts al curs.
+Veu 1: Gràcies a tothom.
+"""
+    spk_name = "Veu presentadora"
+    new_voice = "pau"
+    new_pan_str = "+25%"
+
+    cfg_header_pattern = re.compile(r"^\[(?:CONFIGURACIO_VEUS|CONFIGURACIO_LOCUTORS|CONFIGURACIO|SPEAKERS_CONFIG)\]", re.MULTILINE | re.IGNORECASE)
+    spk_line_pattern = re.compile(rf"^(\s*{re.escape(spk_name)}\s*:\s*)([^\r\n]*)", re.MULTILINE)
+
+    match_spk = spk_line_pattern.search(script_text)
+    assert match_spk is not None, "La línia de la veu hauria d'existir al guió"
+
+    prefix = match_spk.group(1)
+    rest = match_spk.group(2)
+    rest = re.sub(r'\b(?:veu|voice)=([^\s]+)', f'veu={new_voice}', rest, flags=re.IGNORECASE)
+    rest = re.sub(r'\b(?:pan|panning)=([^\s]+)', f'pan={new_pan_str}', rest, flags=re.IGNORECASE)
+    new_line = f"{prefix}{rest.strip()}"
+    updated = script_text[:match_spk.start()] + new_line + script_text[match_spk.end():]
+
+    assert "Veu presentadora: veu=pau pan=+25% velocitat=0.96 pitch=-1" in updated
+    assert "Veu 1: veu=elia pan=-25%" in updated
+
+    parser = ScriptParser()
+    parsed = parser.parse(updated)
+    assert parsed.speakers["Veu presentadora"].voice_id == "pau"
+    assert parsed.speakers["Veu presentadora"].pan == 0.25
+    assert parsed.segments[0].speaker == "Veu presentadora"
+    assert parsed.segments[0].voice_id == "pau"
+    assert parsed.segments[0].pan == 0.25
+    print("[OK] Sincronització de veus i panning amb etiquetes inclusives [VEUS] i [CONFIGURACIO_VEUS] verificada amb èxit!")
+
+
+def test_voice_structure_templates():
+    print("\n--- 3. Provant plantilles d'1, 2 i 3 veus ---")
+    parser = ScriptParser()
+
+    # 1 veu
+    path_1v = os.path.join(project_root, "examples", "plantilla_1veu.txt")
+    assert os.path.exists(path_1v), "La plantilla d'1 veu ha d'existir"
+    with open(path_1v, "r", encoding="utf-8") as f:
+        c1 = f.read()
+    p1 = parser.parse(c1)
+    assert len(p1.speakers) == 1, f"Esperat 1 locutor, obtinguts {len(p1.speakers)}"
+    assert "Veu presentadora" in p1.speakers, "El locutor d'1 veu ha de ser la Veu presentadora"
+    assert p1.speakers["Veu presentadora"].pan == 0.0, "La Veu presentadora d'1 veu ha d'estar al centre (0%)"
+    assert "Com funciona el format d'una veu" in c1 or "com funciona" in c1.lower(), "Ha d'explicar com funciona l'app"
+    print("[OK] Plantilla 1 veu verificada (explica com funciona l'app en 1 veu).")
+
+    # 2 veus (sense presentador)
+    path_2v = os.path.join(project_root, "examples", "plantilla_2veus.txt")
+    assert os.path.exists(path_2v), "La plantilla de 2 veus ha d'existir"
+    with open(path_2v, "r", encoding="utf-8") as f:
+        c2 = f.read()
+    p2 = parser.parse(c2)
+    assert len(p2.speakers) == 2, f"Esperats 2 locutors, obtinguts {len(p2.speakers)}"
+    assert "Veu presentadora" not in p2.speakers, "La plantilla de 2 veus NO ha de tenir presentador"
+    assert "Veu 1" in p2.speakers and "Veu 2" in p2.speakers
+    assert p2.speakers["Veu 1"].pan == -0.25
+    assert p2.speakers["Veu 2"].pan == 0.25
+    assert "Com funciona el format de dues veus" in c2 or "com funciona" in c2.lower(), "Ha d'explicar com funciona l'app"
+    print("[OK] Plantilla 2 veus verificada (explica com funciona l'app en 2 veus).")
+
+    # 3 veus (amb presentador)
+    path_3v = os.path.join(project_root, "examples", "plantilla_3veus.txt")
+    assert os.path.exists(path_3v), "La plantilla de 3 veus ha d'existir"
+    with open(path_3v, "r", encoding="utf-8") as f:
+        c3 = f.read()
+    p3 = parser.parse(c3)
+    assert len(p3.speakers) == 3, f"Esperats 3 locutors, obtinguts {len(p3.speakers)}"
+    assert "Veu presentadora" in p3.speakers, "La plantilla de 3 veus ha d'incloure la Veu presentadora"
+    assert p3.speakers["Veu presentadora"].pan == 0.0
+    assert p3.speakers["Veu 1"].pan == -0.25
+    assert p3.speakers["Veu 2"].pan == 0.25
+    assert "Com funciona el format de tres veus" in c3 or "com funciona" in c3.lower(), "Ha d'explicar com funciona l'app"
+    print("[OK] Plantilla 3 veus verificada (explica com funciona l'app en 3 veus).")
+
+    # Guió complet de mostra de 5 minuts
+    path_5m = os.path.join(project_root, "examples", "guio_exemple_5min.txt")
+    assert os.path.exists(path_5m), "El guió de 5 minuts ha d'existir"
+    with open(path_5m, "r", encoding="utf-8") as f:
+        content_5m = f.read()
+    p5m = parser.parse(content_5m)
+    assert len(p5m.speakers) == 3
+    assert "Veu presentadora" in p5m.speakers
+    assert "Veu 1" in p5m.speakers
+    assert "Veu 2" in p5m.speakers
+    words = sum(len(s.text.split()) for s in p5m.segments if s.segment_type == "dialogue")
+    assert words >= 700, f"El guió de 5 minuts ha de tenir almenys 700 paraules, té {words}"
+    assert "Pòdcasts amb Estil i Matxa" in content_5m
+    assert "flow matching" in content_5m
+    assert "StyleTTS 2" in content_5m, "El guió de 5 minuts ha de mencionar StyleTTS 2"
+    assert "alVoCat" in content_5m
+    print(f"[OK] Guió de 5 minuts verificat ({words} paraules, inclou StyleTTS 2 i Matxa-TTS v2).")
+
+
+def test_voice_preview_manager():
+    print("\n--- 4. Provant VoicePreviewManager ---")
+    mgr = VoicePreviewManager()
+    phrase_elia = mgr.get_sample_phrase("elia")
+    assert "Èlia" in phrase_elia
+    assert "central" in phrase_elia.lower()
+
+    phrase_quim = mgr.get_sample_phrase("quim")
+    assert "Quim" in phrase_quim
+    assert "balear" in phrase_quim.lower()
+
+    phrase_lluc = mgr.get_sample_phrase("lluc")
+    assert "Lluc" in phrase_lluc
+    assert "valencià" in phrase_lluc.lower()
+
+    print("[OK] Frases dialectals personalitzades verificades correctament.")
+
+
+def test_theme_and_accessibility():
+    print("\n--- 5. Provant tema i colors verd matxa pastel ---")
+    assert MatchaTheme.BG_MAIN.startswith("#"), "El fons principal ha de ser un color hex vàlid"
+    assert MatchaTheme.PRIMARY == "#2E5E41", "Color primari matxa cerimonial profund"
+    assert MatchaTheme.FONT_BODY[1] >= 11, f"La mida del text corporal és massa petita: {MatchaTheme.FONT_BODY}"
+    assert MatchaTheme.FONT_SMALL[1] >= 10, f"La mida del text petit és massa petita: {MatchaTheme.FONT_SMALL}"
+    print(f"[OK] Tema verd matxa pastel verificat (Primary: {MatchaTheme.PRIMARY}, Fons: {MatchaTheme.BG_MAIN}).")
+
+
+def test_default_model_and_naming():
+    print("\n--- 6. Provant model predeterminat StyleTTS 2 i nou nom ---")
+    import inspect
+    from ui.main_window import MainWindow
+    src = inspect.getsource(MainWindow.__init__)
+    assert "self.tts_engine = self.styletts_engine" in src, "El motor per defecte ha de ser StyleTTS 2"
+    assert 'self.title("Pòdcasts amb Estil i Matxa")' in src, "El títol ha de ser 'Pòdcasts amb Estil i Matxa'"
+    print("[OK] StyleTTS 2 configurat com a motor predeterminat i nom actualitzat.")
+
+
+def test_components_manager():
+    print("\n--- 7. Provant Gestor de Components i Models ---")
+    from core.model_downloader import ModelDownloader
+    from ui.components_modal import ComponentsManagerModal
+
+    downloader = ModelDownloader()
+    statuses = downloader.get_all_components_status()
+
+    assert "alvocat_vocos" in statuses, "alVoCat ha de figurar al catàleg de components"
+    assert "matxa_tts" in statuses, "Matxa-TTS ha de figurar al catàleg de components"
+    assert "styletts2_ca" in statuses, "StyleTTS 2 ha de figurar al catàleg de components"
+
+    # Verificar que els models instal·lats localment es detecten
+    alvocat = statuses["alvocat_vocos"]
+    assert alvocat["is_installed"], "alVoCat ha d'estar marcat com a instal·lat"
+    assert alvocat["installed_size_mb"] >= 50.0, f"Mida inesperada per alVoCat: {alvocat['installed_size_mb']} MB"
+
+    matxa = statuses["matxa_tts"]
+    assert matxa["is_installed"], "Matxa-TTS ha d'estar marcat com a instal·lat"
+    assert matxa["installed_size_mb"] >= 250.0, f"Mida inesperada per Matxa-TTS: {matxa['installed_size_mb']} MB"
+
+    print(f"[OK] Estat de components verificat: alVoCat ({alvocat['installed_size_mb']} MB), Matxa-TTS ({matxa['installed_size_mb']} MB).")
+
+
+if __name__ == "__main__":
+    test_voice_descriptions()
+    test_script_synchronization()
+    test_voice_structure_templates()
+    test_voice_preview_manager()
+    test_theme_and_accessibility()
+    test_default_model_and_naming()
+    test_components_manager()
+    print("\n*** TOTES LES PROVES S'HAN SUPERAT AMB ÈXIT! ***")

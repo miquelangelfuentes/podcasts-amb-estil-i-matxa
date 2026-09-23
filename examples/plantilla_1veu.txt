@@ -1,0 +1,30 @@
+[TITOL: Com funciona el format d'una veu a l'aplicació]
+[DESCRIPCIO: Monòleg explicatiu on la Veu presentadora descriu com funciona l'aplicació en format d'una sola veu per a càpsules formatives.]
+[FORMAT: Stereo 160kbps]
+[PAUSA_DEFECTE: 350ms]
+
+[LOCUTORS]
+- Veu presentadora: Conducció del pòdcast, to didàctic i proper (Central)
+
+[CONFIGURACIO_LOCUTORS]
+Veu presentadora: veu=ona pan=0% velocitat=1.0 pitch=0
+
+---
+
+Veu presentadora: Us donem la benvinguda a aquesta guia ràpida. Avui us expliquem com funciona l'aplicació «Pòdcasts amb Estil i Matxa» en la modalitat d'una sola veu.
+
+[PAUSA: 500ms]
+
+Veu presentadora: El format d'una veu és ideal per a càpsules docents breus, resums de lliçons, instruccions d'activitats o editorials sonors. La Veu presentadora se situa automàticament al centre de l'escenari acústic, amb un espai estèreo al zero per cent, garantint una presència vocal clara, directa i equilibrada.
+
+[PAUSA: 450ms]
+
+Veu presentadora: Per escriure el vostre guió, només cal redactar el text encapçalat pel nom «Veu presentadora» seguit de dos punts. Podeu afegir pauses expressives sempre que vulgueu amb etiquetes senzilles de temps entre claudàtors, com ara una pausa de cinc-cents mil·lisegons.
+
+[PAUSA: 500ms]
+
+Veu presentadora: Des de la taula de control, podeu triar el model de síntesi que preferiu: StyleTTS 2, que destaca per la seva expressivitat i clonatge de veu, o Matxa-TTS versió dos, amb setze variants dialectals catalanes. També podeu ajustar la velocitat de lectura o afegir el normalitzador alVoCat per tractar xifres i sigles de manera impecable.
+
+[PAUSA: 400ms]
+
+Veu presentadora: Quan tingueu el text enllestit, premeu «Generar pòdcast complet». L'aplicació processarà l'àudio, aplicarà la masterització estàndard EBU R128 a menys setze LUFS i podreu exportar el vostre fitxer MP3 a cent seixanta quilobits per segon llest per compartir. Així de fàcil i ràpid!

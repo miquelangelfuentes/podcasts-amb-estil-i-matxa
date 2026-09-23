@@ -1,0 +1,12 @@
+customtkinter>=6.0.0
+soundfile>=0.12.0
+imageio-ffmpeg>=0.5.0
+numpy>=1.24.0
+scipy>=1.10.0
+pygame>=2.5.0
+onnxruntime>=1.16.0
+pydub>=0.25.1
+pyyaml>=6.0
+requests>=2.31.0
+pillow>=10.0.0
+pyinstaller>=6.0.0

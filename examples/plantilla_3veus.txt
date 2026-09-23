@@ -1,0 +1,39 @@
+[TITOL: Com funciona el format de tres veus a l'aplicació]
+[DESCRIPCIO: Tertúlia educativa on la Veu presentadora, la Veu 1 i la Veu 2 expliquen pas a pas com funciona l'aplicació en format complet de tres veus.]
+[FORMAT: Stereo 160kbps]
+[PAUSA_DEFECTE: 350ms]
+[PAUSA_INTERLOCUTOR: 650ms]
+
+[LOCUTORS]
+- Veu presentadora: Conducció de la tertúlia, to institucional i moderador (Central)
+- Veu 1: Primera veu convidada, to tècnic i analític (Central)
+- Veu 2: Segona veu convidada, to pràctic i docent (Central)
+
+[CONFIGURACIO_LOCUTORS]
+Veu presentadora: veu=jordi pan=0% velocitat=0.98 pitch=-1
+Veu 1: veu=ona pan=-25% velocitat=1.0 pitch=0
+Veu 2: veu=pau pan=+25% velocitat=1.0 pitch=0
+
+---
+
+Veu presentadora: Benvingudes i benvinguts a aquest episodi demostratiu. En aquest programa us explicarem amb detall com funciona la modalitat de tres veus a l'aplicació «Pòdcasts amb Estil i Matxa». Comptem amb la col·laboració de la Veu 1 i de la Veu 2. Veu 1, com s'estructura aquest format?
+
+[PAUSA: 500ms]
+
+Veu 1: Gràcies! El format de tres veus és el més complet de l'aplicació: compta amb una Veu presentadora situada al centre, amb un espai estèreo al zero per cent, que introdueix els temes, modera i tanca l'episodi. Al seu costat, la Veu 1 s'ubica a l'esquerra a menys vint-i-cinc per cent i la Veu 2 a la dreta a més vint-i-cinc per cent.
+
+Veu 2: Això reprodueix fidelment la distribució física d'una emissora de ràdio o d'un estudi professional de pòdcast, creant una experiència immersiva i molt agradable per a l'oient.
+
+[PAUSA: 550ms]
+
+Veu presentadora: I pel que fa a la redacció del guió, Veu 1, quines facilitats ofereix la interfície?
+
+Veu 1: L'aplicació disposa d'un mode de guió net on només cal escriure qui parla i què diu. L'analitzador sintàctic detecta automàticament els personatges, crea les targetes de configuració i permet assignar accents i paràmetres a cadascú de manera visual. Si voleu més control, podeu alternar al mode de codi complet per editar directament les metadades i les pauses personalitzades.
+
+[PAUSA: 500ms]
+
+Veu 2: A més, l'aplicació integra dos motors neuronals d'alta tecnologia desenvolupats pel Barcelona Supercomputing Center: StyleTTS 2, amb gran expressivitat i opció de clonació de veu a partir d'una mostra d'àudio curta, i Matxa-TTS versió dos, que ofereix setze veus en diferents varietats dialectals del català. Tot plegat recolzat pel normalitzador lingüístic alVoCat del Projecte AINA.
+
+[PAUSA: 500ms]
+
+Veu presentadora: Un cop acabada la síntesi, el processador d'àudio acobla les pistes, normalitza la sonoritat a menys setze LUFS segons la norma EBU R128 i genera un fitxer MP3 a cent seixanta quilobits per segon llest per descarregar i compartir. Moltes gràcies per acompanyar-nos i esperem que gaudiu creant els vostres pòdcasts educatius!

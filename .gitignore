@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+
+# Models neuronals pesants (es descarreguen mitjançant el gestor de components o Hugging Face)
+models/**/*.onnx
+models/**/*.pth
+models/**/*.bin
+models/**/*.safetensors
+models/**/*.pt
+models/**/*.tmp
+*.onnx
+*.pth
+
+# PyInstaller i compilació
+build/
+dist/
+dist_staging/
+*.spec
+*.manifest
+
+# Temporals d'àudio i memòria cau de mostres
+*.mp3
+*.wav
+outputs/
+podcasts_matxa_voice_previews/
+temp_audio/
+
+# IDE i entorns
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
