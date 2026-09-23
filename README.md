@@ -30,15 +30,18 @@ Per utilitzar l'aplicació a Windows **sense necessitat d'instal·lar Python ni 
 - **Sense límit de durada**: Genera des de càpsules breus de 2 minuts fins a lliçons o debats de 30-60 minuts gràcies a la síntesi per blocs oracionals.
 - **100% local i privat**: No envia cap dada ni text a internet. Apte per a escoles, instituts i universitats (privadesa total per a docents i alumnat).
 - **Models de llengua oberts de Catalunya**:
-  - **`BSC-LT/StyleTTS2-Catalan`**: Model neuronal basat en difusió d'estil i alta expressivitat, amb suport per a clonació de veu zero-shot (motor per defecte).
-  - **`BSC-LT/Matxa-TTS-v2-Multiaccent`**: Model acústic d'última generació basat en transport òptim i flow matching, amb 16 variants dialectals del català (central, balear, valencià, nord-occidental i septentrional).
-  - **`projecte-aina/alvocat-vocos-22khz`**: Vocoder neuronal Vocos i normalitzador desenvolupat en el marc del Projecte AINA.
-- **Clonació de veu zero-shot**: Clona la veu de qualsevol docent aportant una petita mostra d'àudio (5-15 segons).
+  - **`BSC-LT/Matxa-TTS-v2-Multiaccent`**: Model acústic d'última generació basat en transport òptim i flow matching (100% offline), amb 16 variants dialectals del català (central, balear, valencià, nord-occidental i septentrional).
+  - **`BSC-LT/StyleTTS2-Catalan`**: Model neuronal basat en difusió d'estil i alta expressivitat, amb 9 veus i suport per a clonació de veu zero-shot.
+  - **`projecte-aina/alvocat-vocos-22khz`**: Vocoder neuronal Vocos i normalitzador desenvolupat en el marc del Projecte AINA (100% offline).
+  - **`Microsoft Neural ca-ES (Online)`**: Servei al núvol integrat opcionalment per a síntesi ràpida (veus Joana i Enric).
+- **Selector directe de motor**: Canvi immediat entre Matxa-TTS v2 (offline), StyleTTS 2 (offline) i Microsoft Neural (online) des de la capçalera del panell de locutors.
+- **Clonació de veu zero-shot**: Clona la veu de qualsevol persona aportant una petita mostra d'àudio en format WAV (5-15 segons).
 - **Mostres instantànies de veu (0 ms)**: Escolta en directe qualsevol veu catalana amb el botó `▶ Escolta`.
 - **Masterització d'estudi i exportació MP3**:
   - Espacialització estèreo (*panning*) per posicionar cada veu a l'estudi sonor.
   - Normalització de sonoritat d'emissió segons l'estàndard **EBU R128 (-16 LUFS)**.
   - Exportació directa a **MP3 estèreo a 160 kbps CBR** (màxima fidelitat per a 22,05 kHz).
+- **Interfície responsiva i adaptativa**: Suport complet per a escalat DPI a Windows (125% i 150%) amb reproductor d'àudio ancorat a la base i controls desplaçables.
 - **Executable independent per a Windows**: Distribució autònoma en fitxer `.exe`.
 
 ---
@@ -55,21 +58,25 @@ Per utilitzar l'aplicació a Windows **sense necessitat d'instal·lar Python ni 
 │   ├── 📄 tts_engine.py          # Motor StyleTTS 2 i clonació de veu
 │   ├── 📄 vocoder_alvocat.py     # Vocoder neural Vocos 22kHz (AINA)
 │   ├── 📄 voice_preview.py       # Gestor de mostres i memòria cau d'àudio
-│   └── 📄 audio_processor.py     # Panning estèreo, LUFS i exportació MP3 160k
+│   ├── 📄 audio_processor.py     # Panning estèreo, LUFS i exportació MP3 160k
+│   ├── 📄 model_downloader.py    # Gestor de descàrrega asíncrona des d'Hugging Face
+│   └── 📄 system_checker.py      # Diagnòstic automàtic de maquinari (CPU, GPU, RAM, disc)
 ├── 📁 ui/                        # Interfície d'usuari (CustomTkinter)
 │   ├── 📄 theme.py               # Paleta de colors Te Matxa Pastel
 │   ├── 📄 main_window.py         # Finestra principal amb editor i selecció d'1, 2 o 3 veus
+│   ├── 📄 components_modal.py    # Gestor visual de models i comprovació del sistema
 │   ├── 📄 voice_clone_modal.py   # Modal per a clonació de veu zero-shot
 │   └── 📄 player_widget.py       # Reproductor d'àudio i exportador MP3
 ├── 📁 docs/                      # Guies i documentació
 │   ├── 📄 GUIA_PROMPT_LLM.md     # Indicació per a models de llenguatge (ChatGPT/Claude/Gemini)
-│   └── 📄 GUIA_SSML_CATALA.md    # Manual d'opcions SSML i fonètica en català
+│   ├── 📄 GUIA_SSML_CATALA.md    # Manual d'opcions SSML i fonètica en català
+│   └── 📄 FITXA_DIVULGACIO_DOCENTS.md # Fitxa pedagògica per a docents i comunitat educativa
 ├── 📁 examples/                  # Recursos didàctics
 │   ├── 📄 guio_exemple_5min.txt  # Guió formatiu complet de 5 minuts
 │   ├── 📄 plantilla_1veu.txt     # Plantilla d'1 veu (monòleg amb Veu presentadora)
 │   ├── 📄 plantilla_2veus.txt    # Plantilla de 2 veus (diàleg sense presentador)
 │   └── 📄 plantilla_3veus.txt    # Plantilla de 3 veus (tertúlia amb Veu presentadora)
-├── 📁 assets/                    # Icona cerimonial de te matxa (ICO i PNG)
+├── 📁 assets/                    # Icona cerimonial de te matxa i bàner oficial
 ├── 📄 build_exe.py               # Script de compilació a .exe amb PyInstaller
 ├── 📄 build_exe.bat              # Fitxer per compilar amb un sol clic a Windows
 ├── 📄 run_app.bat                # Llançador directe de l'aplicació
@@ -97,13 +104,20 @@ L'executable autònom es generarà a la carpeta `dist/PodcastsAmbEstilIMatxa/Pod
 
 ## 📦 Gestor de models i components
 
-L'aplicació inclou un gestor visual integrat accessible des del botó **`📦 Models`** de la barra superior. Aquest mòdul permet a qualsevol usuari:
-- **Comprovar l'estat**: Saber a l'instant quins models neuronals estan instal·lats localment i quant d'espai ocupen.
-- **Descarregar per separat**: Obtenir directament des d'Hugging Face cadascun dels components:
-  - **Vocoder alVoCat** (~51 MB)
-  - **Matxa-TTS v2 multiaccent** (~260 MB)
-  - **StyleTTS 2 Català**
-- **Verificar la integritat o alliberar espai** amb un sol clic.
+L'aplicació inclou un centre de control integrat accessible des del botó **`📦 Models`** de la barra superior. Aquest mòdul permet a qualsevol persona usuària:
+
+- **Comprovar l'estat en temps real**: Saber a l'instant quins models neuronals estan instal·lats localment, quant d'espai ocupen en disc i la seva integritat.
+- **Descarregar per separat de forma modular**: Obtenir directament des d'Hugging Face cadascun dels components amb suport per a represa automàtica i negociació de certificats SSL:
+  - **Vocoder alVoCat 22kHz (100% Offline)** (~51,2 MB): Vocoder neuronal del Projecte AINA d'alta fidelitat acústica a 22.050 Hz i normalització lingüística.
+  - **Matxa-TTS v2 multiaccent (100% Offline)** (~260,2 MB): Model acústic autònom en format ONNX amb 16 veus per a totes les variants dialectals del català (balear, central, nord-occidental, septentrional i valencià).
+  - **StyleTTS 2 Català (BSC-LT Checkpoint complet)** (~2,05 GB): Checkpoint PyTorch oficial de difusió neuronal del BSC-LT per a locució expressiva d'alta fidelitat i clonació de veu zero-shot.
+- **Gestió del servei al núvol (Microsoft Neural ca-ES)**:
+  - Permet utilitzar les veus Joana i Enric ocupant 0 MB locals, amb informació transparent sobre la necessitat de connexió a internet, límits de peticions per IP (*rate limiting*) i absència de SLA.
+- **Diagnòstic de maquinari («Comprovar el meu equip»)**:
+  - Analitza automàticament la CPU, memòria RAM, GPU (DirectML/CUDA), emmagatzematge disponible i compatibilitat amb instruccions AVX2 per determinar amb precisió quins models pot executar el teu ordinador amb fluïdesa.
+- **Guia pedagògica («Què implica instal·lar-ho tot?»)**:
+  - Resol els dubtes més freqüents sobre l'ús de models locals en format ONNX (independència tecnològica, privadesa absoluta de les dades docents i funcionament sense xarxa).
+- **Alliberament d'espai en disc**: Elimina els fitxers d'un model amb un sol clic si necessites recuperar espai.
 
 ---
 
