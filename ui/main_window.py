@@ -559,7 +559,7 @@ class MainWindow(ctk.CTk):
         parent.grid_rowconfigure(0, weight=1)
         # Reserva física estable per al reproductor. La zona superior absorbeix
         # qualsevol canvi d'alçada i, si cal, es desplaça.
-        parent.grid_rowconfigure(1, weight=0, minsize=180)
+        parent.grid_rowconfigure(1, weight=0)
 
         # Zona superior desplaçable implementada amb Tkinter natiu. Això evita
         # el mínim intern d'uns 200 punts de CTkScrollableFrame.
@@ -615,6 +615,7 @@ class MainWindow(ctk.CTk):
         # 1. Targeta de locutors i panning estèreo
         speakers_card = ctk.CTkFrame(
             self.controls_inner,
+            height=1,
             fg_color=MatchaTheme.BG_CARD,
             corner_radius=MatchaTheme.CARD_RADIUS,
             border_width=1,
@@ -655,6 +656,7 @@ class MainWindow(ctk.CTk):
         # 2. Targeta de paràmetres i generació
         gen_card = ctk.CTkFrame(
             self.controls_inner,
+            height=1,
             fg_color=MatchaTheme.BG_CARD,
             corner_radius=MatchaTheme.CARD_RADIUS,
             border_width=1,
@@ -1154,6 +1156,7 @@ class MainWindow(ctk.CTk):
 
             card = ctk.CTkFrame(
                 self.speakers_container,
+                height=1,
                 fg_color=MatchaTheme.BG_CARD,
                 corner_radius=10,
                 border_width=1,
@@ -1162,7 +1165,7 @@ class MainWindow(ctk.CTk):
             card.pack(fill="x", padx=4, pady=4)
 
             # Línia 1: Nom distingit, Selector de Veu i Botó d'Escolta
-            top_line = ctk.CTkFrame(card, fg_color="transparent")
+            top_line = ctk.CTkFrame(card, fg_color="transparent", height=1)
             top_line.pack(fill="x", padx=10, pady=(8, 4))
 
             is_presenter = "presentad" in spk_name.lower()
@@ -1209,7 +1212,7 @@ class MainWindow(ctk.CTk):
             sample_btn.pack(side="right")
 
             # Línia 2: Espacialització Estèreo amb PillSelector d'alt contrast (Blanc sobre verd quan és actiu!)
-            pan_line = ctk.CTkFrame(card, fg_color="transparent")
+            pan_line = ctk.CTkFrame(card, fg_color="transparent", height=1)
             pan_line.pack(fill="x", padx=10, pady=(0, 8))
 
             pan_lbl = ctk.CTkLabel(
