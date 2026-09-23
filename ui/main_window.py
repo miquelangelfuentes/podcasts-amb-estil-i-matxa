@@ -62,15 +62,15 @@ class MainWindow(ctk.CTk):
     }
 
     STYLETTS_VOICE_DESCRIPTIONS = {
-        "ona": "Ona — Central (Fem, professional)",
-        "pau": "Pau — Central (Masc, proper)",
-        "bet": "Bet — Central (Fem, didàctica)",
-        "jordi": "Jordi — Central (Masc, acadèmic)",
-        "teia": "Teia — Central (Fem, narrativa)",
-        "pere": "Pere — Valencià (Masc, natural)",
-        "lluc": "Lluc — Balear (Masc, Mallorca)",
-        "joana": "Joana — Central (Fem, estàndard)",
-        "enric": "Enric — Central (Masc, estàndard)"
+        "joana": "Joana — Microsoft Neural (Fem, estàndard)",
+        "enric": "Enric — Microsoft Neural (Masc, estàndard)",
+        "ona": "Ona — Microsoft Neural (Fem, càlida)",
+        "pau": "Pau — Microsoft Neural (Masc, dinàmic)",
+        "bet": "Bet — Microsoft Neural (Fem, didàctica)",
+        "jordi": "Jordi — Microsoft Neural (Masc, acadèmic)",
+        "teia": "Teia — Microsoft Neural (Fem, narrativa)",
+        "pere": "Pere — Microsoft Neural (Masc, natural)",
+        "lluc": "Lluc — Microsoft Neural (Masc, balear)"
     }
 
     def __init__(self):
@@ -578,7 +578,7 @@ class MainWindow(ctk.CTk):
 
         spk_title = ctk.CTkLabel(
             spk_header,
-            text="👥 Repartiment de veus i espacialització estèreo",
+            text="👥 Repartiment de veus i espacialització",
             font=MatchaTheme.FONT_SUBTITLE,
             text_color=MatchaTheme.TEXT_MAIN
         )
@@ -592,6 +592,39 @@ class MainWindow(ctk.CTk):
             command=self._open_clone_modal
         )
         clone_btn.pack(side="right")
+
+        # Selector destacat de motor de veus (Matxa-TTS vs. Microsoft Neural)
+        engine_row = ctk.CTkFrame(speakers_card, fg_color="transparent", height=1)
+        engine_row.pack(fill="x", padx=18, pady=(2, 8))
+
+        engine_lbl = ctk.CTkLabel(
+            engine_row,
+            text="Motor:",
+            font=MatchaTheme.FONT_SMALL_BOLD,
+            text_color=MatchaTheme.TEXT_MUTED
+        )
+        engine_lbl.pack(side="left", padx=(0, 8))
+
+        self.engine_combo = ctk.CTkComboBox(
+            engine_row,
+            values=[
+                "🍵 Matxa-TTS v2 (100% Offline — 16 veus BSC-LT)",
+                "☁️ Microsoft Neural ca-ES (Online — Veus Joana i Enric)"
+            ],
+            height=28,
+            corner_radius=14,
+            fg_color=MatchaTheme.BG_CARD_SUBTLE,
+            border_color=MatchaTheme.BORDER_CARD,
+            button_color=MatchaTheme.PRIMARY,
+            button_hover_color=MatchaTheme.PRIMARY_HOVER,
+            text_color=MatchaTheme.TEXT_MAIN,
+            font=MatchaTheme.FONT_SMALL,
+            dropdown_font=MatchaTheme.FONT_SMALL,
+            dropdown_text_color=MatchaTheme.TEXT_MAIN,
+            command=self._on_engine_change
+        )
+        self.engine_combo.pack(side="left", fill="x", expand=True)
+        self.engine_combo.set("🍵 Matxa-TTS v2 (100% Offline — 16 veus BSC-LT)")
 
         # Contenidor per als locutors amb alçada dinàmica (evita malbaratar 180 px amb 1 sola veu)
         self.speakers_container = ctk.CTkFrame(
@@ -614,40 +647,11 @@ class MainWindow(ctk.CTk):
 
         gen_title = ctk.CTkLabel(
             gen_card,
-            text="⚙ Motor de síntesi i masterització",
+            text="⚙ Masterització i paràmetres d'àudio",
             font=MatchaTheme.FONT_SUBTITLE,
             text_color=MatchaTheme.TEXT_MAIN
         )
         gen_title.pack(anchor="w", padx=18, pady=(10, 4))
-
-        engine_row = ctk.CTkFrame(gen_card, fg_color="transparent", height=1)
-        engine_row.pack(fill="x", padx=18, pady=(0, 6))
-
-        engine_lbl = ctk.CTkLabel(
-            engine_row,
-            text="Model:",
-            font=MatchaTheme.FONT_SMALL_BOLD,
-            text_color=MatchaTheme.TEXT_MUTED
-        )
-        engine_lbl.pack(side="left", padx=(0, 8))
-
-        self.engine_combo = ctk.CTkComboBox(
-            engine_row,
-            values=["🍵 Matxa-TTS v2 (100% Offline - BSC-LT)", "🎙️ Edge TTS / StyleTTS (Online - Núvol)"],
-            height=28,
-            corner_radius=14,
-            fg_color=MatchaTheme.BG_CARD_SUBTLE,
-            border_color=MatchaTheme.BORDER_CARD,
-            button_color=MatchaTheme.PRIMARY,
-            button_hover_color=MatchaTheme.PRIMARY_HOVER,
-            text_color=MatchaTheme.TEXT_MAIN,
-            font=MatchaTheme.FONT_SMALL,
-            dropdown_font=MatchaTheme.FONT_SMALL,
-            dropdown_text_color=MatchaTheme.TEXT_MAIN,
-            command=self._on_engine_change
-        )
-        self.engine_combo.pack(side="left", fill="x", expand=True)
-        self.engine_combo.set("🍵 Matxa-TTS v2 (100% Offline - BSC-LT)")
 
         # Opcions inline netes
         opts_row = ctk.CTkFrame(gen_card, fg_color="transparent", height=1)
@@ -793,7 +797,12 @@ class MainWindow(ctk.CTk):
 
         # Si hem detectat locutors en el diàleg net
         if found_speakers:
-            default_voices = ["ona", "pau", "bet", "jordi", "teia", "pere", "joana", "enric"]
+            if hasattr(self.tts_engine, "MATXA_SPEAKERS"):
+                default_voices = ["elia", "grau", "ona", "pau", "olga", "quim", "gina", "lluc"]
+                pres_voice = "elia"
+            else:
+                default_voices = ["joana", "enric", "ona", "pau", "bet", "jordi", "teia", "pere"]
+                pres_voice = "joana"
             default_pans = [-0.25, 0.25, 0.0, -0.35, 0.35]
             assigned_idx = 0
 
@@ -805,7 +814,7 @@ class MainWindow(ctk.CTk):
                 else:
                     is_presenter = "presentad" in spk_name.lower()
                     if is_presenter:
-                        voice_id = "jordi"
+                        voice_id = pres_voice
                         pan_str = "0%"
                     else:
                         voice_id = default_voices[assigned_idx % len(default_voices)]
@@ -821,15 +830,18 @@ class MainWindow(ctk.CTk):
                     lines.append(f"{spk_name}: veu={spk_cfg.voice_id} pan={pan_str}")
             else:
                 mode = self.voices_mode_seg.get().lower()
+                is_matxa = hasattr(self.tts_engine, "MATXA_SPEAKERS")
+                v_fem = "elia" if is_matxa else "joana"
+                v_masc = "grau" if is_matxa else "enric"
                 if "1 veu" in mode:
-                    lines.append("Veu presentadora: veu=ona pan=0%")
+                    lines.append(f"Veu presentadora: veu={v_fem} pan=0%")
                 elif "2 veus" in mode:
-                    lines.append("Veu 1: veu=ona pan=-25%")
-                    lines.append("Veu 2: veu=pau pan=+25%")
+                    lines.append(f"Veu 1: veu={v_fem} pan=-25%")
+                    lines.append(f"Veu 2: veu={v_masc} pan=+25%")
                 else:
-                    lines.append("Veu presentadora: veu=jordi pan=0%")
-                    lines.append("Veu 1: veu=ona pan=-25%")
-                    lines.append("Veu 2: veu=pau pan=+25%")
+                    lines.append(f"Veu presentadora: veu={v_fem} pan=0%")
+                    lines.append(f"Veu 1: veu={v_fem} pan=-25%")
+                    lines.append(f"Veu 2: veu={v_masc} pan=+25%")
 
         lines.append("")
         lines.append("---")
@@ -1089,9 +1101,14 @@ class MainWindow(ctk.CTk):
         available_labels = self._get_available_voice_labels()
         available_ids = list(self._get_voice_catalog().keys())
 
-        for spk_name, spk_cfg in self.current_script.speakers.items():
+        is_matxa = hasattr(self.tts_engine, "MATXA_SPEAKERS")
+        for i, (spk_name, spk_cfg) in enumerate(self.current_script.speakers.items()):
             if spk_cfg.voice_id not in available_ids:
-                spk_cfg.voice_id = available_ids[0]
+                if not is_matxa:
+                    is_masc = any(m in spk_name.lower() for m in ["masc", "home", "enric", "pau", "jordi", "pere", "noi", "veu 2"])
+                    spk_cfg.voice_id = "enric" if is_masc else ("joana" if i % 2 == 0 else "enric")
+                else:
+                    spk_cfg.voice_id = available_ids[min(i, len(available_ids) - 1)]
 
             card = ctk.CTkFrame(
                 self.speakers_container,
