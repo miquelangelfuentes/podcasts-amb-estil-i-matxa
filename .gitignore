@@ -10,14 +10,12 @@ venv/
 ENV/
 
 # Models neuronals pesants (es descarreguen mitjançant el gestor de components o Hugging Face)
-models/**/*.onnx
-models/**/*.pth
-models/**/*.bin
-models/**/*.safetensors
-models/**/*.pt
-models/**/*.tmp
+models/
 *.onnx
 *.pth
+*.bin
+*.safetensors
+*.pt
 
 # PyInstaller i compilació
 build/

@@ -77,6 +77,7 @@ class ModelDownloader:
             self.cache_dir = os.path.join(base_dir, "models")
         os.makedirs(self.cache_dir, exist_ok=True)
         self._cancel_requested = False
+        self.last_error = ""
 
     def cancel_download(self):
         """Sol·licita la cancel·lació de la descàrrega en curs."""
@@ -164,6 +165,7 @@ class ModelDownloader:
         os.makedirs(os.path.dirname(destination_path), exist_ok=True)
         temp_dest = destination_path + ".tmp"
         self._cancel_requested = False
+        self.last_error = ""
 
         headers = {
             "User-Agent": "PodcastsAmbEstilIMatxa/1.0"
@@ -178,37 +180,60 @@ class ModelDownloader:
         last_time = start_time
         bytes_since_last = 0
         speed_mb_s = 0.0
+        session = requests.Session()
+        session.headers.update(headers)
 
         try:
-            with requests.get(url, headers=headers, stream=True, timeout=30) as response:
-                if response.status_code == 416: # Range not satisfiable
-                    headers.pop("Range", None)
-                    downloaded_bytes = 0
-                    response = requests.get(url, headers=headers, stream=True, timeout=30)
+            # Intentar primer amb verificació SSL estàndard; si falla per certificats locals o antivirus a Windows, usar verify=False
+            try:
+                response = session.get(url, stream=True, timeout=30, verify=True)
+            except requests.exceptions.SSLError:
+                import urllib3
+                urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+                response = session.get(url, stream=True, timeout=30, verify=False)
 
-                response.raise_for_status()
+            if response.status_code == 416: # Range not satisfiable (fitxer ja completat o offset invàlid)
+                session.headers.pop("Range", None)
+                downloaded_bytes = 0
+                try:
+                    response = session.get(url, stream=True, timeout=30, verify=True)
+                except requests.exceptions.SSLError:
+                    import urllib3
+                    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+                    response = session.get(url, stream=True, timeout=30, verify=False)
 
-                total_size = int(response.headers.get("content-length", 0)) + downloaded_bytes
-                mode = "ab" if downloaded_bytes > 0 else "wb"
+            response.raise_for_status()
 
-                chunk_size = 512 * 1024 # 512 KB per bloc
-                with open(temp_dest, mode) as f:
-                    for chunk in response.iter_content(chunk_size=chunk_size):
-                        if self._cancel_requested:
-                            return False
-                        if chunk:
-                            f.write(chunk)
-                            downloaded_bytes += len(chunk)
-                            bytes_since_last += len(chunk)
+            if response.status_code == 206:
+                # El servidor accepta Range
+                content_len = response.headers.get("content-length")
+                total_size = int(content_len) + downloaded_bytes if content_len else downloaded_bytes
+                mode = "ab"
+            else:
+                # Resposta estàndard 200 (tot el fitxer des del principi)
+                content_len = response.headers.get("content-length")
+                total_size = int(content_len) if content_len else 0
+                downloaded_bytes = 0
+                mode = "wb"
 
-                            now = time.time()
-                            if now - last_time >= 0.5:
-                                speed_mb_s = (bytes_since_last / (now - last_time)) / (1024 * 1024)
-                                bytes_since_last = 0
-                                last_time = now
+            chunk_size = 512 * 1024 # 512 KB per bloc
+            with open(temp_dest, mode) as f:
+                for chunk in response.iter_content(chunk_size=chunk_size):
+                    if self._cancel_requested:
+                        return False
+                    if chunk:
+                        f.write(chunk)
+                        downloaded_bytes += len(chunk)
+                        bytes_since_last += len(chunk)
 
-                                if progress_callback:
-                                    progress_callback(downloaded_bytes, total_size, os.path.basename(destination_path), speed_mb_s)
+                        now = time.time()
+                        if now - last_time >= 0.5:
+                            speed_mb_s = (bytes_since_last / (now - last_time)) / (1024 * 1024)
+                            bytes_since_last = 0
+                            last_time = now
+
+                            if progress_callback:
+                                progress_callback(downloaded_bytes, total_size, os.path.basename(destination_path), speed_mb_s)
 
             if self._cancel_requested:
                 return False
@@ -222,9 +247,16 @@ class ModelDownloader:
             return True
 
         except Exception as e:
+            self.last_error = str(e)
+            print(f"[ModelDownloader] Error descarregant {url}: {e}")
             if progress_callback:
                 progress_callback(-1, -1, f"Error: {e}", 0.0)
             return False
+        finally:
+            try:
+                session.close()
+            except Exception:
+                pass
 
     def download_model(self, model_key: str, progress_callback: Optional[Callable[[int, int, str, float], None]] = None) -> bool:
         """Descarrega tots els fitxers d'un repositori de model."""

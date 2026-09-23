@@ -207,7 +207,12 @@ class SystemChecker:
             }
 
         try:
-            resp = requests.head("https://huggingface.co", timeout=2.5)
+            try:
+                resp = requests.head("https://huggingface.co", timeout=2.5, verify=True)
+            except requests.exceptions.SSLError:
+                import urllib3
+                urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+                resp = requests.head("https://huggingface.co", timeout=2.5, verify=False)
             if resp.status_code < 400:
                 return {
                     "name": "Connexió a Hugging Face",

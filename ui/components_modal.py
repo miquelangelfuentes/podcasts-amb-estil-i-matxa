@@ -797,7 +797,9 @@ class ComponentsManagerModal(ctk.CTkToplevel):
                 if success:
                     messagebox.showinfo("Descàrrega completada", f"El component «{self.downloader.MODEL_REPOSITORIES[key]['name']}» s'ha instal·lat amb èxit.")
                 else:
-                    messagebox.showerror("Error", f"No s'ha pogut completar la descàrrega de «{self.downloader.MODEL_REPOSITORIES[key]['name']}». Comprova la connexió a Internet.")
+                    err_msg = getattr(self.downloader, "last_error", "")
+                    detail = f"\n\nDetall tècnic: {err_msg}" if err_msg else ""
+                    messagebox.showerror("Error", f"No s'ha pogut completar la descàrrega de «{self.downloader.MODEL_REPOSITORIES[key]['name']}».{detail}")
 
             self.after(0, _on_finish)
 
