@@ -136,11 +136,11 @@ class MainWindow(ctk.CTk):
         self._ui_queue = queue.Queue()
         self.after(35, self._process_ui_queue)
 
-        # Motors interns: per defecte s'obre amb Matxa-TTS v2 (100% Offline)
+        # Motors interns: per defecte s'obre amb StyleTTS 2 Català (amb suport per a Matxa-TTS)
         self.script_parser = ScriptParser()
-        self.matxa_engine = MatxaTTSCatalanEngine()
         self.styletts_engine = StyleTTS2CatalanEngine()
-        self.tts_engine = self.matxa_engine
+        self.matxa_engine = MatxaTTSCatalanEngine()
+        self.tts_engine = self.styletts_engine
         self.audio_processor = AudioProcessor(sample_rate=self.tts_engine.sample_rate)
         self.voice_preview_manager = VoicePreviewManager()
 
@@ -240,7 +240,7 @@ class MainWindow(ctk.CTk):
 
         self.badge = ctk.CTkLabel(
             brand_frame,
-            text="BSC-LT Matxa-TTS v2 (100% Offline) & alVoCat 22kHz",
+            text="BSC-LT StyleTTS 2 Català (PyTorch / Zero-Shot) & alVoCat 22kHz",
             font=MatchaTheme.FONT_SMALL,
             text_color=MatchaTheme.TEXT_MUTED
         )
@@ -613,8 +613,8 @@ class MainWindow(ctk.CTk):
         self.engine_combo = ctk.CTkComboBox(
             engine_row,
             values=[
-                "🍵 Matxa-TTS v2 (100% Offline — 16 veus BSC-LT)",
                 "🎙️ StyleTTS 2 Català (BSC-LT / Neural — 9 veus d'estil)",
+                "🍵 Matxa-TTS v2 (100% Offline — 16 veus BSC-LT)",
                 "☁️ Microsoft Neural ca-ES (Online — Joana i Enric)"
             ],
             height=28,
@@ -630,7 +630,7 @@ class MainWindow(ctk.CTk):
             command=self._on_engine_change
         )
         self.engine_combo.pack(side="left", fill="x", expand=True)
-        self.engine_combo.set("🍵 Matxa-TTS v2 (100% Offline — 16 veus BSC-LT)")
+        self.engine_combo.set("🎙️ StyleTTS 2 Català (BSC-LT / Neural — 9 veus d'estil)")
 
         # Contenidor per als locutors amb alçada dinàmica (evita malbaratar 180 px amb 1 sola veu)
         self.speakers_container = ctk.CTkFrame(
