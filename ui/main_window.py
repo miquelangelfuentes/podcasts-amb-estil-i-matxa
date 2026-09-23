@@ -511,8 +511,19 @@ class MainWindow(ctk.CTk):
         # El reproductor queda ancorat a la part inferior perquè les accions
         # essencials (reproduir i desar) continuïn visibles amb DPI alt o
         # quan la finestra té poca alçada disponible.
-        self.player_widget = AudioPlayerWidget(parent, self.audio_processor)
-        self.player_widget.pack(side="bottom", fill="x")
+        # Reservem explícitament l'alçada del reproductor. CTkFrame no sempre
+        # propaga bé l'alçada sol·licitada pels fills quan Windows aplica DPI alt,
+        # i això podia deixar visible només la capçalera del reproductor.
+        player_slot = ctk.CTkFrame(
+            parent,
+            fg_color="transparent",
+            height=150
+        )
+        player_slot.pack(side="bottom", fill="x")
+        player_slot.pack_propagate(False)
+
+        self.player_widget = AudioPlayerWidget(player_slot, self.audio_processor)
+        self.player_widget.pack(fill="both", expand=True)
 
         # La resta de controls de producció poden desplaçar-se verticalment.
         # D'aquesta manera el panell s'adapta a pantalles petites i a
