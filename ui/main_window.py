@@ -76,10 +76,11 @@ class MainWindow(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        # Configuració bàsica de la finestra i títol renovat
+        # Configuració bàsica de la finestra. CustomTkinter escala tant
+        # les dimensions de la finestra com els ginys segons el DPI de Windows,
+        # de manera que una geometria fixa 1280x840 no cap en pantalles amb 150%.
         self.title("Pòdcasts amb Estil i Matxa")
-        self.geometry("1280x840")
-        self.minsize(1120, 720)
+        self._fit_window_to_work_area()
 
         # Configuració d'aparença neta
         ctk.set_appearance_mode("light")
@@ -131,6 +132,45 @@ class MainWindow(ctk.CTk):
                 self.iconphoto(True, self._icon_img)
             except Exception:
                 pass
+
+    def _get_logical_work_area(self):
+        """Retorna l'àrea útil de pantalla en unitats lògiques de CustomTkinter."""
+        try:
+            window_scale = max(float(self._get_window_scaling()), 0.1)
+        except Exception:
+            window_scale = 1.0
+
+        physical_w = self.winfo_screenwidth()
+        physical_h = self.winfo_screenheight()
+
+        if sys.platform.startswith("win"):
+            try:
+                from ctypes import wintypes
+                rect = wintypes.RECT()
+                SPI_GETWORKAREA = 0x0030
+                ok = ctypes.windll.user32.SystemParametersInfoW(
+                    SPI_GETWORKAREA, 0, ctypes.byref(rect), 0
+                )
+                if ok:
+                    physical_w = rect.right - rect.left
+                    physical_h = rect.bottom - rect.top
+            except Exception:
+                pass
+
+        return int(physical_w / window_scale), int(physical_h / window_scale)
+
+    def _fit_window_to_work_area(self):
+        """Evita que la finestra inicial superi l'àrea útil després de l'escalat DPI."""
+        work_w, work_h = self._get_logical_work_area()
+
+        target_w = max(1000, min(1280, work_w - 24))
+        target_h = max(640, min(840, work_h - 24))
+
+        # El mínim també ha de cabre a pantalles amb escalat alt.
+        min_w = min(1040, target_w)
+        min_h = min(640, target_h)
+        self.minsize(min_w, min_h)
+        self.geometry(f"{target_w}x{target_h}")
 
     def safe_after(self, func):
         self._ui_queue.put(func)
@@ -508,31 +548,19 @@ class MainWindow(ctk.CTk):
         self.btn_toggle_view.pack(side="right")
 
     def _build_control_panel(self, parent):
-        # El panell dret usa grid en lloc de pack per reservar de manera
-        # determinista una fila completa al reproductor. Amb DPI alt, pack
-        # podia recalcular la geometria en maximitzar i deixar-ne visible
-        # només la capçalera.
-        parent.grid_columnconfigure(0, weight=1)
-        parent.grid_rowconfigure(0, weight=1, minsize=180)
-        parent.grid_rowconfigure(1, weight=0, minsize=145)
-
-        # La zona superior és la que cedeix espai i es desplaça verticalment
-        # quan la finestra no té prou alçada.
-        controls_scroll = ctk.CTkScrollableFrame(
+        # Tot el panell de producció comparteix un únic desplaçament vertical.
+        # Amb DPI alt no intentem forçar que tres targetes de mida fixa càpiguen
+        # simultàniament: qualsevol control continua sent accessible.
+        self.controls_scroll = ctk.CTkScrollableFrame(
             parent,
             fg_color="transparent",
             corner_radius=0
         )
-        controls_scroll.grid(row=0, column=0, sticky="nsew", pady=(0, 10))
-
-        # El reproductor ocupa una fila pròpia i conserva sempre l'alçada
-        # necessària per mostrar la barra temporal i els botons.
-        self.player_widget = AudioPlayerWidget(parent, self.audio_processor)
-        self.player_widget.grid(row=1, column=0, sticky="ew")
+        self.controls_scroll.pack(fill="both", expand=True)
 
         # 1. Targeta de Locutors & Panning Estèreo
         speakers_card = ctk.CTkFrame(
-            controls_scroll,
+            self.controls_scroll,
             fg_color=MatchaTheme.BG_CARD,
             corner_radius=MatchaTheme.CARD_RADIUS,
             border_width=1,
@@ -560,10 +588,11 @@ class MainWindow(ctk.CTk):
         )
         clone_btn.pack(side="right")
 
-        # Contenidor amb desplaçament per als locutors
-        self.speakers_container = ctk.CTkScrollableFrame(
+        # No reservem una alçada fixa de 180 px. Amb 150% de DPI aquella alçada
+        # es converteix en 270 px físics fins i tot amb una sola veu i deixa un
+        # gran espai buit. El contenidor creix segons el nombre real de locutors.
+        self.speakers_container = ctk.CTkFrame(
             speakers_card,
-            height=180,
             fg_color=MatchaTheme.BG_CARD_SUBTLE,
             corner_radius=10
         )
@@ -571,7 +600,7 @@ class MainWindow(ctk.CTk):
 
         # 2. Targeta de Paràmetres & Acció de Generació
         gen_card = ctk.CTkFrame(
-            controls_scroll,
+            self.controls_scroll,
             fg_color=MatchaTheme.BG_CARD,
             corner_radius=MatchaTheme.CARD_RADIUS,
             border_width=1,
@@ -616,7 +645,6 @@ class MainWindow(ctk.CTk):
         self.engine_combo.pack(side="left", fill="x", expand=True)
         self.engine_combo.set("🎙️ StyleTTS 2 Català (BSC-LT)")
 
-        # Opcions inline netes
         opts_row = ctk.CTkFrame(gen_card, fg_color="transparent")
         opts_row.pack(fill="x", padx=18, pady=(0, 10))
 
@@ -646,7 +674,6 @@ class MainWindow(ctk.CTk):
         self.cb_lufs.pack(side="left")
         self.cb_lufs.select()
 
-        # Botó principal de generació (Call-to-Action destacat amb TEXT BLANC sobre fons fosc)
         btn_row = ctk.CTkFrame(gen_card, fg_color="transparent")
         btn_row.pack(fill="x", padx=18, pady=(0, 6))
 
@@ -671,7 +698,6 @@ class MainWindow(ctk.CTk):
         )
         self.cancel_btn.pack(side="right")
 
-        # Barra de progrés subtil
         self.progress_bar = ctk.CTkProgressBar(
             gen_card,
             height=6,
@@ -689,6 +715,21 @@ class MainWindow(ctk.CTk):
             text_color=MatchaTheme.TEXT_MUTED
         )
         self.status_lbl.pack(anchor="w", padx=18, pady=(0, 12))
+
+        # 3. Reproductor. Forma part de la mateixa columna desplaçable; per tant
+        # no pot quedar retallat fora del viewport.
+        self.player_widget = AudioPlayerWidget(self.controls_scroll, self.audio_processor)
+        self.player_widget.pack(fill="x", pady=(0, 2))
+
+    def _scroll_controls_to_bottom(self):
+        """Mostra el reproductor després de generar l'àudio."""
+        try:
+            self.update_idletasks()
+            canvas = self.controls_scroll._parent_canvas
+            canvas.configure(scrollregion=canvas.bbox("all"))
+            canvas.yview_moveto(1.0)
+        except Exception as e:
+            print(f"Error desplaçant el panell de producció: {e}")
 
     def _extract_clean_dialogue(self, full_text: str) -> str:
         """Extreu exclusivament les línies de locució i pauses d'un fitxer de guió."""
@@ -852,11 +893,9 @@ class MainWindow(ctk.CTk):
         factor = mapping.get(choice, 1.0)
         try:
             ctk.set_widget_scaling(factor)
-            screen_w = self.winfo_screenwidth()
-            screen_h = self.winfo_screenheight()
-            target_w = min(screen_w - 40, int(1280 * min(factor, 1.35)))
-            target_h = min(screen_h - 60, int(840 * min(factor, 1.35)))
-            self.geometry(f"{target_w}x{target_h}")
+            # No multipliquem de nou la geometria per l'escala de la UI:
+            # CustomTkinter ja incorpora el DPI de Windows a la finestra.
+            self._fit_window_to_work_area()
         except Exception as e:
             print(f"Error aplicant escala: {e}")
 
@@ -1482,4 +1521,5 @@ class MainWindow(ctk.CTk):
         if stereo_audio is not None and stereo_audio.size > 0:
             self.progress_bar.set(1.0)
             self.player_widget.load_audio(stereo_audio, title=self.current_script.title)
+            self._scroll_controls_to_bottom()
             messagebox.showinfo("Pòdcast completat", "El pòdcast s'ha generat correctament!\nPots escoltar-lo o desar-lo directament com a MP3.")
