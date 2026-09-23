@@ -548,26 +548,73 @@ class MainWindow(ctk.CTk):
         self.btn_toggle_view.pack(side="right")
 
     def _build_control_panel(self, parent):
-        # CTkFrame i CTkScrollableFrame tenen 200x200 com a mida per defecte.
-        # Per evitar que aquests 200 punts es converteixin en espai buit
-        # (especialment visible amb DPI 150%), fem que només la zona superior
-        # sigui flexible i mantenim el reproductor sempre visible a baix.
+        """Construeix el panell dret sense dependre de CTkScrollableFrame.
+
+        CTkScrollableFrame té problemes coneguts amb alçades petites i amb
+        redimensionament via grid. Per això la zona superior usa un Canvas
+        natiu de Tkinter amb scrollbar, mentre el reproductor queda fix a baix.
+        """
         parent.grid_columnconfigure(0, weight=1)
+        parent.grid_columnconfigure(1, weight=0)
         parent.grid_rowconfigure(0, weight=1)
-        parent.grid_rowconfigure(1, weight=0)
-        parent.grid_propagate(False)
+        # Reserva física estable per al reproductor. La zona superior absorbeix
+        # qualsevol canvi d'alçada i, si cal, es desplaça.
+        parent.grid_rowconfigure(1, weight=0, minsize=180)
 
-        self.controls_scroll = ctk.CTkScrollableFrame(
+        # Zona superior desplaçable implementada amb Tkinter natiu. Això evita
+        # el mínim intern d'uns 200 punts de CTkScrollableFrame.
+        self.controls_canvas = tk.Canvas(
             parent,
-            height=1,
-            fg_color="transparent",
-            corner_radius=0
+            bg=MatchaTheme.BG_MAIN,
+            highlightthickness=0,
+            bd=0,
+            relief="flat"
         )
-        self.controls_scroll.grid(row=0, column=0, sticky="nsew", pady=(0, 10))
+        self.controls_scrollbar = ctk.CTkScrollbar(
+            parent,
+            orientation="vertical",
+            command=self.controls_canvas.yview,
+            width=10
+        )
+        self.controls_canvas.configure(yscrollcommand=self.controls_scrollbar.set)
 
-        # 1. Targeta de Locutors & Panning Estèreo
+        self.controls_canvas.grid(
+            row=0, column=0, sticky="nsew", pady=(0, 10)
+        )
+        self.controls_scrollbar.grid(
+            row=0, column=1, sticky="ns", padx=(4, 0), pady=(0, 10)
+        )
+
+        # Frame natiu: no imposa cap alçada mínima pròpia.
+        self.controls_inner = tk.Frame(
+            self.controls_canvas,
+            bg=MatchaTheme.BG_MAIN,
+            bd=0,
+            highlightthickness=0
+        )
+        self._controls_window = self.controls_canvas.create_window(
+            (0, 0),
+            window=self.controls_inner,
+            anchor="nw"
+        )
+
+        def _sync_scrollregion(_event=None):
+            bbox = self.controls_canvas.bbox("all")
+            if bbox:
+                self.controls_canvas.configure(scrollregion=bbox)
+
+        def _fit_inner_width(event):
+            self.controls_canvas.itemconfigure(
+                self._controls_window,
+                width=event.width
+            )
+
+        self.controls_inner.bind("<Configure>", _sync_scrollregion)
+        self.controls_canvas.bind("<Configure>", _fit_inner_width)
+
+        # 1. Targeta de locutors i panning estèreo
         speakers_card = ctk.CTkFrame(
-            self.controls_scroll,
+            self.controls_inner,
             fg_color=MatchaTheme.BG_CARD,
             corner_radius=MatchaTheme.CARD_RADIUS,
             border_width=1,
@@ -575,7 +622,7 @@ class MainWindow(ctk.CTk):
         )
         speakers_card.pack(fill="x", pady=(0, 10))
 
-        spk_header = ctk.CTkFrame(speakers_card, fg_color="transparent")
+        spk_header = ctk.CTkFrame(speakers_card, fg_color="transparent", height=1)
         spk_header.pack(fill="x", padx=18, pady=(12, 6))
 
         spk_title = ctk.CTkLabel(
@@ -595,20 +642,19 @@ class MainWindow(ctk.CTk):
         )
         clone_btn.pack(side="right")
 
-        # No reservem una alçada fixa de 180 px. Amb 150% de DPI aquella alçada
-        # es converteix en 270 px físics fins i tot amb una sola veu i deixa un
-        # gran espai buit. El contenidor creix segons el nombre real de locutors.
-        self.speakers_container = ctk.CTkFrame(
+        # Frame natiu perquè l'alçada depengui estrictament de les targetes de
+        # locutor i no d'un valor per defecte de CustomTkinter.
+        self.speakers_container = tk.Frame(
             speakers_card,
-            height=1,
-            fg_color=MatchaTheme.BG_CARD_SUBTLE,
-            corner_radius=10
+            bg=MatchaTheme.BG_CARD_SUBTLE,
+            bd=0,
+            highlightthickness=0
         )
         self.speakers_container.pack(fill="x", padx=18, pady=(0, 12))
 
-        # 2. Targeta de Paràmetres & Acció de Generació
+        # 2. Targeta de paràmetres i generació
         gen_card = ctk.CTkFrame(
-            self.controls_scroll,
+            self.controls_inner,
             fg_color=MatchaTheme.BG_CARD,
             corner_radius=MatchaTheme.CARD_RADIUS,
             border_width=1,
@@ -624,7 +670,7 @@ class MainWindow(ctk.CTk):
         )
         gen_title.pack(anchor="w", padx=18, pady=(12, 6))
 
-        engine_row = ctk.CTkFrame(gen_card, fg_color="transparent")
+        engine_row = ctk.CTkFrame(gen_card, fg_color="transparent", height=1)
         engine_row.pack(fill="x", padx=18, pady=(0, 8))
 
         engine_lbl = ctk.CTkLabel(
@@ -653,7 +699,7 @@ class MainWindow(ctk.CTk):
         self.engine_combo.pack(side="left", fill="x", expand=True)
         self.engine_combo.set("🎙️ StyleTTS 2 Català (BSC-LT)")
 
-        opts_row = ctk.CTkFrame(gen_card, fg_color="transparent")
+        opts_row = ctk.CTkFrame(gen_card, fg_color="transparent", height=1)
         opts_row.pack(fill="x", padx=18, pady=(0, 10))
 
         self.cb_normalizer = ctk.CTkCheckBox(
@@ -682,7 +728,7 @@ class MainWindow(ctk.CTk):
         self.cb_lufs.pack(side="left")
         self.cb_lufs.select()
 
-        btn_row = ctk.CTkFrame(gen_card, fg_color="transparent")
+        btn_row = ctk.CTkFrame(gen_card, fg_color="transparent", height=1)
         btn_row.pack(fill="x", padx=18, pady=(0, 6))
 
         self.generate_btn = CleanButton(
@@ -724,15 +770,15 @@ class MainWindow(ctk.CTk):
         )
         self.status_lbl.pack(anchor="w", padx=18, pady=(0, 12))
 
-        # 3. El reproductor queda fora de l'àrea desplaçable i ancorat a baix.
-        # height=1 evita heretar els 200 punts de mida desitjada per defecte;
-        # els seus fills determinen l'alçada real necessària.
+        # 3. Reproductor fix. No comparteix geometria amb l'àrea desplaçable.
         self.player_widget = AudioPlayerWidget(
             parent,
             self.audio_processor,
             height=1
         )
-        self.player_widget.grid(row=1, column=0, sticky="ew")
+        self.player_widget.grid(
+            row=1, column=0, columnspan=2, sticky="nsew"
+        )
 
     def _extract_clean_dialogue(self, full_text: str) -> str:
         """Extreu exclusivament les línies de locució i pauses d'un fitxer de guió."""
