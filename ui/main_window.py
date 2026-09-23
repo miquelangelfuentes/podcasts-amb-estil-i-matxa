@@ -548,15 +548,22 @@ class MainWindow(ctk.CTk):
         self.btn_toggle_view.pack(side="right")
 
     def _build_control_panel(self, parent):
-        # Tot el panell de producció comparteix un únic desplaçament vertical.
-        # Amb DPI alt no intentem forçar que tres targetes de mida fixa càpiguen
-        # simultàniament: qualsevol control continua sent accessible.
+        # CTkFrame i CTkScrollableFrame tenen 200x200 com a mida per defecte.
+        # Per evitar que aquests 200 punts es converteixin en espai buit
+        # (especialment visible amb DPI 150%), fem que només la zona superior
+        # sigui flexible i mantenim el reproductor sempre visible a baix.
+        parent.grid_columnconfigure(0, weight=1)
+        parent.grid_rowconfigure(0, weight=1)
+        parent.grid_rowconfigure(1, weight=0)
+        parent.grid_propagate(False)
+
         self.controls_scroll = ctk.CTkScrollableFrame(
             parent,
+            height=1,
             fg_color="transparent",
             corner_radius=0
         )
-        self.controls_scroll.pack(fill="both", expand=True)
+        self.controls_scroll.grid(row=0, column=0, sticky="nsew", pady=(0, 10))
 
         # 1. Targeta de Locutors & Panning Estèreo
         speakers_card = ctk.CTkFrame(
@@ -593,6 +600,7 @@ class MainWindow(ctk.CTk):
         # gran espai buit. El contenidor creix segons el nombre real de locutors.
         self.speakers_container = ctk.CTkFrame(
             speakers_card,
+            height=1,
             fg_color=MatchaTheme.BG_CARD_SUBTLE,
             corner_radius=10
         )
@@ -716,20 +724,15 @@ class MainWindow(ctk.CTk):
         )
         self.status_lbl.pack(anchor="w", padx=18, pady=(0, 12))
 
-        # 3. Reproductor. Forma part de la mateixa columna desplaçable; per tant
-        # no pot quedar retallat fora del viewport.
-        self.player_widget = AudioPlayerWidget(self.controls_scroll, self.audio_processor)
-        self.player_widget.pack(fill="x", pady=(0, 2))
-
-    def _scroll_controls_to_bottom(self):
-        """Mostra el reproductor després de generar l'àudio."""
-        try:
-            self.update_idletasks()
-            canvas = self.controls_scroll._parent_canvas
-            canvas.configure(scrollregion=canvas.bbox("all"))
-            canvas.yview_moveto(1.0)
-        except Exception as e:
-            print(f"Error desplaçant el panell de producció: {e}")
+        # 3. El reproductor queda fora de l'àrea desplaçable i ancorat a baix.
+        # height=1 evita heretar els 200 punts de mida desitjada per defecte;
+        # els seus fills determinen l'alçada real necessària.
+        self.player_widget = AudioPlayerWidget(
+            parent,
+            self.audio_processor,
+            height=1
+        )
+        self.player_widget.grid(row=1, column=0, sticky="ew")
 
     def _extract_clean_dialogue(self, full_text: str) -> str:
         """Extreu exclusivament les línies de locució i pauses d'un fitxer de guió."""
@@ -1521,5 +1524,4 @@ class MainWindow(ctk.CTk):
         if stereo_audio is not None and stereo_audio.size > 0:
             self.progress_bar.set(1.0)
             self.player_widget.load_audio(stereo_audio, title=self.current_script.title)
-            self._scroll_controls_to_bottom()
             messagebox.showinfo("Pòdcast completat", "El pòdcast s'ha generat correctament!\nPots escoltar-lo o desar-lo directament com a MP3.")
