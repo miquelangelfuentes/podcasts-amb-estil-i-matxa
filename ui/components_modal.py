@@ -629,11 +629,11 @@ class ComponentsManagerModal(ctk.CTkToplevel):
                     fg_color="#E3F2FD"
                 )
                 btn_action.configure(
-                    text="ℹ️ Sempre disponible",
+                    text="🌐 Provar connexió al núvol",
                     fg_color=MatchaTheme.BG_CARD_SUBTLE,
-                    text_color=MatchaTheme.TEXT_SECONDARY,
-                    hover_color=MatchaTheme.BG_CARD_SUBTLE,
-                    state="disabled"
+                    text_color="#1565C0",
+                    hover_color=MatchaTheme.BG_CARD_HOVER,
+                    state="normal"
                 )
                 btn_delete.pack_forget()
             elif st["is_installed"]:
@@ -681,7 +681,29 @@ class ComponentsManagerModal(ctk.CTkToplevel):
         if self.is_downloading:
             messagebox.showinfo("Descàrrega en curs", "Ja hi ha una descàrrega en marxa. Espera que acabi.")
             return
+
+        info = self.downloader.MODEL_REPOSITORIES.get(key, {})
+        if info.get("is_cloud", False):
+            self._test_cloud_connection(key)
+            return
+
         self._start_download_component(key)
+
+    def _test_cloud_connection(self, key: str):
+        try:
+            import requests
+            requests.head("https://azure.microsoft.com", timeout=3)
+            messagebox.showinfo(
+                "Servei al núvol operatiu",
+                "El servei de veu al núvol (Microsoft Neural ca-ES) està connectat i disponible.\n\n"
+                "ℹ️ Aquest servei no necessita descarregar cap fitxer al disc dur perquè la síntesi es realitza directament a través d'internet (0 MB de descàrrega local)."
+            )
+        except Exception as e:
+            messagebox.showwarning(
+                "Sense connexió al núvol",
+                f"No s'ha pogut establir connexió amb el servei al núvol: {e}\n\n"
+                "Pots utilitzar Matxa-TTS v2 multiaccent, que funciona 100% offline sense internet."
+            )
 
     def _on_delete_click(self, key: str):
         if self.is_downloading:
