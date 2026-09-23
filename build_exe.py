@@ -42,7 +42,7 @@ def build():
                 pass
             time.sleep(1)
 
-    staging_dist = os.path.join(base_dir, "dist_staging")
+    staging_dist = os.path.join(os.environ.get("TEMP", "C:\\Temp"), "pm_stg")
     if os.path.exists(staging_dist):
         shutil.rmtree(staging_dist, ignore_errors=True)
 
@@ -77,6 +77,12 @@ def build():
         "--hidden-import=pydub",
         "--hidden-import=requests",
         "--hidden-import=aiohttp",
+        "--hidden-import=aiohappyeyeballs",
+        "--hidden-import=tabulate",
+        "--hidden-import=uuid",
+        "--hidden-import=asyncio",
+        "--hidden-import=edge_tts",
+        "--hidden-import=pyttsx3",
         os.path.join(base_dir, "app.py")
     ]
 
