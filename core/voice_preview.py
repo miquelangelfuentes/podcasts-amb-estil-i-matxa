@@ -81,7 +81,7 @@ class VoicePreviewManager:
             try:
                 pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=1024)
             except Exception as e:
-                print(f"Avís: No s'ha pogut inicialitzar pygame.mixer a VoicePreviewManager: {e}")
+                print(f"Avís: no s'ha pogut inicialitzar pygame.mixer a VoicePreviewManager: {e}")
 
     def _check_cache_version(self):
         """Invalida i neteja mostres de veu obsoletes o amb artefactes de versions anteriors."""

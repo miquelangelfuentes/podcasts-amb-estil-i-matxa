@@ -250,7 +250,7 @@ class InstallGuideModal(ctk.CTkToplevel):
 
         title_lbl = ctk.CTkLabel(
             header,
-            text="ℹ️ Guia d'implicacions: Síntesi 100% Offline",
+            text="ℹ️ Guia d'implicacions: síntesi 100% offline",
             font=MatchaTheme.FONT_TITLE,
             text_color=MatchaTheme.TEXT_MAIN
         )
@@ -286,8 +286,8 @@ class InstallGuideModal(ctk.CTkToplevel):
             ),
             (
                 "✈️ Descàrrega única vs. Ús permanent sense connexió",
-                "• Connexió puntual: La connexió a internet només cal una sola vegada per descarregar els arxius oficials des d'Hugging Face (a la pestanya de Models).\n"
-                "• Funcionament permanent offline: Un cop descarregats, l'ordinador pot funcionar en mode avió, sense connexió Wi-Fi o en aules d'escoles i instituts sense cap accés a la xarxa."
+                "• Connexió puntual: la connexió a internet només cal una sola vegada per descarregar els arxius oficials des d'Hugging Face (a la pestanya de Models).\n"
+                "• Funcionament permanent offline: un cop descarregats, l'ordinador pot funcionar en mode avió, sense connexió Wi-Fi o en aules d'escoles i instituts sense cap accés a la xarxa."
             ),
             (
                 "🔒 Privadesa total (0% dades al núvol)",
@@ -298,27 +298,27 @@ class InstallGuideModal(ctk.CTkToplevel):
             ),
             (
                 "⏱️ Rendiment i temps de generació",
-                "• Síntesi per CPU: Els models funcionen a qualsevol ordinador estàndard amb Windows (Intel o AMD) sense necessitat de targeta gràfica dedicada.\n"
-                "• Temps estimat: En un processador típic de 4 a 8 nuclis, 1 minut de conversa o lliçó es genera en aproximadament 15-30 segons (més ràpid que en temps real).\n"
+                "• Síntesi per CPU: els models funcionen a qualsevol ordinador estàndard amb Windows (Intel o AMD) sense necessitat de targeta gràfica dedicada.\n"
+                "• Temps estimat: en un processador típic de 4 a 8 nuclis, 1 minut de conversa o lliçó es genera en aproximadament 15-30 segons (més ràpid que en temps real).\n"
                 "• Si l'equip disposa de GPU NVIDIA amb suport CUDA o DirectML, la generació és encara més ràpida."
             ),
             (
                 "🗣️ Diferència entre els motors disponibles",
                 "• Matxa-TTS v2 multiaccent (100% Offline - Recomanat per defecte):\n"
-                "  Model autònom en ONNX del Barcelona Supercomputing Center amb 16 veus catalanes (central, balear, valencià, nord-occidental i rossellonès). Ràpid i sense dependre de la xarxa.\n\n"
+                "  model autònom en ONNX del Barcelona Supercomputing Center amb 16 veus catalanes (central, balear, valencià, nord-occidental i rossellonès). Ràpid i sense dependre de la xarxa.\n\n"
                 "• StyleTTS 2 Català (Offline complet, ~2,05 GB):\n"
-                "  Checkpoint de pesos PyTorch complet del BSC-LT descarregat íntegrament al disc local.\n\n"
+                "  checkpoint de pesos PyTorch complet del BSC-LT descarregat íntegrament al disc local.\n\n"
                 "• Microsoft Neural ca-ES (Online):\n"
-                "  Pont de connexió que utilitza les veus al núvol de Microsoft (Joana i Enric). Ocupa 0 MB al disc, però requereix connexió constant a internet."
+                "  pont de connexió que utilitza les veus al núvol de Microsoft (Joana i Enric). Ocupa 0 MB al disc, però requereix connexió constant a internet."
             ),
             (
                 "☁️ Limitacions d'ús de Microsoft Neural ca-ES (Online)",
                 "Tot i que és una alternativa ràpida que no requereix espai de disc (0 MB locals), presenta limitacions clau:\n\n"
-                "• Connexió permanent requerida: Si cau la xarxa Wi-Fi o no hi ha internet, la síntesi no funcionarà.\n"
-                "• Privadesa de les dades: El guió s'envia a servidors de Microsoft al núvol; no és apte per a dades personals o privades protegides pel RGPD.\n"
+                "• Connexió permanent requerida: si cau la xarxa Wi-Fi o no hi ha internet, la síntesi no funcionarà.\n"
+                "• Privadesa de les dades: el guió s'envia a servidors de Microsoft al núvol; no és apte per a dades personals o privades protegides pel RGPD.\n"
                 "• Límits de peticions (Rate Limiting): Microsoft aplica límits de volum de peticions per IP; sol·licituds consecutives molt intenses poden retornar errors de bloqueig temporal (HTTP 429 Too Many Requests).\n"
-                "• Sense garantia de servei (SLA): L'endpoint gratuït pot patir canvis d'accés o talls sobtats sense previ avís per part de Microsoft.\n"
-                "• Varietats limitades: Només disposa de 2 veus (Joana i Enric) en català central, sense opció de dialectes balears o valencians."
+                "• Sense garantia de servei (SLA): l'endpoint gratuït pot patir canvis d'accés o talls sobtats sense previ avís per part de Microsoft.\n"
+                "• Varietats limitades: només disposa de 2 veus (Joana i Enric) en català central, sense opció de dialectes balears o valencians."
             ),
             (
                 "📜 Llicències i suport institucional",
@@ -725,12 +725,12 @@ class ComponentsManagerModal(ctk.CTkToplevel):
                 "Estat del servei al núvol — Limitacions d'ús",
                 "✅ Connexió amb el servei Microsoft Neural ca-ES establerta amb èxit.\n\n"
                 "ℹ️ LIMITACIONS D'ÚS GRATUÏT I CONDICIONS:\n"
-                "• Connexió requerida: Cal internet permanent (no funciona offline).\n"
-                "• Privadesa: El contingut del text s'envia als servidors de Microsoft.\n"
-                "• Límits de peticions (Rate Limiting): Sessions amb centenars de frases seguides a gran velocitat poden ser blocades temporalment per IP (error HTTP 429 Too Many Requests).\n"
-                "• Sense garantia de servei (SLA): És un endpoint públic d'accés lliure; Microsoft pot canviar els paràmetres o la disponibilitat sense previ avís.\n"
-                "• Varietats dialectals: Només inclou 2 veus (Joana i Enric) en català central estàndard.\n\n"
-                "💡 Recomanació: Per a total privadesa, ús sense internet i 16 varietats dialectals, utilitza Matxa-TTS v2 multiaccent (100% Offline)."
+                "• Connexió requerida: cal internet permanent (no funciona offline).\n"
+                "• Privadesa: el contingut del text s'envia als servidors de Microsoft.\n"
+                "• Límits de peticions (Rate Limiting): sessions amb centenars de frases seguides a gran velocitat poden ser blocades temporalment per IP (error HTTP 429 Too Many Requests).\n"
+                "• Sense garantia de servei (SLA): és un endpoint públic d'accés lliure; Microsoft pot canviar els paràmetres o la disponibilitat sense previ avís.\n"
+                "• Varietats dialectals: només inclou 2 veus (Joana i Enric) en català central estàndard.\n\n"
+                "💡 Recomanació: per a total privadesa, ús sense internet i 16 varietats dialectals, utilitza Matxa-TTS v2 multiaccent (100% Offline)."
             )
         except Exception as e:
             messagebox.showwarning(

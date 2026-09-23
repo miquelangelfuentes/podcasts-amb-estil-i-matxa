@@ -1,13 +1,13 @@
-[TITOL: Pòdcasts amb Estil i Matxa: Com funciona i com s'ha construït]
-[DESCRIPCIO: Episodi especial de 5 minuts on la Veu presentadora, la Veu 1 i la Veu 2 expliquen el funcionament de l'aplicació pas a pas, les seves opcions d'una, dues o tres veus, i l'arquitectura tecnològica oberta amb StyleTTS 2, Matxa-TTS v2 multiaccent i alVoCat.]
+[TITOL: Pòdcasts amb Estil i Matxa: com funciona i com s'ha construït]
+[DESCRIPCIO: episodi especial de 5 minuts on la Veu presentadora, la Veu 1 i la Veu 2 expliquen el funcionament de l'aplicació pas a pas, les seves opcions d'una, dues o tres veus, i l'arquitectura tecnològica oberta amb StyleTTS 2, Matxa-TTS v2 multiaccent i alVoCat.]
 [FORMAT: Stereo 160kbps]
 [PAUSA_DEFECTE: 350ms]
 [PAUSA_INTERLOCUTOR: 700ms]
 
 [LOCUTORS]
-- Veu presentadora: Conducció del pòdcast, to serè i acadèmic (Central)
-- Veu 1: Primera veu convidada, experta en tecnologia educativa i didàctica (Central)
-- Veu 2: Segona veu convidada, docent de secundària i formador de professorat (Central)
+- Veu presentadora: conducció del pòdcast, to serè i acadèmic (Central)
+- Veu 1: primera veu convidada, experta en tecnologia educativa i didàctica (Central)
+- Veu 2: segona veu convidada, docent de secundària i formador de professorat (Central)
 
 [CONFIGURACIO_LOCUTORS]
 Veu presentadora: veu=jordi pan=0% velocitat=0.96 pitch=-1

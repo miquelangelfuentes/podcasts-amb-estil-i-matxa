@@ -1,5 +1,5 @@
 """
-Paleta de Colors i Estil Visual: Disseny Minimalista Japonès (Modern Matcha Studio).
+Paleta de Colors i Estil Visual: disseny minimalista japonès (Modern Matcha Studio).
 Inspirat en el disseny contemporani d'alta gamma (estil Notion, Craft, Linear, Muji).
 Garanteix conformitat estricta WCAG AAA:
 - Fons verds o foscos -> SEMPRE text blanc pur (#FFFFFF).

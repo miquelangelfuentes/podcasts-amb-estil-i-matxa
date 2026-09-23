@@ -315,7 +315,7 @@ class AudioPlayerWidget(ctk.CTkFrame):
                 )
                 messagebox.showinfo(
                     "Pòdcast desat amb èxit",
-                    f"El fitxer s'ha exportat correctament:\n{file_path}\n\nFormat: MP3 Estèreo, 160 kbps CBR\nSonoritat: EBU R128 (-16 LUFS)"
+                    f"El fitxer s'ha exportat correctament:\n{file_path}\n\nFormat: MP3 estèreo, 160 kbps CBR\nSonoritat: normalitzada segons EBU R128 (-16 LUFS)"
                 )
             except Exception as e:
                 messagebox.showerror("Error d'exportació", f"No s'ha pogut desar el fitxer MP3: {e}")

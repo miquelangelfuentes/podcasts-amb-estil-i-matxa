@@ -1,12 +1,12 @@
-[TITOL: Com funciona el format de dues veus a l'aplicació]
-[DESCRIPCIO: Diàleg formatiu on la Veu 1 i la Veu 2 expliquen com funciona l'aplicació en el format de dues veus sense presentador.]
+[TITOL: com funciona el format de dues veus a l'aplicació]
+[DESCRIPCIO: diàleg formatiu on la Veu 1 i la Veu 2 expliquen com funciona l'aplicació en el format de dues veus sense presentador.]
 [FORMAT: Stereo 160kbps]
 [PAUSA_DEFECTE: 350ms]
 [PAUSA_INTERLOCUTOR: 600ms]
 
 [LOCUTORS]
-- Veu 1: Primera veu interlocutora, to explicatiu (Central)
-- Veu 2: Segona veu interlocutora, to dinàmic i curiós (Central)
+- Veu 1: primera veu interlocutora, to explicatiu (Central)
+- Veu 2: segona veu interlocutora, to dinàmic i curiós (Central)
 
 [CONFIGURACIO_LOCUTORS]
 Veu 1: veu=ona pan=-25% velocitat=1.0 pitch=0

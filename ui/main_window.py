@@ -451,9 +451,9 @@ class MainWindow(ctk.CTk):
             values=[
                 "Plantilles...",
                 "🌟 Guió de 5 min (com funciona l'aplicació)",
-                "👤 1 veu: Com funciona (monòleg)",
-                "👥 2 veus: Com funciona (diàleg)",
-                "👥👥 3 veus: Com funciona (tertúlia)"
+                "👤 1 veu: com funciona (monòleg)",
+                "👥 2 veus: com funciona (diàleg)",
+                "👥👥 3 veus: com funciona (tertúlia)"
             ],
             width=140,
             height=28,
@@ -1115,7 +1115,7 @@ class MainWindow(ctk.CTk):
         if not self.current_script.speakers:
             no_spk = ctk.CTkLabel(
                 self.speakers_container,
-                text="Escriu línies com 'Veu presentadora: Text' o 'Nom: Text' per detectar les veus.",
+                text="Escriu línies com 'Veu presentadora: text' o 'Nom: text' per detectar les veus.",
                 font=MatchaTheme.FONT_SMALL,
                 text_color=MatchaTheme.TEXT_MUTED
             )

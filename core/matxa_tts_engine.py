@@ -81,7 +81,7 @@ class MatxaTTSCatalanEngine:
             return True
 
         if not os.path.exists(self.matxa_onnx_path):
-            print(f"Error: No s'ha trobat el model ONNX a {self.matxa_onnx_path}")
+            print(f"Error: no s'ha trobat el model ONNX a {self.matxa_onnx_path}")
             return False
 
         if not HAS_ONNX:

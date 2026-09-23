@@ -1,13 +1,13 @@
-[TITOL: Com funciona el format de tres veus a l'aplicació]
-[DESCRIPCIO: Tertúlia educativa on la Veu presentadora, la Veu 1 i la Veu 2 expliquen pas a pas com funciona l'aplicació en format complet de tres veus.]
+[TITOL: com funciona el format de tres veus a l'aplicació]
+[DESCRIPCIO: tertúlia educativa on la Veu presentadora, la Veu 1 i la Veu 2 expliquen pas a pas com funciona l'aplicació en format complet de tres veus.]
 [FORMAT: Stereo 160kbps]
 [PAUSA_DEFECTE: 350ms]
 [PAUSA_INTERLOCUTOR: 650ms]
 
 [LOCUTORS]
-- Veu presentadora: Conducció de la tertúlia, to institucional i moderador (Central)
-- Veu 1: Primera veu convidada, to tècnic i analític (Central)
-- Veu 2: Segona veu convidada, to pràctic i docent (Central)
+- Veu presentadora: conducció de la tertúlia, to institucional i moderador (Central)
+- Veu 1: primera veu convidada, to tècnic i analític (Central)
+- Veu 2: segona veu convidada, to pràctic i docent (Central)
 
 [CONFIGURACIO_LOCUTORS]
 Veu presentadora: veu=jordi pan=0% velocitat=0.98 pitch=-1
