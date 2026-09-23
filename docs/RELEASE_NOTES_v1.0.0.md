@@ -1,0 +1,25 @@
+# Pòdcasts amb Estil i Matxa v1.0.0 🎙️🍵
+
+Primer llançament oficial de **Pòdcasts amb Estil i Matxa**, l'estudi d'escriptori autònom per a la creació i locució de guions de pòdcast en català amb intel·ligència artificial.
+
+### ✨ Novetats i funcionalitats destacades
+- **Motors de síntesi de veu catalana d'última generació**:
+  - **Matxa-TTS v2 multiaccent (100% Offline)**: suport complet per a totes les variants dialectals (balear, central, nord-occidental, septentrional i valencià) combinat amb el vocoder neuronal **alVoCat**.
+  - **StyleTTS 2 Català (Offline)**: locució expressiva i natural per a fins a 3 veus simultànies (`ona`, `pau`, `bet`, `jordi`, `teia`, `pere`, `lluc`, `joana`, `enric`) i clonació de veu zero-shot.
+  - **Microsoft Neural ca-ES (Online)**: integració al núvol per a síntesi ràpida amb les veus Joana i Enric.
+- **Gestor integrat de components i models (📦 Models)**:
+  - Descàrrega autònoma i modular dels pesos dels models des d'Hugging Face directament des de l'aplicació.
+  - Comprovació automàtica de la instal·lació, velocitat de descàrrega en temps real (MB/s), represa automàtica de descàrregues i alliberament d'espai en disc.
+  - Eina **«Comprovar el meu equip»** amb diagnòstic automàtic de maquinari (CPU, GPU, RAM, disc i suport AVX2).
+  - Guia pedagògica **«Què implica instal·lar-ho tot?»** per resoldre dubtes d'independència tecnològica i privadesa.
+- **Estudi de guió interactiu**:
+  - Reproductor d'àudio integrat amb forma d'ona (*waveform*), controls de navegació i exportació a MP3 (160 kbps CBR).
+  - Suport per a 1 veu (monòleg), 2 veus (diàleg) i 3 veus (tertúlia amb presentador) amb espacialització estèreo (*panning*) i masterització EBU R128 (-16 LUFS).
+  - Guia de síntesi de veu i fonètica en català, i plantilla d'indicacions per a models de llenguatge (LLM).
+- **Interfície responsiva**:
+  - Resolució adaptativa optimitzada per a escalat DPI de Windows (125% - 150%) amb panell d'àudio permanentment ancorat a la base.
+- **Paquet binari autònom per a Windows**:
+  - Aplicació d'escriptori directa en fitxer ZIP (`PodcastsAmbEstilIMatxa-v1.0.0-Windows.zip`) sense necessitat de configurar entorns de Python.
+
+---
+*Creat mitjançant codificació per intencions amb Google Antigravity per Miquel Àngel Fuentes.*
