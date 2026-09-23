@@ -270,11 +270,19 @@ class InstallGuideModal(ctk.CTkToplevel):
 
         sections = [
             (
-                "📦 Espai total necessari (~311 MB)",
-                "Per tenir la màxima qualitat de veu local sense necessitat d'internet, el paquet complet ocupa només uns 311 MB de disc:\n"
-                "• Matxa-TTS v2 multiaccent (BSC-LT): ~260 MB (conté les 16 veus neuronals catalanes).\n"
-                "• Vocoder alVoCat 22kHz (Projecte AINA): ~51 MB (reconstrucció acústica i normalitzador d'ortografia).\n\n"
-                "A diferència dels models lingüístics pesats (LLM) que pesen entre 4 i 10 GB, aquests models acústics estan altament optimitzats en format ONNX per cabre en qualsevol disc i consumir molt poca memòria RAM."
+                "📦 Espai total necessari (311 MB o 2,36 GB)",
+                "• Configuració 100% Offline recomanada (~311 MB):\n"
+                "  - Matxa-TTS v2 multiaccent (BSC-LT): ~260 MB (16 veus catalanes autònomes).\n"
+                "  - Vocoder alVoCat 22kHz (Projecte AINA): ~51 MB (reconstrucció acústica i normalitzador d'ortografia).\n\n"
+                "• Checkpoint complet StyleTTS 2 (~2,05 GB):\n"
+                "  - Checkpoint PyTorch oficial de difusió neuronal del BSC-LT per a ús avançat complet a disc.\n\n"
+                "A diferència dels models lingüístics pesats (LLM) que pesen de 4 a 10 GB, els models Matxa-TTS estan altament optimitzats en format ONNX per cabre en qualsevol ordinador i consumir molt poca memòria RAM."
+            ),
+            (
+                "⚡ Cal ONNX també? Per a què serveix?",
+                "• Sí! El format ONNX (Open Neural Network Exchange) és la clau de la rapidesa i eficiència de l'aplicació.\n"
+                "• Permet que Matxa-TTS i alVoCat s'executin directament sobre la CPU de qualsevol PC o portàtil (Intel o AMD) sense necessitat d'instal·lar paquets feixucs de PyTorch ni entorns gegants de CUDA.\n"
+                "• L'aplicació ja porta el motor d'execució ONNX Runtime integrat; només cal que descarreguis els fitxers .onnx dels models (311 MB) per començar a parlar."
             ),
             (
                 "✈️ Descàrrega única vs. Ús permanent sense connexió",
@@ -296,9 +304,11 @@ class InstallGuideModal(ctk.CTkToplevel):
             ),
             (
                 "🗣️ Diferència entre els motors disponibles",
-                "• Matxa-TTS v2 (100% Offline - Recomanat per defecte):\n"
-                "  Model de parla autònom del Barcelona Supercomputing Center amb 16 veus reals en català central, balear, valencià, nord-occidental i septentrional.\n\n"
-                "• Edge TTS / StyleTTS (Online):\n"
+                "• Matxa-TTS v2 multiaccent (100% Offline - Recomanat per defecte):\n"
+                "  Model autònom en ONNX del Barcelona Supercomputing Center amb 16 veus catalanes (central, balear, valencià, nord-occidental i rossellonès). Ràpid i sense dependre de la xarxa.\n\n"
+                "• StyleTTS 2 Català (Offline complet, ~2,05 GB):\n"
+                "  Checkpoint de pesos PyTorch complet del BSC-LT descarregat íntegrament al disc local.\n\n"
+                "• Microsoft Neural ca-ES (Online):\n"
                 "  Pont de connexió que utilitza les veus al núvol de Microsoft (Joana i Enric). Ocupa 0 MB al disc, però requereix connexió constant a internet."
             ),
             (
@@ -607,6 +617,13 @@ class ComponentsManagerModal(ctk.CTkToplevel):
             "btn_delete": btn_delete
         }
 
+    @staticmethod
+    def _format_size_mb(mb: float) -> str:
+        """Formata una mida en MB o GB per a una lectura clara a la interfície."""
+        if mb >= 1024.0:
+            return f"{mb / 1024.0:.2f} GB"
+        return f"{mb:.1f} MB"
+
     def _refresh_all_status(self):
         """Actualitza la informació visual de tots els components."""
         statuses = self.downloader.get_all_components_status()
@@ -637,8 +654,9 @@ class ComponentsManagerModal(ctk.CTkToplevel):
                 )
                 btn_delete.pack_forget()
             elif st["is_installed"]:
+                inst_str = self._format_size_mb(st["installed_size_mb"])
                 badge.configure(
-                    text=f"✓ Instal·lat ({st['installed_size_mb']} MB)",
+                    text=f"✓ Instal·lat ({inst_str})",
                     text_color=MatchaTheme.PRIMARY,
                     fg_color=MatchaTheme.PRIMARY_LIGHT
                 )
@@ -652,8 +670,9 @@ class ComponentsManagerModal(ctk.CTkToplevel):
                 btn_delete.pack(side="right")
             else:
                 pending_count += 1
+                exp_str = self._format_size_mb(st["expected_size_mb"])
                 badge.configure(
-                    text=f"⬇ Pendent (~{st['expected_size_mb']} MB)",
+                    text=f"⬇ Pendent (~{exp_str})",
                     text_color="#8C5C00",
                     fg_color="#FFF8E7"
                 )
@@ -736,10 +755,10 @@ class ComponentsManagerModal(ctk.CTkToplevel):
                 if total > 0:
                     pct = max(0.0, min(1.0, downloaded / total))
                     progress_bar.set(pct)
-                    cur_mb = downloaded / (1024 * 1024)
-                    tot_mb = total / (1024 * 1024)
+                    cur_str = f"{downloaded / (1024*1024*1024):.2f} GB" if total >= 1024*1024*1024 else f"{downloaded / (1024*1024):.1f} MB"
+                    tot_str = f"{total / (1024*1024*1024):.2f} GB" if total >= 1024*1024*1024 else f"{total / (1024*1024):.1f} MB"
                     speed_str = f" · {speed_mb_s:.1f} MB/s" if speed_mb_s > 0 else ""
-                    progress_lbl.configure(text=f"{filename}: {cur_mb:.1f} MB / {tot_mb:.1f} MB ({int(pct*100)}%){speed_str}")
+                    progress_lbl.configure(text=f"{filename}: {cur_str} / {tot_str} ({int(pct*100)}%){speed_str}")
                 else:
                     progress_lbl.configure(text=f"{filename}: descarregant...")
             self.after(0, _ui_update)
@@ -794,10 +813,10 @@ class ComponentsManagerModal(ctk.CTkToplevel):
                         if total > 0:
                             pct = max(0.0, min(1.0, downloaded / total))
                             card_ui["progress_bar"].set(pct)
-                            cur_mb = downloaded / (1024 * 1024)
-                            tot_mb = total / (1024 * 1024)
+                            cur_str = f"{downloaded / (1024*1024*1024):.2f} GB" if total >= 1024*1024*1024 else f"{downloaded / (1024*1024):.1f} MB"
+                            tot_str = f"{total / (1024*1024*1024):.2f} GB" if total >= 1024*1024*1024 else f"{total / (1024*1024):.1f} MB"
                             speed_str = f" · {speed_mb_s:.1f} MB/s" if speed_mb_s > 0 else ""
-                            card_ui["progress_lbl"].configure(text=f"{filename}: {cur_mb:.1f} MB / {tot_mb:.1f} MB ({int(pct*100)}%){speed_str}")
+                            card_ui["progress_lbl"].configure(text=f"{filename}: {cur_str} / {tot_str} ({int(pct*100)}%){speed_str}")
                     self.after(0, _ui_update)
 
                 try:

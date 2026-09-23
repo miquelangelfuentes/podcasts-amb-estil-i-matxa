@@ -39,16 +39,19 @@ class SystemChecker:
             free_gb = round(usage.free / (1024 ** 3), 2)
             total_gb = round(usage.total / (1024 ** 3), 2)
 
-            # Requisits: models complets ocupen ~320 MB; recomanem mínim 1 GB lliure
-            if free_gb >= 2.0:
+            # Requisits: Matxa-TTS ocupa ~311 MB; StyleTTS 2 complet ocupa ~2,05 GB
+            if free_gb >= 3.0:
                 status = "ok"
-                msg = f"{free_gb} GB lliures de {total_gb} GB (Més que suficient per instal·lar tots els models)"
-            elif free_gb >= 0.8:
+                msg = f"{free_gb} GB lliures de {total_gb} GB (Més que suficient per instal·lar tots els models, incloent StyleTTS 2 complet)"
+            elif free_gb >= 1.0:
+                status = "ok"
+                msg = f"{free_gb} GB lliures de {total_gb} GB (Suficient per a la síntesi autònoma Matxa-TTS v2 i alVoCat)"
+            elif free_gb >= 0.5:
                 status = "warning"
-                msg = f"{free_gb} GB lliures de {total_gb} GB (Espai suficient per als models, però ajustat)"
+                msg = f"{free_gb} GB lliures de {total_gb} GB (Espai ajustat per als models bàsics; es recomana alliberar espai)"
             else:
                 status = "error"
-                msg = f"{free_gb} GB lliures de {total_gb} GB (Molt poc espai, cal un mínim de 800 MB lliures)"
+                msg = f"{free_gb} GB lliures de {total_gb} GB (Molt poc espai, cal un mínim de 500 MB lliures)"
 
             return {
                 "name": "Espai en disc",

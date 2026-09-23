@@ -45,15 +45,26 @@ class ModelDownloader:
             "is_cloud": False
         },
         "styletts2_ca": {
-            "name": "StyleTTS 2 / Edge TTS (Online)",
-            "provider": "Microsoft Neural (ca-ES)",
+            "name": "StyleTTS 2 Català (BSC-LT Checkpoint 2.05 GB)",
+            "provider": "BSC-LT",
             "repo_id": "BSC-LT/styletts2-catalan-multispeaker",
             "files": {
+                "epoch_2nd_00070.pth": "epoch_2nd_00070.pth",
                 "config.yml": "config.yml"
             },
-            "desc": "Servei de veu al núvol (veus Joana i Enric). No requereix espai a disc; requereix connexió a internet.",
+            "desc": "Checkpoint PyTorch complet de difusió neuronal del BSC-LT (~2,05 GB). Descarrega el model complet a disc.",
+            "expected_size_mb": 2050.1,
+            "category": "Model complet (PyTorch 2.05 GB)",
+            "is_cloud": False
+        },
+        "edge_tts_cloud": {
+            "name": "Microsoft Neural ca-ES (Online)",
+            "provider": "Microsoft Edge Cloud",
+            "repo_id": "microsoft/edge-tts-catalan",
+            "files": {},
+            "desc": "Servei de veus Joana i Enric al núvol. No requereix espai a disc; requereix connexió a internet.",
             "expected_size_mb": 0.0,
-            "category": "Síntesi al núvol (Online)",
+            "category": "Servei al núvol (Online)",
             "is_cloud": True
         }
     }
