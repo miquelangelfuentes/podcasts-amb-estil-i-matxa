@@ -52,7 +52,7 @@ class AudioPlayerWidget(ctk.CTkFrame):
 
     def _build_ui(self):
         # Capçalera del reproductor
-        title_row = ctk.CTkFrame(self, fg_color="transparent")
+        title_row = ctk.CTkFrame(self, fg_color="transparent", height=1)
         title_row.pack(fill="x", padx=18, pady=(14, 4))
 
         title_lbl = ctk.CTkLabel(
@@ -76,7 +76,7 @@ class AudioPlayerWidget(ctk.CTkFrame):
         self.status_badge.pack(side="right")
 
         # Barra de progrés temporal neta
-        prog_row = ctk.CTkFrame(self, fg_color="transparent")
+        prog_row = ctk.CTkFrame(self, fg_color="transparent", height=1)
         prog_row.pack(fill="x", padx=18, pady=(4, 6))
 
         self.time_current_lbl = ctk.CTkLabel(
@@ -110,11 +110,11 @@ class AudioPlayerWidget(ctk.CTkFrame):
         self.time_total_lbl.pack(side="right")
 
         # Fila de botons de control i exportació amb contrast impecable
-        controls_row = ctk.CTkFrame(self, fg_color="transparent")
+        controls_row = ctk.CTkFrame(self, fg_color="transparent", height=1)
         controls_row.pack(fill="x", padx=18, pady=(4, 14))
 
         # Botons d'acció de reproducció
-        btn_frame = ctk.CTkFrame(controls_row, fg_color="transparent")
+        btn_frame = ctk.CTkFrame(controls_row, fg_color="transparent", height=1)
         btn_frame.pack(side="left")
 
         # Botó Reproduir: Verd fosc amb TEXT BLANC PUR
