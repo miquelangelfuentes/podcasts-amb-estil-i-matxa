@@ -508,9 +508,25 @@ class MainWindow(ctk.CTk):
         self.btn_toggle_view.pack(side="right")
 
     def _build_control_panel(self, parent):
+        # El reproductor queda ancorat a la part inferior perquè les accions
+        # essencials (reproduir i desar) continuïn visibles amb DPI alt o
+        # quan la finestra té poca alçada disponible.
+        self.player_widget = AudioPlayerWidget(parent, self.audio_processor)
+        self.player_widget.pack(side="bottom", fill="x")
+
+        # La resta de controls de producció poden desplaçar-se verticalment.
+        # D'aquesta manera el panell s'adapta a pantalles petites i a
+        # l'escalat de Windows sense retallar el reproductor.
+        controls_scroll = ctk.CTkScrollableFrame(
+            parent,
+            fg_color="transparent",
+            corner_radius=0
+        )
+        controls_scroll.pack(side="top", fill="both", expand=True, pady=(0, 10))
+
         # 1. Targeta de Locutors & Panning Estèreo
         speakers_card = ctk.CTkFrame(
-            parent,
+            controls_scroll,
             fg_color=MatchaTheme.BG_CARD,
             corner_radius=MatchaTheme.CARD_RADIUS,
             border_width=1,
@@ -549,7 +565,7 @@ class MainWindow(ctk.CTk):
 
         # 2. Targeta de Paràmetres & Acció de Generació
         gen_card = ctk.CTkFrame(
-            parent,
+            controls_scroll,
             fg_color=MatchaTheme.BG_CARD,
             corner_radius=MatchaTheme.CARD_RADIUS,
             border_width=1,
@@ -667,10 +683,6 @@ class MainWindow(ctk.CTk):
             text_color=MatchaTheme.TEXT_MUTED
         )
         self.status_lbl.pack(anchor="w", padx=18, pady=(0, 12))
-
-        # 3. Targeta de Reproducció d'Àudio i Exportació MP3
-        self.player_widget = AudioPlayerWidget(parent, self.audio_processor)
-        self.player_widget.pack(fill="x")
 
     def _extract_clean_dialogue(self, full_text: str) -> str:
         """Extreu exclusivament les línies de locució i pauses d'un fitxer de guió."""
