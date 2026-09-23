@@ -4,7 +4,7 @@
 
 # 🎙️ Pòdcasts amb Estil i Matxa
 
-> **Aplicació d'escriptori autònoma per a Windows de creació de pòdcasts en català d'1, 2 o 3 veus en local i sense límit de durada.**  
+> **Aplicació d'escriptori autònoma per a Windows de creació de pòdcasts en català d'una, dues o tres veus en local i sense límit de durada.**  
 > Dissenyada per a materials educatius, formatius i divulgatius.  
 
 ---
