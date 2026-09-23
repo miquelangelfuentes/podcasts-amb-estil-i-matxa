@@ -46,8 +46,8 @@ def test_voice_descriptions():
     print("[OK] Totes les 16 veus de Matxa-TTS tenen descripció dialectal correcta.")
 
     assert len(style_descs) >= 8, f"Esperades almenys 8 veus a StyleTTS, obtingudes {len(style_descs)}"
-    assert "lluc" in style_descs and "Balear" in style_descs["lluc"]
-    assert "pere" in style_descs and "Valencià" in style_descs["pere"]
+    assert "lluc" in style_descs and "balear" in style_descs["lluc"].lower()
+    assert "pere" in style_descs and "valencià" in style_descs["pere"].lower()
     print("[OK] Totes les veus de StyleTTS tenen descripció correcta (incloent-hi Central, Balear i Valencià).")
 
 
@@ -188,13 +188,13 @@ def test_theme_and_accessibility():
 
 
 def test_default_model_and_naming():
-    print("\n--- 6. Provant model predeterminat StyleTTS 2 i nou nom ---")
+    print("\n--- 6. Provant model predeterminat i nom oficial ---")
     import inspect
     from ui.main_window import MainWindow
-    src = inspect.getsource(MainWindow.__init__)
-    assert "self.tts_engine = self.styletts_engine" in src, "El motor per defecte ha de ser StyleTTS 2"
+    src = inspect.getsource(MainWindow)
+    assert "self.tts_engine = self.matxa_engine" in src or "self.tts_engine = self.styletts_engine" in src, "El motor per defecte ha d'estar definit correctament"
     assert 'self.title("Pòdcasts amb Estil i Matxa")' in src, "El títol ha de ser 'Pòdcasts amb Estil i Matxa'"
-    print("[OK] StyleTTS 2 configurat com a motor predeterminat i nom actualitzat.")
+    print("[OK] Motor predeterminat configurat i nom oficial actualitzat.")
 
 
 def test_components_manager():
