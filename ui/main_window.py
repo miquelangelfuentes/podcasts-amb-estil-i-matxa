@@ -508,32 +508,27 @@ class MainWindow(ctk.CTk):
         self.btn_toggle_view.pack(side="right")
 
     def _build_control_panel(self, parent):
-        # El reproductor queda ancorat a la part inferior perquè les accions
-        # essencials (reproduir i desar) continuïn visibles amb DPI alt o
-        # quan la finestra té poca alçada disponible.
-        # Reservem explícitament l'alçada del reproductor. CTkFrame no sempre
-        # propaga bé l'alçada sol·licitada pels fills quan Windows aplica DPI alt,
-        # i això podia deixar visible només la capçalera del reproductor.
-        player_slot = ctk.CTkFrame(
-            parent,
-            fg_color="transparent",
-            height=150
-        )
-        player_slot.pack(side="bottom", fill="x")
-        player_slot.pack_propagate(False)
+        # El panell dret usa grid en lloc de pack per reservar de manera
+        # determinista una fila completa al reproductor. Amb DPI alt, pack
+        # podia recalcular la geometria en maximitzar i deixar-ne visible
+        # només la capçalera.
+        parent.grid_columnconfigure(0, weight=1)
+        parent.grid_rowconfigure(0, weight=1, minsize=180)
+        parent.grid_rowconfigure(1, weight=0, minsize=145)
 
-        self.player_widget = AudioPlayerWidget(player_slot, self.audio_processor)
-        self.player_widget.pack(fill="both", expand=True)
-
-        # La resta de controls de producció poden desplaçar-se verticalment.
-        # D'aquesta manera el panell s'adapta a pantalles petites i a
-        # l'escalat de Windows sense retallar el reproductor.
+        # La zona superior és la que cedeix espai i es desplaça verticalment
+        # quan la finestra no té prou alçada.
         controls_scroll = ctk.CTkScrollableFrame(
             parent,
             fg_color="transparent",
             corner_radius=0
         )
-        controls_scroll.pack(side="top", fill="both", expand=True, pady=(0, 10))
+        controls_scroll.grid(row=0, column=0, sticky="nsew", pady=(0, 10))
+
+        # El reproductor ocupa una fila pròpia i conserva sempre l'alçada
+        # necessària per mostrar la barra temporal i els botons.
+        self.player_widget = AudioPlayerWidget(parent, self.audio_processor)
+        self.player_widget.grid(row=1, column=0, sticky="ew")
 
         # 1. Targeta de Locutors & Panning Estèreo
         speakers_card = ctk.CTkFrame(
