@@ -22,12 +22,14 @@ class AudioPlayerWidget(ctk.CTkFrame):
     """Component visual minimalista per reproduir i exportar el pòdcast generat."""
 
     def __init__(self, parent, audio_processor, **kwargs):
+        height = kwargs.pop("height", 1)
         super().__init__(
             parent,
             fg_color=MatchaTheme.BG_CARD,
             corner_radius=MatchaTheme.CARD_RADIUS,
             border_width=1,
             border_color=MatchaTheme.BORDER_CARD,
+            height=height,
             **kwargs
         )
         self.audio_processor = audio_processor
@@ -52,8 +54,8 @@ class AudioPlayerWidget(ctk.CTkFrame):
 
     def _build_ui(self):
         # Capçalera del reproductor
-        title_row = ctk.CTkFrame(self, fg_color="transparent")
-        title_row.pack(fill="x", padx=18, pady=(14, 4))
+        title_row = ctk.CTkFrame(self, fg_color="transparent", height=1)
+        title_row.pack(fill="x", padx=18, pady=(12, 4))
 
         title_lbl = ctk.CTkLabel(
             title_row,
@@ -76,8 +78,8 @@ class AudioPlayerWidget(ctk.CTkFrame):
         self.status_badge.pack(side="right")
 
         # Barra de progrés temporal neta
-        prog_row = ctk.CTkFrame(self, fg_color="transparent")
-        prog_row.pack(fill="x", padx=18, pady=(4, 6))
+        prog_row = ctk.CTkFrame(self, fg_color="transparent", height=1)
+        prog_row.pack(fill="x", padx=18, pady=(2, 6))
 
         self.time_current_lbl = ctk.CTkLabel(
             prog_row,
@@ -110,11 +112,11 @@ class AudioPlayerWidget(ctk.CTkFrame):
         self.time_total_lbl.pack(side="right")
 
         # Fila de botons de control i exportació amb contrast impecable
-        controls_row = ctk.CTkFrame(self, fg_color="transparent")
-        controls_row.pack(fill="x", padx=18, pady=(4, 14))
+        controls_row = ctk.CTkFrame(self, fg_color="transparent", height=1)
+        controls_row.pack(fill="x", padx=18, pady=(2, 12))
 
         # Botons d'acció de reproducció
-        btn_frame = ctk.CTkFrame(controls_row, fg_color="transparent")
+        btn_frame = ctk.CTkFrame(controls_row, fg_color="transparent", height=1)
         btn_frame.pack(side="left")
 
         # Botó Reproduir: Verd fosc amb TEXT BLANC PUR

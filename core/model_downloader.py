@@ -20,38 +20,52 @@ class ModelDownloader:
     HF_BASE_URL = "https://huggingface.co"
 
     MODEL_REPOSITORIES = {
-        "alvocat_vocos": {
-            "name": "Vocoder alVoCat 22kHz",
-            "provider": "Projecte AINA",
-            "repo_id": "projecte-aina/alvocat-vocos-22khz",
-            "files": {
-                "mel_spec_22khz_cat.onnx": "mel_spec_22khz_cat.onnx"
-            },
-            "desc": "Vocoder d'alta fidelitat acústica a 22.050 Hz i normalització fonètica del català.",
-            "expected_size_mb": 51.2,
-            "category": "Vocoder essencial"
-        },
         "matxa_tts": {
-            "name": "Matxa-TTS v2 multiaccent",
+            "name": "Matxa-TTS v2 multiaccent (100% Offline)",
             "provider": "BSC-LT",
             "repo_id": "BSC-LT/matxa-tts-v2-ca-multiaccent-graphemes",
             "files": {
                 "matxa_v2_multiaccent_graphemes_20_steps_wavenext.onnx": "matxa_v2_multiaccent_graphemes_20_steps_wavenext.onnx"
             },
-            "desc": "Model autònom amb 16 veus autèntiques per a totes les varietats dialectals catalanes.",
-            "expected_size_mb": 260.4,
-            "category": "Síntesi multiaccent"
+            "desc": "Model neuronal autònom amb 16 veus per a totes les variants dialectals. No requereix internet.",
+            "expected_size_mb": 260.17,
+            "category": "Motor autònom principal (Offline)",
+            "is_cloud": False
+        },
+        "alvocat_vocos": {
+            "name": "Vocoder alVoCat 22kHz (100% Offline)",
+            "provider": "Projecte AINA",
+            "repo_id": "projecte-aina/alvocat-vocos-22khz",
+            "files": {
+                "mel_spec_22khz_cat.onnx": "mel_spec_22khz_cat.onnx"
+            },
+            "desc": "Vocoder neuronal d'alta fidelitat acústica a 22.050 Hz i normalització lingüística AINA.",
+            "expected_size_mb": 51.2,
+            "category": "Vocoder essencial (Offline)",
+            "is_cloud": False
         },
         "styletts2_ca": {
-            "name": "StyleTTS 2 Català",
+            "name": "StyleTTS 2 Català (BSC-LT Checkpoint 2.05 GB)",
             "provider": "BSC-LT",
             "repo_id": "BSC-LT/styletts2-catalan-multispeaker",
             "files": {
+                "epoch_2nd_00070.pth": "epoch_2nd_00070.pth",
                 "config.yml": "config.yml"
             },
-            "desc": "Model de difusió neuronal per a expressivitat oral avançada i clonació de veu zero-shot.",
-            "expected_size_mb": 0.1,
-            "category": "Síntesi expressiva"
+            "desc": "Checkpoint PyTorch complet de difusió neuronal del BSC-LT (~2,05 GB). Descarrega el model complet a disc.",
+            "expected_size_mb": 2050.1,
+            "category": "Model complet (PyTorch 2.05 GB)",
+            "is_cloud": False
+        },
+        "edge_tts_cloud": {
+            "name": "Microsoft Neural ca-ES (Online)",
+            "provider": "Microsoft Edge Cloud",
+            "repo_id": "microsoft/edge-tts-catalan",
+            "files": {},
+            "desc": "Servei al núvol (veus Joana i Enric). Ocupa 0 MB locals però envia el text a Microsoft i requereix internet constant. Subjecte a límits de peticions (rate limiting) i sense SLA.",
+            "expected_size_mb": 0.0,
+            "category": "Servei al núvol (Online)",
+            "is_cloud": True
         }
     }
 
@@ -120,6 +134,7 @@ class ModelDownloader:
             "expected_size_mb": info["expected_size_mb"],
             "installed_size_mb": installed_mb,
             "is_installed": is_complete,
+            "is_cloud": info.get("is_cloud", False),
             "files": files_detail
         }
 
