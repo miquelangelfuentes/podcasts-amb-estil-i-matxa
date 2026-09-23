@@ -76,10 +76,11 @@ class MainWindow(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        # Configuració bàsica de la finestra i títol renovat
+        # Configuració bàsica de la finestra i títol renovat.
+        # CustomTkinter escala les dimensions segons el DPI de Windows;
+        # adaptem la geometria a l'àrea útil de treball per no superar la pantalla a 150%.
         self.title("Pòdcasts amb Estil i Matxa")
-        self.geometry("1280x840")
-        self.minsize(1120, 720)
+        self._fit_window_to_work_area()
 
         # Configuració d'aparença neta
         ctk.set_appearance_mode("light")
@@ -87,6 +88,44 @@ class MainWindow(ctk.CTk):
 
         # Icona de l'aplicació per a la finestra i la barra de tasques de Windows
         self._set_app_icon()
+
+    def _get_logical_work_area(self):
+        """Retorna l'àrea útil de pantalla en unitats lògiques de CustomTkinter."""
+        try:
+            window_scale = max(float(self._get_window_scaling()), 0.1)
+        except Exception:
+            window_scale = 1.0
+
+        physical_w = self.winfo_screenwidth()
+        physical_h = self.winfo_screenheight()
+
+        if sys.platform.startswith("win"):
+            try:
+                from ctypes import wintypes
+                rect = wintypes.RECT()
+                SPI_GETWORKAREA = 0x0030
+                ok = ctypes.windll.user32.SystemParametersInfoW(
+                    SPI_GETWORKAREA, 0, ctypes.byref(rect), 0
+                )
+                if ok:
+                    physical_w = rect.right - rect.left
+                    physical_h = rect.bottom - rect.top
+            except Exception:
+                pass
+
+        return int(physical_w / window_scale), int(physical_h / window_scale)
+
+    def _fit_window_to_work_area(self):
+        """Evita que la finestra inicial superi l'àrea útil després de l'escalat DPI."""
+        work_w, work_h = self._get_logical_work_area()
+
+        target_w = max(1000, min(1280, work_w - 24))
+        target_h = max(620, min(840, work_h - 24))
+
+        min_w = min(1020, target_w)
+        min_h = min(620, target_h)
+        self.minsize(min_w, min_h)
+        self.geometry(f"{target_w}x{target_h}")
 
         # Cua thread-safe per a comunicació segura entre fils secundaris i Tkinter
         self._ui_queue = queue.Queue()
@@ -508,18 +547,34 @@ class MainWindow(ctk.CTk):
         self.btn_toggle_view.pack(side="right")
 
     def _build_control_panel(self, parent):
+        # 1. El reproductor queda ancorat a la part inferior perquè les accions
+        # essencials (escoltar i desar el fitxer MP3) siguin SEMPRE visibles i
+        # mai quedin retallades fora de la pantalla (ex. a 150% de DPI o en pantalles petites).
+        self.player_widget = AudioPlayerWidget(parent, self.audio_processor, height=1)
+        self.player_widget.pack(side="bottom", fill="x", pady=(8, 0))
+
+        # 2. Panell de controls superior desplaçable (Locutors + Generació).
+        # height=1 evita heretar els 200 punts de mida desitjada per defecte de CustomTkinter.
+        self.controls_scroll = ctk.CTkScrollableFrame(
+            parent,
+            fg_color="transparent",
+            corner_radius=0,
+            height=1
+        )
+        self.controls_scroll.pack(side="top", fill="both", expand=True)
+
         # 1. Targeta de Locutors & Panning Estèreo
         speakers_card = ctk.CTkFrame(
-            parent,
+            self.controls_scroll,
             fg_color=MatchaTheme.BG_CARD,
             corner_radius=MatchaTheme.CARD_RADIUS,
             border_width=1,
             border_color=MatchaTheme.BORDER_CARD
         )
-        speakers_card.pack(fill="x", pady=(0, 10))
+        speakers_card.pack(fill="x", pady=(0, 8))
 
-        spk_header = ctk.CTkFrame(speakers_card, fg_color="transparent")
-        spk_header.pack(fill="x", padx=18, pady=(12, 6))
+        spk_header = ctk.CTkFrame(speakers_card, fg_color="transparent", height=1)
+        spk_header.pack(fill="x", padx=18, pady=(10, 4))
 
         spk_title = ctk.CTkLabel(
             spk_header,
@@ -538,24 +593,24 @@ class MainWindow(ctk.CTk):
         )
         clone_btn.pack(side="right")
 
-        # Contenidor amb desplaçament per als locutors
-        self.speakers_container = ctk.CTkScrollableFrame(
+        # Contenidor per als locutors amb alçada dinàmica (evita malbaratar 180 px amb 1 sola veu)
+        self.speakers_container = ctk.CTkFrame(
             speakers_card,
-            height=180,
             fg_color=MatchaTheme.BG_CARD_SUBTLE,
-            corner_radius=10
+            corner_radius=10,
+            height=1
         )
-        self.speakers_container.pack(fill="x", padx=18, pady=(0, 12))
+        self.speakers_container.pack(fill="x", padx=18, pady=(0, 10))
 
         # 2. Targeta de Paràmetres & Acció de Generació
         gen_card = ctk.CTkFrame(
-            parent,
+            self.controls_scroll,
             fg_color=MatchaTheme.BG_CARD,
             corner_radius=MatchaTheme.CARD_RADIUS,
             border_width=1,
             border_color=MatchaTheme.BORDER_CARD
         )
-        gen_card.pack(fill="x", pady=(0, 10))
+        gen_card.pack(fill="x", pady=(0, 2))
 
         gen_title = ctk.CTkLabel(
             gen_card,
@@ -563,10 +618,10 @@ class MainWindow(ctk.CTk):
             font=MatchaTheme.FONT_SUBTITLE,
             text_color=MatchaTheme.TEXT_MAIN
         )
-        gen_title.pack(anchor="w", padx=18, pady=(12, 6))
+        gen_title.pack(anchor="w", padx=18, pady=(10, 4))
 
-        engine_row = ctk.CTkFrame(gen_card, fg_color="transparent")
-        engine_row.pack(fill="x", padx=18, pady=(0, 8))
+        engine_row = ctk.CTkFrame(gen_card, fg_color="transparent", height=1)
+        engine_row.pack(fill="x", padx=18, pady=(0, 6))
 
         engine_lbl = ctk.CTkLabel(
             engine_row,
@@ -595,8 +650,8 @@ class MainWindow(ctk.CTk):
         self.engine_combo.set("🎙️ StyleTTS 2 Català (BSC-LT)")
 
         # Opcions inline netes
-        opts_row = ctk.CTkFrame(gen_card, fg_color="transparent")
-        opts_row.pack(fill="x", padx=18, pady=(0, 10))
+        opts_row = ctk.CTkFrame(gen_card, fg_color="transparent", height=1)
+        opts_row.pack(fill="x", padx=18, pady=(0, 8))
 
         self.cb_normalizer = ctk.CTkCheckBox(
             opts_row,
@@ -625,14 +680,14 @@ class MainWindow(ctk.CTk):
         self.cb_lufs.select()
 
         # Botó principal de generació (Call-to-Action destacat amb TEXT BLANC sobre fons fosc)
-        btn_row = ctk.CTkFrame(gen_card, fg_color="transparent")
+        btn_row = ctk.CTkFrame(gen_card, fg_color="transparent", height=1)
         btn_row.pack(fill="x", padx=18, pady=(0, 6))
 
         self.generate_btn = CleanButton(
             btn_row,
             style="primary",
             text="🎙️ Generar pòdcast complet",
-            height=42,
+            height=40,
             font=("Segoe UI", 12, "bold"),
             command=self._start_generation
         )
@@ -643,7 +698,7 @@ class MainWindow(ctk.CTk):
             style="danger",
             text="✕ Cancel·lar",
             width=85,
-            height=42,
+            height=40,
             state="disabled",
             command=self._cancel_generation
         )
@@ -657,7 +712,7 @@ class MainWindow(ctk.CTk):
             progress_color=MatchaTheme.PRIMARY,
             fg_color=MatchaTheme.PROGRESS_BG
         )
-        self.progress_bar.pack(fill="x", padx=18, pady=(4, 4))
+        self.progress_bar.pack(fill="x", padx=18, pady=(3, 3))
         self.progress_bar.set(0.0)
 
         self.status_lbl = ctk.CTkLabel(
@@ -666,11 +721,7 @@ class MainWindow(ctk.CTk):
             font=MatchaTheme.FONT_SMALL,
             text_color=MatchaTheme.TEXT_MUTED
         )
-        self.status_lbl.pack(anchor="w", padx=18, pady=(0, 12))
-
-        # 3. Targeta de Reproducció d'Àudio i Exportació MP3
-        self.player_widget = AudioPlayerWidget(parent, self.audio_processor)
-        self.player_widget.pack(fill="x")
+        self.status_lbl.pack(anchor="w", padx=18, pady=(0, 10))
 
     def _extract_clean_dialogue(self, full_text: str) -> str:
         """Extreu exclusivament les línies de locució i pauses d'un fitxer de guió."""
@@ -834,11 +885,7 @@ class MainWindow(ctk.CTk):
         factor = mapping.get(choice, 1.0)
         try:
             ctk.set_widget_scaling(factor)
-            screen_w = self.winfo_screenwidth()
-            screen_h = self.winfo_screenheight()
-            target_w = min(screen_w - 40, int(1280 * min(factor, 1.35)))
-            target_h = min(screen_h - 60, int(840 * min(factor, 1.35)))
-            self.geometry(f"{target_w}x{target_h}")
+            self._fit_window_to_work_area()
         except Exception as e:
             print(f"Error aplicant escala: {e}")
 
@@ -1051,13 +1098,14 @@ class MainWindow(ctk.CTk):
                 fg_color=MatchaTheme.BG_CARD,
                 corner_radius=10,
                 border_width=1,
-                border_color=MatchaTheme.BORDER_CARD
+                border_color=MatchaTheme.BORDER_CARD,
+                height=1
             )
             card.pack(fill="x", padx=4, pady=4)
 
             # Línia 1: Nom distingit, Selector de Veu i Botó d'Escolta
-            top_line = ctk.CTkFrame(card, fg_color="transparent")
-            top_line.pack(fill="x", padx=10, pady=(8, 4))
+            top_line = ctk.CTkFrame(card, fg_color="transparent", height=1)
+            top_line.pack(fill="x", padx=10, pady=(6, 2))
 
             is_presenter = "presentad" in spk_name.lower()
             spk_icon = "🎙️" if is_presenter else "👤"
@@ -1103,8 +1151,8 @@ class MainWindow(ctk.CTk):
             sample_btn.pack(side="right")
 
             # Línia 2: Espacialització Estèreo amb PillSelector d'alt contrast (Blanc sobre verd quan és actiu!)
-            pan_line = ctk.CTkFrame(card, fg_color="transparent")
-            pan_line.pack(fill="x", padx=10, pady=(0, 8))
+            pan_line = ctk.CTkFrame(card, fg_color="transparent", height=1)
+            pan_line.pack(fill="x", padx=10, pady=(2, 6))
 
             pan_lbl = ctk.CTkLabel(
                 pan_line,
