@@ -131,11 +131,11 @@ class MainWindow(ctk.CTk):
         self._ui_queue = queue.Queue()
         self.after(35, self._process_ui_queue)
 
-        # Motors interns: per defecte s'obre amb StyleTTS 2
+        # Motors interns: per defecte s'obre amb Matxa-TTS v2 (100% Offline)
         self.script_parser = ScriptParser()
         self.matxa_engine = MatxaTTSCatalanEngine()
         self.styletts_engine = StyleTTS2CatalanEngine()
-        self.tts_engine = self.styletts_engine
+        self.tts_engine = self.matxa_engine
         self.audio_processor = AudioProcessor(sample_rate=self.tts_engine.sample_rate)
         self.voice_preview_manager = VoicePreviewManager()
 
@@ -235,7 +235,7 @@ class MainWindow(ctk.CTk):
 
         self.badge = ctk.CTkLabel(
             brand_frame,
-            text="StyleTTS 2 Català (BSC-LT) & alVoCat 22kHz",
+            text="BSC-LT Matxa-TTS v2 (100% Offline) & alVoCat 22kHz",
             font=MatchaTheme.FONT_SMALL,
             text_color=MatchaTheme.TEXT_MUTED
         )
@@ -633,7 +633,7 @@ class MainWindow(ctk.CTk):
 
         self.engine_combo = ctk.CTkComboBox(
             engine_row,
-            values=["🎙️ StyleTTS 2 Català (BSC-LT)", "🍵 Matxa-TTS v2 (Multiaccent - BSC-LT)"],
+            values=["🍵 Matxa-TTS v2 (100% Offline - BSC-LT)", "🎙️ Edge TTS / StyleTTS (Online - Núvol)"],
             height=28,
             corner_radius=14,
             fg_color=MatchaTheme.BG_CARD_SUBTLE,
@@ -647,7 +647,7 @@ class MainWindow(ctk.CTk):
             command=self._on_engine_change
         )
         self.engine_combo.pack(side="left", fill="x", expand=True)
-        self.engine_combo.set("🎙️ StyleTTS 2 Català (BSC-LT)")
+        self.engine_combo.set("🍵 Matxa-TTS v2 (100% Offline - BSC-LT)")
 
         # Opcions inline netes
         opts_row = ctk.CTkFrame(gen_card, fg_color="transparent", height=1)
@@ -1178,11 +1178,11 @@ class MainWindow(ctk.CTk):
     def _on_engine_change(self, choice):
         if "Matxa" in choice:
             self.tts_engine = self.matxa_engine
-            self.badge.configure(text="BSC-LT Matxa-TTS v2 multiaccent & alVoCat 22kHz")
+            self.badge.configure(text="BSC-LT Matxa-TTS v2 (100% Offline) & alVoCat 22kHz")
             self.styletts_engine.unload()
         else:
             self.tts_engine = self.styletts_engine
-            self.badge.configure(text="BSC-LT StyleTTS 2 & alVoCat 22kHz")
+            self.badge.configure(text="Microsoft Neural ca-ES & alVoCat 22kHz (Online)")
             self.matxa_engine.unload()
         self._refresh_speakers_ui()
 
