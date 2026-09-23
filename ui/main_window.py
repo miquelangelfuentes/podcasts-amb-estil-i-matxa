@@ -62,15 +62,20 @@ class MainWindow(ctk.CTk):
     }
 
     STYLETTS_VOICE_DESCRIPTIONS = {
-        "joana": "Joana — Microsoft Neural (Fem, estàndard)",
-        "enric": "Enric — Microsoft Neural (Masc, estàndard)",
-        "ona": "Ona — Microsoft Neural (Fem, càlida)",
-        "pau": "Pau — Microsoft Neural (Masc, dinàmic)",
-        "bet": "Bet — Microsoft Neural (Fem, didàctica)",
-        "jordi": "Jordi — Microsoft Neural (Masc, acadèmic)",
-        "teia": "Teia — Microsoft Neural (Fem, narrativa)",
-        "pere": "Pere — Microsoft Neural (Masc, natural)",
-        "lluc": "Lluc — Microsoft Neural (Masc, balear)"
+        "ona": "Ona — StyleTTS 2 (Fem, càlida i professional)",
+        "pau": "Pau — StyleTTS 2 (Masc, dinàmic i proper)",
+        "bet": "Bet — StyleTTS 2 (Fem, didàctica i expressiva)",
+        "jordi": "Jordi — StyleTTS 2 (Masc, acadèmic)",
+        "teia": "Teia — StyleTTS 2 (Fem, narrativa)",
+        "pere": "Pere — StyleTTS 2 (Masc, valencià natural)",
+        "lluc": "Lluc — StyleTTS 2 (Masc, balear mallorquí)",
+        "joana": "Joana — StyleTTS 2 / Neural (Fem, estàndard)",
+        "enric": "Enric — StyleTTS 2 / Neural (Masc, estàndard)"
+    }
+
+    MICROSOFT_VOICE_DESCRIPTIONS = {
+        "joana": "Joana — Microsoft Neural (Fem, ca-ES estàndard)",
+        "enric": "Enric — Microsoft Neural (Masc, ca-ES estàndard)"
     }
 
     def __init__(self):
@@ -609,7 +614,8 @@ class MainWindow(ctk.CTk):
             engine_row,
             values=[
                 "🍵 Matxa-TTS v2 (100% Offline — 16 veus BSC-LT)",
-                "☁️ Microsoft Neural ca-ES (Online — Veus Joana i Enric)"
+                "🎙️ StyleTTS 2 Català (BSC-LT / Neural — 9 veus d'estil)",
+                "☁️ Microsoft Neural ca-ES (Online — Joana i Enric)"
             ],
             height=28,
             corner_radius=14,
@@ -988,6 +994,13 @@ class MainWindow(ctk.CTk):
             self._internal_mode_update = False
 
     def _get_voice_catalog(self) -> dict:
+        engine_str = self.engine_combo.get() if hasattr(self, "engine_combo") else ""
+        if "Matxa" in engine_str:
+            return self.MATXA_VOICE_DESCRIPTIONS
+        elif "Microsoft" in engine_str:
+            return self.MICROSOFT_VOICE_DESCRIPTIONS
+        elif "StyleTTS" in engine_str:
+            return self.STYLETTS_VOICE_DESCRIPTIONS
         if hasattr(self.tts_engine, "MATXA_SPEAKERS"):
             return self.MATXA_VOICE_DESCRIPTIONS
         return self.STYLETTS_VOICE_DESCRIPTIONS
@@ -997,6 +1010,10 @@ class MainWindow(ctk.CTk):
         v_key = str(voice_id).lower().strip()
         if v_key in cat:
             return cat[v_key]
+        if v_key in self.STYLETTS_VOICE_DESCRIPTIONS:
+            return self.STYLETTS_VOICE_DESCRIPTIONS[v_key]
+        if v_key in self.MATXA_VOICE_DESCRIPTIONS:
+            return self.MATXA_VOICE_DESCRIPTIONS[v_key]
         return f"{v_key.capitalize()} — Català"
 
     def _get_voice_id_from_label(self, label: str) -> str:
@@ -1004,6 +1021,13 @@ class MainWindow(ctk.CTk):
         for v_id, desc in cat.items():
             if desc == label:
                 return v_id
+        for full_cat in (self.STYLETTS_VOICE_DESCRIPTIONS, self.MATXA_VOICE_DESCRIPTIONS, self.MICROSOFT_VOICE_DESCRIPTIONS):
+            for v_id, desc in full_cat.items():
+                if desc == label:
+                    return v_id
+        first_token = label.split(" — ")[0].strip().lower()
+        if first_token in cat:
+            return first_token
         return label.split(" — ")[0].split()[0].lower().strip()
 
     def _get_available_voice_labels(self) -> list:
@@ -1101,14 +1125,21 @@ class MainWindow(ctk.CTk):
         available_labels = self._get_available_voice_labels()
         available_ids = list(self._get_voice_catalog().keys())
 
-        is_matxa = hasattr(self.tts_engine, "MATXA_SPEAKERS")
+        engine_choice = self.engine_combo.get() if hasattr(self, "engine_combo") else ""
+        is_matxa = "Matxa" in engine_choice or hasattr(self.tts_engine, "MATXA_SPEAKERS")
         for i, (spk_name, spk_cfg) in enumerate(self.current_script.speakers.items()):
             if spk_cfg.voice_id not in available_ids:
-                if not is_matxa:
-                    is_masc = any(m in spk_name.lower() for m in ["masc", "home", "enric", "pau", "jordi", "pere", "noi", "veu 2"])
-                    spk_cfg.voice_id = "enric" if is_masc else ("joana" if i % 2 == 0 else "enric")
-                else:
+                if is_matxa:
                     spk_cfg.voice_id = available_ids[min(i, len(available_ids) - 1)]
+                elif "Microsoft" in engine_choice:
+                    is_masc = any(m in spk_name.lower() for m in ["masc", "home", "enric", "pau", "jordi", "pere", "noi", "veu 2"])
+                    spk_cfg.voice_id = "enric" if is_masc else "joana"
+                else:  # StyleTTS 2 Català
+                    is_masc = any(m in spk_name.lower() for m in ["masc", "home", "enric", "pau", "jordi", "pere", "noi", "veu 2"])
+                    if is_masc:
+                        spk_cfg.voice_id = "pau" if i % 2 == 0 else "jordi"
+                    else:
+                        spk_cfg.voice_id = "ona" if i % 2 == 0 else "bet"
 
             card = ctk.CTkFrame(
                 self.speakers_container,
@@ -1197,9 +1228,13 @@ class MainWindow(ctk.CTk):
             self.tts_engine = self.matxa_engine
             self.badge.configure(text="BSC-LT Matxa-TTS v2 (100% Offline) & alVoCat 22kHz")
             self.styletts_engine.unload()
-        else:
+        elif "Microsoft" in choice:
             self.tts_engine = self.styletts_engine
-            self.badge.configure(text="Microsoft Neural ca-ES & alVoCat 22kHz (Online)")
+            self.badge.configure(text="Microsoft Neural ca-ES (Online directe Joana i Enric) & alVoCat 22kHz")
+            self.matxa_engine.unload()
+        else:  # StyleTTS 2 Català
+            self.tts_engine = self.styletts_engine
+            self.badge.configure(text="BSC-LT StyleTTS 2 Català (PyTorch / Zero-Shot) & alVoCat 22kHz")
             self.matxa_engine.unload()
         self._refresh_speakers_ui()
 
