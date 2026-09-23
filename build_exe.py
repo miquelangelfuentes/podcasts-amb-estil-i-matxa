@@ -90,13 +90,20 @@ def build():
     print(" ".join(cmd))
     print("-" * 60)
 
+    def robust_copy(src, dst):
+        """Còpia segura de directoris que gestiona rutes llargues a Windows (MAX_PATH)."""
+        if sys.platform == "win32":
+            subprocess.run(["robocopy", src, dst, "/MIR", "/R:2", "/W:1", "/NP"], check=False)
+        else:
+            shutil.copytree(src, dst, dirs_exist_ok=True)
+
     result = subprocess.run(cmd, cwd=base_dir)
     if result.returncode == 0:
         built_dir = os.path.join(staging_dist, "PodcastsAmbEstilIMatxa")
         new_dist = os.path.join(dist_dir, "PodcastsAmbEstilIMatxa")
         os.makedirs(new_dist, exist_ok=True)
         print(f"\nCopiant fitxers generats a {new_dist}...")
-        shutil.copytree(built_dir, new_dist, dirs_exist_ok=True)
+        robust_copy(built_dir, new_dist)
 
         exe_path = os.path.join(new_dist, "PodcastsAmbEstilIMatxa.exe")
         print("\n" + "=" * 60)
@@ -113,7 +120,7 @@ def build():
             try:
                 print(f"\n  Sincronitzant versió actualitzada a dist/{alias_name}...")
                 os.makedirs(alias_dist, exist_ok=True)
-                shutil.copytree(built_dir, alias_dist, dirs_exist_ok=True)
+                robust_copy(built_dir, alias_dist)
                 dest_exe = os.path.join(alias_dist, alias_exe)
                 orig_in_copy = os.path.join(alias_dist, "PodcastsAmbEstilIMatxa.exe")
                 if os.path.exists(orig_in_copy):
