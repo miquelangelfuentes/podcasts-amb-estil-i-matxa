@@ -6,11 +6,13 @@ exportació a MP3 estèreo a 160 kbps mitjançant FFmpeg integrat.
 """
 
 import os
+import math
 import subprocess
 import tempfile
 import numpy as np
+import scipy.signal
 import soundfile as sf
-from typing import List, Tuple, Optional
+from typing import List, Tuple, Optional, Union
 import imageio_ffmpeg
 
 class AudioProcessor:
@@ -188,3 +190,179 @@ class AudioProcessor:
                     os.remove(tmp_wav_path)
                 except OSError:
                     pass
+
+    def load_audio_file(self, file_path: str, target_sr: Optional[int] = None) -> np.ndarray:
+        """
+        Carrega un fitxer d'àudio (MP3, WAV, OGG, FLAC, M4A...) i el retorna com a array
+        numpy estèreo de forma (2, N) i dtype float32 re-mostrejat a target_sr (per defecte self.sample_rate).
+        Utilitza soundfile per defecte i recorre a FFmpeg si el format conté etiquetes complexes.
+        """
+        if target_sr is None:
+            target_sr = self.sample_rate
+
+        file_path = os.path.abspath(file_path)
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"No s'ha trobat el fitxer d'àudio: {file_path}")
+
+        data = None
+        orig_sr = None
+
+        # 1. Intent de lectura directa mitjançant soundfile
+        try:
+            data, orig_sr = sf.read(file_path, dtype="float32")
+        except Exception:
+            # 2. Descodificació de seguretat mitjançant FFmpeg integrat
+            with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp_wav:
+                tmp_wav_path = tmp_wav.name
+            try:
+                cmd = [
+                    self.ffmpeg_exe,
+                    "-y",
+                    "-i", file_path,
+                    "-vn",
+                    "-ac", "2",
+                    "-ar", str(target_sr),
+                    "-f", "wav",
+                    tmp_wav_path
+                ]
+                res = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                if res.returncode == 0 and os.path.exists(tmp_wav_path):
+                    data, orig_sr = sf.read(tmp_wav_path, dtype="float32")
+            finally:
+                if os.path.exists(tmp_wav_path):
+                    try:
+                        os.remove(tmp_wav_path)
+                    except OSError:
+                        pass
+
+        if data is None or orig_sr is None:
+            raise RuntimeError(f"No s'ha pogut descodificar el fitxer d'àudio: {file_path}")
+
+        # 3. Normalitzem la forma a estèreo de 2 canals: (2, N)
+        if data.ndim == 1:
+            stereo = np.vstack([data, data])
+        elif data.ndim == 2:
+            if data.shape[1] == 2:
+                stereo = data.T
+            elif data.shape[0] == 2:
+                stereo = data
+            elif data.shape[1] == 1:
+                mono = data[:, 0]
+                stereo = np.vstack([mono, mono])
+            else:
+                stereo = data[:, :2].T
+        else:
+            flat = data.flatten()
+            stereo = np.vstack([flat, flat])
+
+        # 4. Re-mostreig d'alta qualitat polifàsic si cal
+        if orig_sr != target_sr and stereo.shape[1] > 0:
+            gcd = math.gcd(orig_sr, target_sr)
+            up = target_sr // gcd
+            down = orig_sr // gcd
+            stereo = scipy.signal.resample_poly(stereo, up, down, axis=1).astype(np.float32)
+
+        return stereo.astype(np.float32)
+
+    def mix_background_track(
+        self,
+        voice_audio: np.ndarray,
+        bg_audio: Union[str, np.ndarray],
+        volume: float = 0.15,
+        loop: bool = True,
+        fade_in_sec: float = 1.0,
+        fade_out_sec: float = 2.0
+    ) -> np.ndarray:
+        """
+        Mescla una pista de música o ambient de fons sota la locució del pòdcast.
+        - voice_audio: Senyal estèreo principal (2, N) a self.sample_rate.
+        - bg_audio: Ruta al fitxer d'àudio (MP3/WAV/etc.) o array estèreo (2, L).
+        - volume: Factor de volum de fons (0.0 a 1.0, típicament 0.10 - 0.20).
+        - loop: Si és True i la pista és més curta que el pòdcast, es repeteix en bucle amb cross-fade de 20 ms.
+        - fade_in_sec / fade_out_sec: Durada dels esvaïments suaus d'entrada i sortida de la música.
+        """
+        if voice_audio is None or voice_audio.size == 0:
+            return voice_audio
+
+        if voice_audio.ndim == 1:
+            voice_audio = np.vstack([voice_audio, voice_audio])
+        elif voice_audio.shape[0] != 2 and voice_audio.shape[1] == 2:
+            voice_audio = voice_audio.T
+
+        total_samples = voice_audio.shape[1]
+        if total_samples == 0:
+            return voice_audio
+
+        volume = max(0.0, min(1.0, float(volume)))
+        if volume <= 0.0:
+            return voice_audio
+
+        # Carrega o obté la pista de fons
+        if isinstance(bg_audio, str):
+            try:
+                bg_stereo = self.load_audio_file(bg_audio, target_sr=self.sample_rate)
+            except Exception as e:
+                print(f"Avís: no s'ha pogut carregar la pista de fons ({e}). Es manté només la veu.")
+                return voice_audio
+        elif isinstance(bg_audio, np.ndarray):
+            bg_stereo = np.copy(bg_audio)
+            if bg_stereo.ndim == 1:
+                bg_stereo = np.vstack([bg_stereo, bg_stereo])
+            elif bg_stereo.shape[0] != 2 and bg_stereo.shape[1] == 2:
+                bg_stereo = bg_stereo.T
+        else:
+            return voice_audio
+
+        bg_len = bg_stereo.shape[1]
+        if bg_len == 0:
+            return voice_audio
+
+        # Ajust de durada: Bucle o tall/silenci
+        if bg_len < total_samples:
+            if loop:
+                cf_samples = min(int(0.020 * self.sample_rate), bg_len // 3)
+                if cf_samples > 10:
+                    fade_out = np.linspace(1.0, 0.0, cf_samples, dtype=np.float32)
+                    fade_in = np.linspace(0.0, 1.0, cf_samples, dtype=np.float32)
+                    tiled = bg_stereo
+                    while tiled.shape[1] < total_samples:
+                        overlap = tiled[:, -cf_samples:] * fade_out + bg_stereo[:, :cf_samples] * fade_in
+                        tiled = np.concatenate([
+                            tiled[:, :-cf_samples],
+                            overlap,
+                            bg_stereo[:, cf_samples:]
+                        ], axis=1)
+                    bg_final = tiled[:, :total_samples]
+                else:
+                    reps = int(np.ceil(total_samples / bg_len))
+                    bg_final = np.tile(bg_stereo, reps)[:, :total_samples]
+            else:
+                bg_final = np.pad(bg_stereo, ((0, 0), (0, total_samples - bg_len)), mode="constant")
+        else:
+            bg_final = bg_stereo[:, :total_samples]
+
+        # Aplicació de volum a la música
+        bg_final = bg_final * volume
+
+        # Esvaïment suau d'entrada (fade-in) i sortida (fade-out)
+        fade_in_samples = min(int(fade_in_sec * self.sample_rate), total_samples // 2)
+        fade_out_samples = min(int(fade_out_sec * self.sample_rate), total_samples // 2)
+
+        if fade_in_samples > 0:
+            curve_in = 0.5 * (1.0 - np.cos(np.pi * np.linspace(0, 1, fade_in_samples, dtype=np.float32)))
+            bg_final[:, :fade_in_samples] *= curve_in
+
+        if fade_out_samples > 0:
+            curve_out = 0.5 * (1.0 + np.cos(np.pi * np.linspace(0, 1, fade_out_samples, dtype=np.float32)))
+            bg_final[:, -fade_out_samples:] *= curve_out
+
+        # Suma ponderada de la locució i la música
+        mixed = voice_audio + bg_final
+
+        # Limitador suau de pic per evitar saturació digital (True Peak <= -0.5 dBTP)
+        peak = float(np.max(np.abs(mixed)))
+        limit = 0.95
+        if peak > limit:
+            mixed = mixed * (limit / peak)
+
+        return mixed.astype(np.float32)

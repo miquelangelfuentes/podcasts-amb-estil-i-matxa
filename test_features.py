@@ -221,6 +221,58 @@ def test_components_manager():
     print(f"[OK] Estat de components verificat: alVoCat ({alvocat['installed_size_mb']} MB), Matxa-TTS ({matxa['installed_size_mb']} MB).")
 
 
+def test_background_music_mixing():
+    print("\n--- 8. Provant mescla de pista de fons (MP3 / àudio) amb bucle i control de volum ---")
+    import numpy as np
+    import tempfile
+    import soundfile as sf
+    from core.audio_processor import AudioProcessor
+
+    ap = AudioProcessor(sample_rate=22050)
+
+    # 1. Crear pista de veu simulada (10 segons a 22050 Hz estèreo)
+    voice_len = 10 * 22050
+    t_voice = np.linspace(0, 10, voice_len, dtype=np.float32)
+    voice_stereo = np.vstack([np.sin(2 * np.pi * 440 * t_voice) * 0.5, np.sin(2 * np.pi * 440 * t_voice) * 0.5])
+
+    # 2. Crear pista de música de fons simulada (3 segons a 44100 Hz mono)
+    bg_len = 3 * 44100
+    t_bg = np.linspace(0, 3, bg_len, dtype=np.float32)
+    bg_mono = np.sin(2 * np.pi * 220 * t_bg) * 0.4
+
+    with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
+        tmp_bg = f.name
+    try:
+        sf.write(tmp_bg, bg_mono, 44100)
+
+        # Test carregar i resamplejar
+        loaded_bg = ap.load_audio_file(tmp_bg, target_sr=22050)
+        assert loaded_bg.shape[0] == 2, "La pista carregada ha de ser estèreo (2 canals)"
+        assert abs(loaded_bg.shape[1] - 3 * 22050) < 15, "Re-mostreig de 44.1k a 22.05k correcte"
+
+        # Test mescla amb bucle
+        mixed_loop = ap.mix_background_track(voice_stereo, tmp_bg, volume=0.15, loop=True)
+        assert mixed_loop.shape == voice_stereo.shape, "L'àudio mesclat ha de tenir exactament la mateixa mida que la veu"
+        assert np.max(np.abs(mixed_loop)) <= 0.96, "El limitador de pic prevé saturació"
+
+        # Test mescla sense bucle
+        mixed_noloop = ap.mix_background_track(voice_stereo, tmp_bg, volume=0.15, loop=False)
+        assert mixed_noloop.shape == voice_stereo.shape
+
+        # A la part final (segons 6-9), la pista en bucle conté música mentre que sense bucle ja ha acabat
+        energy_loop_end = np.mean(mixed_loop[:, int(6 * 22050):int(9 * 22050)] ** 2)
+        energy_noloop_end = np.mean(mixed_noloop[:, int(6 * 22050):int(9 * 22050)] ** 2)
+        assert energy_loop_end > energy_noloop_end, "En bucle la música continua sonant al tram final"
+
+        print("[OK] Mescla de pista de fons, bucle continu, re-mostreig i control de volum verificats amb èxit!")
+    finally:
+        if os.path.exists(tmp_bg):
+            try:
+                os.remove(tmp_bg)
+            except OSError:
+                pass
+
+
 if __name__ == "__main__":
     test_voice_descriptions()
     test_script_synchronization()
@@ -229,4 +281,5 @@ if __name__ == "__main__":
     test_theme_and_accessibility()
     test_default_model_and_naming()
     test_components_manager()
+    test_background_music_mixing()
     print("\n*** TOTES LES PROVES S'HAN SUPERAT AMB ÈXIT! ***")

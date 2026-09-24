@@ -117,6 +117,14 @@ class MainWindow(ctk.CTk):
         self.editor_mode = "clean"
         self._raw_script_full = ""
 
+        # Configuració de pista / música de fons
+        self.bg_music_path: Optional[str] = None
+        self.bg_music_loop: bool = True
+        self.bg_music_volume: float = 0.15
+        self.bg_music_audio_data: Optional[np.ndarray] = None
+        self._bg_preview_sound = None
+        self._bg_preview_timer_id = None
+
         self._build_ui()
         self._load_default_sample()
 
@@ -640,6 +648,118 @@ class MainWindow(ctk.CTk):
             height=1
         )
         self.speakers_container.pack(fill="x", padx=18, pady=(0, 10))
+
+        # 1.5 Targeta de Música o So de Fons (MP3 / WAV)
+        bg_card = ctk.CTkFrame(
+            self.controls_scroll,
+            fg_color=MatchaTheme.BG_CARD,
+            corner_radius=MatchaTheme.CARD_RADIUS,
+            border_width=1,
+            border_color=MatchaTheme.BORDER_CARD
+        )
+        bg_card.pack(fill="x", pady=(0, 8))
+
+        bg_header = ctk.CTkFrame(bg_card, fg_color="transparent", height=1)
+        bg_header.pack(fill="x", padx=18, pady=(10, 4))
+
+        bg_title = ctk.CTkLabel(
+            bg_header,
+            text="🎵 Música o ambient de fons",
+            font=MatchaTheme.FONT_SUBTITLE,
+            text_color=MatchaTheme.TEXT_MAIN
+        )
+        bg_title.pack(side="left")
+
+        # Fila 1: Selecció de fitxer
+        file_row = ctk.CTkFrame(bg_card, fg_color="transparent", height=1)
+        file_row.pack(fill="x", padx=18, pady=(2, 6))
+
+        self.btn_select_bg = CleanButton(
+            file_row,
+            style="subtle",
+            text="📂 Triar MP3...",
+            height=28,
+            command=self._select_bg_audio
+        )
+        self.btn_select_bg.pack(side="left", padx=(0, 8))
+
+        self.lbl_bg_file = ctk.CTkLabel(
+            file_row,
+            text="Sense pista de fons",
+            font=MatchaTheme.FONT_SMALL,
+            text_color=MatchaTheme.TEXT_MUTED,
+            anchor="w"
+        )
+        self.lbl_bg_file.pack(side="left", fill="x", expand=True)
+
+        self.btn_clear_bg = CleanButton(
+            file_row,
+            style="ghost",
+            text="✕",
+            width=28,
+            height=28,
+            state="disabled",
+            command=self._clear_bg_audio
+        )
+        self.btn_clear_bg.pack(side="right", padx=(4, 0))
+
+        # Fila 2: Controls de reproducció (Bucle + Botó de prova d'escolta)
+        ctrl_row = ctk.CTkFrame(bg_card, fg_color="transparent", height=1)
+        ctrl_row.pack(fill="x", padx=18, pady=(2, 6))
+
+        self.cb_bg_loop = ctk.CTkCheckBox(
+            ctrl_row,
+            text="🔁 Reprodueix en bucle",
+            font=MatchaTheme.FONT_SMALL,
+            text_color=MatchaTheme.TEXT_SECONDARY,
+            checkmark_color=MatchaTheme.TEXT_ON_PRIMARY,
+            fg_color=MatchaTheme.PRIMARY,
+            hover_color=MatchaTheme.PRIMARY_HOVER,
+            corner_radius=4,
+            command=self._on_bg_loop_toggle
+        )
+        self.cb_bg_loop.pack(side="left")
+        self.cb_bg_loop.select()
+
+        self.btn_bg_preview = CleanButton(
+            ctrl_row,
+            style="subtle",
+            text="▶ Prova",
+            height=26,
+            width=75,
+            state="disabled",
+            command=self._toggle_bg_preview
+        )
+        self.btn_bg_preview.pack(side="right")
+
+        # Fila 3: Medidor i lliscador de volum
+        vol_row = ctk.CTkFrame(bg_card, fg_color="transparent", height=1)
+        vol_row.pack(fill="x", padx=18, pady=(2, 10))
+
+        self.lbl_bg_volume = ctk.CTkLabel(
+            vol_row,
+            text="Volum: 15%",
+            font=MatchaTheme.FONT_SMALL_BOLD,
+            text_color=MatchaTheme.TEXT_MAIN,
+            width=80,
+            anchor="w"
+        )
+        self.lbl_bg_volume.pack(side="left", padx=(0, 8))
+
+        self.slider_bg_volume = ctk.CTkSlider(
+            vol_row,
+            from_=0.0,
+            to=1.0,
+            number_of_steps=100,
+            height=14,
+            progress_color=MatchaTheme.PRIMARY,
+            button_color=MatchaTheme.PRIMARY,
+            button_hover_color=MatchaTheme.PRIMARY_HOVER,
+            fg_color=MatchaTheme.PROGRESS_BG,
+            command=self._on_bg_volume_change
+        )
+        self.slider_bg_volume.pack(side="left", fill="x", expand=True)
+        self.slider_bg_volume.set(0.15)
 
         # 2. Targeta de Paràmetres & Acció de Generació
         gen_card = ctk.CTkFrame(
@@ -1475,9 +1595,171 @@ class MainWindow(ctk.CTk):
         txt.insert("1.0", text)
         txt.configure(state="disabled")
 
+    def _select_bg_audio(self):
+        """Obre el selector de fitxers per triar una pista MP3/WAV/OGG/FLAC de fons."""
+        path = filedialog.askopenfilename(
+            title="Seleccionar música o ambient de fons",
+            filetypes=[
+                ("Fitxers d'àudio (*.mp3, *.wav, *.ogg, *.flac, *.m4a)", "*.mp3 *.wav *.ogg *.flac *.m4a"),
+                ("Fitxers MP3 (*.mp3)", "*.mp3"),
+                ("Fitxers WAV (*.wav)", "*.wav"),
+                ("Tots els fitxers", "*.*")
+            ]
+        )
+        if not path:
+            return
+
+        self._stop_bg_preview()
+        self.bg_music_path = path
+        filename = os.path.basename(path)
+        display_name = filename if len(filename) <= 28 else filename[:25] + "..."
+
+        self.lbl_bg_file.configure(
+            text=f"🎵 {display_name}",
+            text_color=MatchaTheme.TEXT_MAIN
+        )
+        self.btn_clear_bg.configure(state="normal")
+        self.btn_bg_preview.configure(state="normal")
+        self._set_status(f"Pista de fons seleccionada: {filename}")
+
+        # Pre-carrega en segon pla per tenir la mostra d'escolta instantània
+        def _preload():
+            try:
+                audio = self.audio_processor.load_audio_file(path, target_sr=22050)
+                self.bg_music_audio_data = audio
+            except Exception as e:
+                print(f"Avís pre-carregant pista de fons: {e}")
+                self.bg_music_audio_data = None
+
+        threading.Thread(target=_preload, daemon=True).start()
+
+    def _clear_bg_audio(self):
+        """Elimina la pista de fons actual."""
+        self._stop_bg_preview()
+        self.bg_music_path = None
+        self.bg_music_audio_data = None
+        self.lbl_bg_file.configure(
+            text="Sense pista de fons",
+            text_color=MatchaTheme.TEXT_MUTED
+        )
+        self.btn_clear_bg.configure(state="disabled")
+        self.btn_bg_preview.configure(state="disabled")
+        self._set_status("Pista de fons desactivada.")
+
+    def _on_bg_loop_toggle(self):
+        """Activa o desactiva la repetició en bucle de la música de fons."""
+        self.bg_music_loop = bool(self.cb_bg_loop.get())
+
+    def _on_bg_volume_change(self, val):
+        """Ajusta el volum de la pista de fons i actualitza l'etiqueta."""
+        v = float(val)
+        self.bg_music_volume = v
+        pct = int(round(v * 100))
+        self.lbl_bg_volume.configure(text=f"Volum: {pct}%")
+        if self._bg_preview_sound is not None:
+            try:
+                self._bg_preview_sound.set_volume(max(0.0, min(1.0, v)))
+            except Exception:
+                pass
+
+    def _toggle_bg_preview(self):
+        """Reprodueix o atura una mostra de la música de fons al volum seleccionat."""
+        if self._bg_preview_sound is not None:
+            self._stop_bg_preview()
+            return
+
+        if not self.bg_music_path or not os.path.exists(self.bg_music_path):
+            messagebox.showwarning("Atenció", "Primer has de seleccionar un fitxer d'àudio de fons.")
+            return
+
+        try:
+            if not pygame.mixer.get_init():
+                pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=1024)
+
+            if self.bg_music_audio_data is not None:
+                audio = self.bg_music_audio_data
+            else:
+                audio = self.audio_processor.load_audio_file(self.bg_music_path, target_sr=22050)
+                self.bg_music_audio_data = audio
+
+            if audio is None or audio.size == 0:
+                self._set_status("No s'ha pogut obtenir àudio del fitxer seleccionat.")
+                return
+
+            # Agafem fins a 5 segons de mostra
+            max_samples = int(5.0 * 22050)
+            chunk = audio[:, :min(audio.shape[1], max_samples)]
+
+            # Convertim a int16 per a sndarray
+            scaled = chunk * float(self.bg_music_volume)
+            clipped = np.clip(scaled, -1.0, 1.0)
+            int_data = (clipped * 32767.0).astype(np.int16).T
+
+            self._bg_preview_sound = pygame.sndarray.make_sound(int_data)
+            self._bg_preview_sound.play()
+
+            self.btn_bg_preview.configure(
+                text="■ Atura",
+                fg_color="#2E5E41",
+                text_color="#FFFFFF"
+            )
+            self._set_status("Reproduint mostra de fons (5s)...")
+
+            dur_ms = int((chunk.shape[1] / 22050.0) * 1000) + 150
+            if self._bg_preview_timer_id:
+                try:
+                    self.after_cancel(self._bg_preview_timer_id)
+                except Exception:
+                    pass
+            self._bg_preview_timer_id = self.after(dur_ms, self._on_bg_preview_finished)
+
+        except Exception as e:
+            print(f"Error a _toggle_bg_preview: {e}")
+            self._stop_bg_preview()
+            self._set_status(f"Error en provar la pista: {e}")
+
+    def _on_bg_preview_finished(self):
+        self._bg_preview_sound = None
+        self._bg_preview_timer_id = None
+        try:
+            self.btn_bg_preview.configure(
+                text="▶ Prova",
+                fg_color=MatchaTheme.BUTTON_SUBTLE_BG,
+                text_color=MatchaTheme.TEXT_MAIN
+            )
+            self._set_status("A punt per generar. Sense límit de temps.")
+        except Exception:
+            pass
+
+    def _stop_bg_preview(self):
+        if self._bg_preview_timer_id:
+            try:
+                self.after_cancel(self._bg_preview_timer_id)
+            except Exception:
+                pass
+            self._bg_preview_timer_id = None
+
+        if self._bg_preview_sound is not None:
+            try:
+                self._bg_preview_sound.stop()
+            except Exception:
+                pass
+            self._bg_preview_sound = None
+
+        try:
+            self.btn_bg_preview.configure(
+                text="▶ Prova",
+                fg_color=MatchaTheme.BUTTON_SUBTLE_BG,
+                text_color=MatchaTheme.TEXT_MAIN
+            )
+        except Exception:
+            pass
+
     def _start_generation(self):
         if self.is_generating:
             return
+
+        self._stop_bg_preview()
 
         current_content = self.script_textbox.get("1.0", "end-1c")
         if self.editor_mode == "clean":
@@ -1542,6 +1824,16 @@ class MainWindow(ctk.CTk):
 
             self.safe_after(lambda: self._update_progress_ui(0.95, "Masteritzant àudio (Estèreo i EBU R128)..."))
             mastered_stereo = self.audio_processor.assemble_podcast(audio_segments)
+
+            # Mescla de pista o música de fons si s'ha seleccionat
+            if self.bg_music_path and os.path.exists(self.bg_music_path) and self.bg_music_volume > 0.0:
+                self.safe_after(lambda: self._update_progress_ui(0.98, "Mesclant música de fons..."))
+                mastered_stereo = self.audio_processor.mix_background_track(
+                    voice_audio=mastered_stereo,
+                    bg_audio=self.bg_music_path,
+                    volume=self.bg_music_volume,
+                    loop=self.bg_music_loop
+                )
 
             self.safe_after(lambda: self._on_generation_finished(mastered_stereo, "Pòdcast generat amb èxit!"))
 
