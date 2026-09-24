@@ -117,8 +117,8 @@ class MatxaTTSCatalanEngine:
             try:
                 sess_opts = ort.SessionOptions()
                 sess_opts.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
-                # Reserva 1 nucli per a la interfície d'usuari i el sistema perquè Tkinter no es bloquegi
-                cpu_threads = max(1, (os.cpu_count() or 4) - 1)
+                # Reserva nuclis per a la interfície d'usuari i el sistema perquè Tkinter sigui 100% fluid
+                cpu_threads = max(1, min(4, (os.cpu_count() or 4) - 2))
                 sess_opts.intra_op_num_threads = cpu_threads
                 sess_opts.inter_op_num_threads = 2
                 sess_opts.execution_mode = ort.ExecutionMode.ORT_SEQUENTIAL

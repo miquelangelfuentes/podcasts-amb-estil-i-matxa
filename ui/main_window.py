@@ -94,6 +94,32 @@ class MainWindow(ctk.CTk):
         # Icona de l'aplicació per a la finestra i la barra de tasques de Windows
         self._set_app_icon()
 
+        # Cua thread-safe per a comunicació segura entre fils secundaris i Tkinter
+        self._ui_queue = queue.Queue()
+        self.after(35, self._process_ui_queue)
+
+        # Motors interns: per defecte s'obre amb StyleTTS 2 Català (amb suport per a Matxa-TTS)
+        self.script_parser = ScriptParser()
+        self.styletts_engine = StyleTTS2CatalanEngine()
+        self.matxa_engine = MatxaTTSCatalanEngine()
+        self.tts_engine = self.styletts_engine
+        self.audio_processor = AudioProcessor(sample_rate=self.tts_engine.sample_rate)
+        self.voice_preview_manager = VoicePreviewManager()
+
+        self.current_script = PodcastScript()
+        self.ui_speaker_overrides = {}
+        self._suppress_script_sync = False
+        self._internal_mode_update = False
+        self.is_generating = False
+        self.cancel_requested = False
+
+        # Mode d'edició: 'clean' (només diàlegs) o 'full' (codi .txt complet)
+        self.editor_mode = "clean"
+        self._raw_script_full = ""
+
+        self._build_ui()
+        self._load_default_sample()
+
     def _get_logical_work_area(self):
         """Retorna l'àrea útil de pantalla en unitats lògiques de CustomTkinter."""
         try:
@@ -131,50 +157,6 @@ class MainWindow(ctk.CTk):
         min_h = min(620, target_h)
         self.minsize(min_w, min_h)
         self.geometry(f"{target_w}x{target_h}")
-
-        # Cua thread-safe per a comunicació segura entre fils secundaris i Tkinter
-        self._ui_queue = queue.Queue()
-        self.after(35, self._process_ui_queue)
-
-        # Motors interns: per defecte s'obre amb StyleTTS 2 Català (amb suport per a Matxa-TTS)
-        self.script_parser = ScriptParser()
-        self.styletts_engine = StyleTTS2CatalanEngine()
-        self.matxa_engine = MatxaTTSCatalanEngine()
-        self.tts_engine = self.styletts_engine
-        self.audio_processor = AudioProcessor(sample_rate=self.tts_engine.sample_rate)
-        self.voice_preview_manager = VoicePreviewManager()
-
-        self.current_script = PodcastScript()
-        self.ui_speaker_overrides = {}
-        self._suppress_script_sync = False
-        self._internal_mode_update = False
-        self.is_generating = False
-        self.cancel_requested = False
-
-        # Mode d'edició: 'clean' (només diàlegs) o 'full' (codi .txt complet)
-        self.editor_mode = "clean"
-        self._raw_script_full = ""
-
-        self._build_ui()
-        self._load_default_sample()
-
-        # Càrrega proactiva en segon pla (Pre-warming):
-        # Inicialitza el model neuronal Matxa-TTS en un fil secundari
-        # perquè estigui llest a la memòria RAM quan l'usuari vulgui generar o canviar de motor.
-        self._prewarm_background_models()
-
-    def _prewarm_background_models(self):
-        """Pre-carrega Matxa-TTS en segon pla sense afectar la fluïdesa de la interfície."""
-        def _worker():
-            try:
-                if hasattr(self, "matxa_engine") and not self.matxa_engine.is_loaded():
-                    if os.path.exists(self.matxa_engine.matxa_onnx_path):
-                        self.matxa_engine.ensure_loaded()
-            except Exception as e:
-                print(f"Avís inicialitzant Matxa en segon pla: {e}")
-
-        t = threading.Thread(target=_worker, daemon=True, name="MatxaPrewarmThread")
-        t.start()
 
     def _set_app_icon(self):
         """Assigna la silueta geomètrica del chawan tant a la finestra com a la barra de tasques."""
