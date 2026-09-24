@@ -124,6 +124,7 @@ class MainWindow(ctk.CTk):
         self.bg_music_audio_data: Optional[np.ndarray] = None
         self._bg_preview_sound = None
         self._bg_preview_timer_id = None
+        self._is_bg_previewing: bool = False
 
         self._build_ui()
         self._load_default_sample()
@@ -1649,6 +1650,8 @@ class MainWindow(ctk.CTk):
     def _on_bg_loop_toggle(self):
         """Activa o desactiva la repetició en bucle de la música de fons."""
         self.bg_music_loop = bool(self.cb_bg_loop.get())
+        if getattr(self, "_is_bg_previewing", False):
+            self._play_bg_preview_sound()
 
     def _on_bg_volume_change(self, val):
         """Ajusta el volum de la pista de fons i actualitza l'etiqueta."""
@@ -1656,29 +1659,28 @@ class MainWindow(ctk.CTk):
         self.bg_music_volume = v
         pct = int(round(v * 100))
         self.lbl_bg_volume.configure(text=f"Volum: {pct}%")
-        if self._bg_preview_sound is not None:
-            try:
-                self._bg_preview_sound.set_volume(max(0.0, min(1.0, v)))
-            except Exception:
-                pass
+        if getattr(self, "_is_bg_previewing", False):
+            self._play_bg_preview_sound()
 
     def _toggle_bg_preview(self):
         """Reprodueix o atura una mostra de la música de fons al volum seleccionat."""
-        if self._bg_preview_sound is not None:
+        if getattr(self, "_is_bg_previewing", False):
             self._stop_bg_preview()
+            self._set_status("Prova de música de fons aturada.")
             return
 
         if not self.bg_music_path or not os.path.exists(self.bg_music_path):
             messagebox.showwarning("Atenció", "Primer has de seleccionar un fitxer d'àudio de fons.")
             return
 
-        try:
-            if not pygame.mixer.get_init():
-                try:
-                    pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=1024)
-                except Exception as me:
-                    print(f"Avís inicialitzant mixer: {me}")
+        self._play_bg_preview_sound()
 
+    def _play_bg_preview_sound(self):
+        """Genera i reprodueix la mostra d'àudio de fons al volum actual de forma 100% nativa."""
+        if not self.bg_music_path or not os.path.exists(self.bg_music_path):
+            return
+
+        try:
             if self.bg_music_audio_data is not None:
                 audio = self.bg_music_audio_data
             else:
@@ -1687,77 +1689,94 @@ class MainWindow(ctk.CTk):
                 self.bg_music_audio_data = audio
 
             if audio is None or audio.size == 0:
+                self._stop_bg_preview()
                 self._set_status("No s'ha pogut obtenir àudio del fitxer seleccionat.")
                 return
 
-            # Agafem un fragment representatiu de fins a 7 segons
-            max_samples = int(7.0 * 22050)
+            # Fragment de fins a 10 segons
+            max_samples = int(10.0 * 22050)
             chunk = np.copy(audio[:, :min(audio.shape[1], max_samples)])
 
-            # Esvaïment suau a les puntes (50 ms d'inici i 400 ms al final) per evitar qualsevol clic
-            fade_in = min(int(0.05 * 22050), chunk.shape[1] // 4)
-            fade_out = min(int(0.40 * 22050), chunk.shape[1] // 4)
-            if fade_in > 0:
-                chunk[:, :fade_in] *= np.linspace(0.0, 1.0, fade_in, dtype=np.float32)
-            if fade_out > 0:
-                chunk[:, -fade_out:] *= np.linspace(1.0, 0.0, fade_out, dtype=np.float32)
+            # Esvaïment suau de 30 ms a l'inici i al final per evitar qualsevol espetec
+            fade_samples = min(int(0.03 * 22050), chunk.shape[1] // 4)
+            if fade_samples > 0:
+                curve_in = np.linspace(0.0, 1.0, fade_samples, dtype=np.float32)
+                curve_out = np.linspace(1.0, 0.0, fade_samples, dtype=np.float32)
+                chunk[:, :fade_samples] *= curve_in
+                chunk[:, -fade_samples:] *= curve_out
 
-            # Normalitzem a -1.0 .. 1.0
-            clipped = np.clip(chunk, -1.0, 1.0)
+            # Apliquem el volum exacte seleccionat
+            vol = max(0.0, min(1.0, float(self.bg_music_volume)))
+            scaled = np.clip(chunk * vol, -1.0, 1.0)
 
-            # Escrivim un fitxer WAV temporal PCM de 16 bits per a compatibilitat total
+            # Fitxer WAV temporal PCM de 16 bits estàndard
             tmp_dir = os.path.join(tempfile.gettempdir(), "podcasts_matxa_preview")
             os.makedirs(tmp_dir, exist_ok=True)
             self._bg_preview_tmp_wav = os.path.join(tmp_dir, f"bg_preview_{os.getpid()}.wav")
-            sf.write(self._bg_preview_tmp_wav, clipped.T, 22050, subtype="PCM_16")
+            sf.write(self._bg_preview_tmp_wav, scaled.T, 22050, subtype="PCM_16")
 
-            vol = max(0.0, min(1.0, float(self.bg_music_volume)))
+            self._is_bg_previewing = True
             played = False
 
-            if pygame.mixer.get_init():
-                try:
-                    self._bg_preview_sound = pygame.mixer.Sound(self._bg_preview_tmp_wav)
-                    self._bg_preview_sound.set_volume(vol)
-                    self._bg_preview_sound.play()
-                    played = True
-                except Exception as pe:
-                    print(f"Avís reproduint amb pygame.mixer.Sound: {pe}")
-
-            if not played and sys.platform == "win32":
+            # 1. Reproducció nativa Windows garantida (SND_ASYNC)
+            if sys.platform == "win32":
                 try:
                     import winsound
-                    sf.write(self._bg_preview_tmp_wav, (clipped * vol).T, 22050, subtype="PCM_16")
-                    winsound.PlaySound(self._bg_preview_tmp_wav, winsound.SND_FILENAME | winsound.SND_ASYNC)
+                    flags = winsound.SND_FILENAME | winsound.SND_ASYNC
+                    if self.bg_music_loop:
+                        flags |= winsound.SND_LOOP
+                    winsound.PlaySound(self._bg_preview_tmp_wav, flags)
                     played = True
                 except Exception as we:
-                    print(f"Avís winsound fallback: {we}")
+                    print(f"Avís winsound: {we}")
 
+            # 2. Fallback multiplataforma (pygame.mixer.music)
             if not played:
-                raise RuntimeError("No s'ha pogut inicialitzar cap sortida d'àudio per a la prova.")
-
-            self.btn_bg_preview.configure(
-                text="■ Atura",
-                fg_color="#2E5E41",
-                text_color="#FFFFFF"
-            )
-            dur_secs = chunk.shape[1] / 22050.0
-            self._set_status(f"Reproduint prova de música de fons ({dur_secs:.1f}s)...")
-
-            dur_ms = int(dur_secs * 1000) + 150
-            if self._bg_preview_timer_id:
                 try:
-                    self.after_cancel(self._bg_preview_timer_id)
-                except Exception:
-                    pass
-            self._bg_preview_timer_id = self.after(dur_ms, self._on_bg_preview_finished)
+                    if not pygame.mixer.get_init():
+                        pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=1024)
+                    pygame.mixer.music.load(self._bg_preview_tmp_wav)
+                    pygame.mixer.music.play(-1 if self.bg_music_loop else 0)
+                    played = True
+                except Exception as pe:
+                    print(f"Avís pygame music: {pe}")
+
+            if played:
+                self.btn_bg_preview.configure(
+                    text="■ Atura",
+                    fg_color="#2E5E41",
+                    text_color="#FFFFFF"
+                )
+                dur_secs = chunk.shape[1] / 22050.0
+                loop_text = "en bucle" if self.bg_music_loop else f"{dur_secs:.1f}s"
+                self._set_status(f"Reproduint prova de fons ({loop_text}, volum {int(round(vol*100))}%)...")
+
+                if not self.bg_music_loop:
+                    dur_ms = int(dur_secs * 1000) + 150
+                    if self._bg_preview_timer_id:
+                        try:
+                            self.after_cancel(self._bg_preview_timer_id)
+                        except Exception:
+                            pass
+                    self._bg_preview_timer_id = self.after(dur_ms, self._on_bg_preview_finished)
+                else:
+                    if self._bg_preview_timer_id:
+                        try:
+                            self.after_cancel(self._bg_preview_timer_id)
+                        except Exception:
+                            pass
+                        self._bg_preview_timer_id = None
+            else:
+                self._stop_bg_preview()
+                self._set_status("No s'ha pogut reproduir el so al dispositiu d'àudio.")
 
         except Exception as e:
-            print(f"Error a _toggle_bg_preview: {e}")
+            print(f"Error a _play_bg_preview_sound: {e}")
             self._stop_bg_preview()
             self._set_status(f"Error en provar la pista: {e}")
 
     def _on_bg_preview_finished(self):
-        self._bg_preview_sound = None
+        self._is_bg_previewing = False
         self._bg_preview_timer_id = None
         try:
             self.btn_bg_preview.configure(
@@ -1770,6 +1789,7 @@ class MainWindow(ctk.CTk):
             pass
 
     def _stop_bg_preview(self):
+        self._is_bg_previewing = False
         if self._bg_preview_timer_id:
             try:
                 self.after_cancel(self._bg_preview_timer_id)
@@ -1777,19 +1797,18 @@ class MainWindow(ctk.CTk):
                 pass
             self._bg_preview_timer_id = None
 
-        if self._bg_preview_sound is not None:
-            try:
-                self._bg_preview_sound.stop()
-            except Exception:
-                pass
-            self._bg_preview_sound = None
-
         if sys.platform == "win32":
             try:
                 import winsound
                 winsound.PlaySound(None, winsound.SND_PURGE)
             except Exception:
                 pass
+
+        try:
+            if pygame.mixer.get_init():
+                pygame.mixer.music.stop()
+        except Exception:
+            pass
 
         try:
             self.btn_bg_preview.configure(
