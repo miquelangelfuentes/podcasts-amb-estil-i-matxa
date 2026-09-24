@@ -13,10 +13,14 @@ import threading
 import ctypes
 import webbrowser
 import queue
+import tempfile
+from typing import Optional, List, Dict
 import tkinter as tk
 from tkinter import filedialog, messagebox
 import customtkinter as ctk
 from PIL import Image
+import numpy as np
+import soundfile as sf
 
 # Habilitar suport per a pantalles d'alta resolució (High-DPI) a Windows
 if sys.platform == "win32":
