@@ -1227,8 +1227,6 @@ class MainWindow(ctk.CTk):
         if "Matxa" in choice:
             self.tts_engine = self.matxa_engine
             self.badge.configure(text="BSC-LT Matxa-TTS v2 (100% Offline) & alVoCat 22kHz")
-            if not self.matxa_engine.is_loaded():
-                threading.Thread(target=self.matxa_engine.ensure_loaded, daemon=True, name="MatxaSwitchThread").start()
         elif "Microsoft" in choice:
             self.tts_engine = self.styletts_engine
             self.badge.configure(text="Microsoft Neural ca-ES (Online directe Joana i Enric) & alVoCat 22kHz")
