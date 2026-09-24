@@ -27,6 +27,7 @@ dist_staging/
 # Temporals d'àudio i memòria cau de mostres
 *.mp3
 *.wav
+!assets/previews/*.wav
 outputs/
 podcasts_matxa_voice_previews/
 temp_audio/

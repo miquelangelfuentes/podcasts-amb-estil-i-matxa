@@ -5,9 +5,11 @@ Integrat amb vocoder WaveNeXt end-to-end i suport de càrrega sota demanda (Lazy
 """
 
 import os
+import sys
 import gc
 import re
 import time
+import threading
 import numpy as np
 import scipy.signal
 import soundfile as sf
@@ -68,52 +70,73 @@ class MatxaTTSCatalanEngine:
         self.text_normalizer = CatalanTextNormalizer()
 
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        self.models_dir = os.path.abspath(models_dir) if models_dir else os.path.join(base_dir, "models")
+        if not models_dir:
+            candidates = [
+                os.path.join(base_dir, "models"),
+            ]
+            if hasattr(sys, "_MEIPASS"):
+                candidates.insert(0, os.path.join(sys._MEIPASS, "models"))
+            if getattr(sys, "executable", None):
+                candidates.append(os.path.join(os.path.dirname(sys.executable), "_internal", "models"))
+                candidates.append(os.path.join(os.path.dirname(sys.executable), "models"))
+
+            chosen_dir = os.path.join(base_dir, "models")
+            for cand in candidates:
+                test_path = os.path.join(cand, "matxa_tts", "matxa_v2_multiaccent_graphemes_20_steps_wavenext.onnx")
+                if os.path.exists(test_path):
+                    chosen_dir = cand
+                    break
+            self.models_dir = os.path.abspath(chosen_dir)
+        else:
+            self.models_dir = os.path.abspath(models_dir)
+
         self.matxa_onnx_path = os.path.join(self.models_dir, "matxa_tts", "matxa_v2_multiaccent_graphemes_20_steps_wavenext.onnx")
 
-        # Càrrega sota demanda (Lazy Loading): la sessió no es carrega en obrir l'app
+        # Càrrega thread-safe i persistent a la memòria RAM
+        self._load_lock = threading.Lock()
         self.matxa_session: Optional[Any] = None
         self.cloned_profiles: Dict[str, Dict[str, Any]] = {}
 
     def ensure_loaded(self, on_status_callback: Optional[Callable[[str], None]] = None) -> bool:
-        """Carrega el model Matxa-TTS a la memòria RAM només quan es necessita."""
-        if self.matxa_session is not None:
-            return True
-
-        if not os.path.exists(self.matxa_onnx_path):
-            print(f"Error: no s'ha trobat el model ONNX a {self.matxa_onnx_path}")
-            return False
-
-        if not HAS_ONNX:
-            print("Error: onnxruntime no està disponible.")
-            return False
-
-        if on_status_callback:
-            on_status_callback("Carregant model Matxa-TTS v2 a la memòria...")
-
-        try:
-            sess_opts = ort.SessionOptions()
-            sess_opts.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
-            # Reserva 1 nucli per a la interfície d'usuari i el sistema perquè Tkinter no es bloquegi
-            cpu_threads = max(1, (os.cpu_count() or 4) - 1)
-            sess_opts.intra_op_num_threads = cpu_threads
-            sess_opts.inter_op_num_threads = 2
-            sess_opts.execution_mode = ort.ExecutionMode.ORT_SEQUENTIAL
-
-            providers = ["CUDAExecutionProvider", "CPUExecutionProvider"]
-            avail = ort.get_available_providers()
-            selected = [p for p in providers if p in avail]
-
-            self.matxa_session = ort.InferenceSession(self.matxa_onnx_path, sess_options=sess_opts, providers=selected)
-            return True
-        except Exception as e:
-            print(f"Error carregant sessió ONNX de Matxa: {e}")
-            try:
-                self.matxa_session = ort.InferenceSession(self.matxa_onnx_path, providers=["CPUExecutionProvider"])
+        """Carrega el model Matxa-TTS a la memòria RAM de forma thread-safe."""
+        with self._load_lock:
+            if self.matxa_session is not None:
                 return True
-            except Exception as e2:
-                print(f"Error crític carregant Matxa ONNX: {e2}")
+
+            if not os.path.exists(self.matxa_onnx_path):
+                print(f"Error: no s'ha trobat el model ONNX a {self.matxa_onnx_path}")
                 return False
+
+            if not HAS_ONNX:
+                print("Error: onnxruntime no està disponible.")
+                return False
+
+            if on_status_callback:
+                on_status_callback("Carregant model Matxa-TTS v2 a la memòria...")
+
+            try:
+                sess_opts = ort.SessionOptions()
+                sess_opts.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
+                # Reserva 1 nucli per a la interfície d'usuari i el sistema perquè Tkinter no es bloquegi
+                cpu_threads = max(1, (os.cpu_count() or 4) - 1)
+                sess_opts.intra_op_num_threads = cpu_threads
+                sess_opts.inter_op_num_threads = 2
+                sess_opts.execution_mode = ort.ExecutionMode.ORT_SEQUENTIAL
+
+                providers = ["CUDAExecutionProvider", "CPUExecutionProvider"]
+                avail = ort.get_available_providers()
+                selected = [p for p in providers if p in avail]
+
+                self.matxa_session = ort.InferenceSession(self.matxa_onnx_path, sess_options=sess_opts, providers=selected)
+                return True
+            except Exception as e:
+                print(f"Error carregant sessió ONNX de Matxa: {e}")
+                try:
+                    self.matxa_session = ort.InferenceSession(self.matxa_onnx_path, providers=["CPUExecutionProvider"])
+                    return True
+                except Exception as e2:
+                    print(f"Error crític carregant Matxa ONNX: {e2}")
+                    return False
 
     def unload(self):
         """Allibera completament la memòria RAM del model Matxa-TTS."""

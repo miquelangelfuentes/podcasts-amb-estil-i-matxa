@@ -120,14 +120,31 @@ class VoicePreviewManager:
         return self.VOICE_SAMPLE_PHRASES.get(v_key, self.GENERIC_SAMPLE)
 
     def get_cached_path(self, engine_name: str, voice_id: str) -> str:
-        """Retorna la ruta al fitxer WAV en cau per a una combinació motor+veu."""
+        """Retorna la ruta al fitxer WAV de mostra (preempaquetat a assets o al cau d'usuari)."""
         safe_engine = re.sub(r'[^a-zA-Z0-9_]', '_', engine_name).lower()
         safe_voice = re.sub(r'[^a-zA-Z0-9_]', '_', voice_id).lower()
         filename = f"preview_{safe_engine}_{safe_voice}.wav"
+
+        # 1. Comprova si el fitxer està preempaquetat a assets/previews
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        bundled_candidates = [
+            os.path.join(base_dir, "assets", "previews", filename),
+        ]
+        if hasattr(sys, "_MEIPASS"):
+            bundled_candidates.insert(0, os.path.join(sys._MEIPASS, "assets", "previews", filename))
+        if getattr(sys, "executable", None):
+            bundled_candidates.append(os.path.join(os.path.dirname(sys.executable), "_internal", "assets", "previews", filename))
+            bundled_candidates.append(os.path.join(os.path.dirname(sys.executable), "assets", "previews", filename))
+
+        for cand in bundled_candidates:
+            if os.path.exists(cand) and os.path.getsize(cand) > 1000:
+                return cand
+
+        # 2. Cau d'usuari
         return os.path.join(self.cache_dir, filename)
 
     def is_cached(self, engine_name: str, voice_id: str) -> bool:
-        """Comprova si la mostra ja està desada en memòria cau."""
+        """Comprova si la mostra ja està disponible (al paquet o en memòria cau)."""
         path = self.get_cached_path(engine_name, voice_id)
         return os.path.exists(path) and os.path.getsize(path) > 1000
 
@@ -145,6 +162,12 @@ class VoicePreviewManager:
                 cache_path = self.get_cached_path(engine_name, voice_id)
 
                 if not self.is_cached(engine_name, voice_id):
+                    # Assegurem que s'escriu al directori de cau d'usuari
+                    safe_engine = re.sub(r'[^a-zA-Z0-9_]', '_', engine_name).lower()
+                    safe_voice = re.sub(r'[^a-zA-Z0-9_]', '_', voice_id).lower()
+                    filename = f"preview_{safe_engine}_{safe_voice}.wav"
+                    cache_path = os.path.join(self.cache_dir, filename)
+
                     phrase = self.get_sample_phrase(voice_id)
                     # Assegurar que el motor està llest
                     if hasattr(engine, "ensure_loaded"):

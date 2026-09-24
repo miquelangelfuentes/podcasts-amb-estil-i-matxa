@@ -158,6 +158,24 @@ class MainWindow(ctk.CTk):
         self._build_ui()
         self._load_default_sample()
 
+        # Càrrega proactiva en segon pla (Pre-warming):
+        # Inicialitza el model neuronal Matxa-TTS en un fil secundari
+        # perquè estigui llest a la memòria RAM quan l'usuari vulgui generar o canviar de motor.
+        self._prewarm_background_models()
+
+    def _prewarm_background_models(self):
+        """Pre-carrega Matxa-TTS en segon pla sense afectar la fluïdesa de la interfície."""
+        def _worker():
+            try:
+                if hasattr(self, "matxa_engine") and not self.matxa_engine.is_loaded():
+                    if os.path.exists(self.matxa_engine.matxa_onnx_path):
+                        self.matxa_engine.ensure_loaded()
+            except Exception as e:
+                print(f"Avís inicialitzant Matxa en segon pla: {e}")
+
+        t = threading.Thread(target=_worker, daemon=True, name="MatxaPrewarmThread")
+        t.start()
+
     def _set_app_icon(self):
         """Assigna la silueta geomètrica del chawan tant a la finestra com a la barra de tasques."""
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -1227,15 +1245,14 @@ class MainWindow(ctk.CTk):
         if "Matxa" in choice:
             self.tts_engine = self.matxa_engine
             self.badge.configure(text="BSC-LT Matxa-TTS v2 (100% Offline) & alVoCat 22kHz")
-            self.styletts_engine.unload()
+            if not self.matxa_engine.is_loaded():
+                threading.Thread(target=self.matxa_engine.ensure_loaded, daemon=True, name="MatxaSwitchThread").start()
         elif "Microsoft" in choice:
             self.tts_engine = self.styletts_engine
             self.badge.configure(text="Microsoft Neural ca-ES (Online directe Joana i Enric) & alVoCat 22kHz")
-            self.matxa_engine.unload()
         else:  # StyleTTS 2 Català
             self.tts_engine = self.styletts_engine
             self.badge.configure(text="BSC-LT StyleTTS 2 Català (PyTorch / Zero-Shot) & alVoCat 22kHz")
-            self.matxa_engine.unload()
         self._refresh_speakers_ui()
 
     def _sync_speaker_config_to_editor(self, spk_name: str):
@@ -1530,7 +1547,7 @@ class MainWindow(ctk.CTk):
 
         try:
             if not self.tts_engine.is_loaded():
-                self.safe_after(lambda: self._update_progress_ui(0.01, f"Carregant {self.tts_engine.name} a la memòria..."))
+                self.safe_after(lambda: self._update_progress_ui(0.01, f"Inicialitzant model neuronal {self.tts_engine.name} a la memòria RAM..."))
                 self.tts_engine.ensure_loaded()
 
             audio_segments = self.tts_engine.synthesize_podcast_stream(
