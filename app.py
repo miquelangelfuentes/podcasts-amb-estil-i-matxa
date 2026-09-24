@@ -10,7 +10,15 @@ import sys
 import ctypes
 
 # Assegurar que el directori arrel del projecte és al sys.path
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+if getattr(sys, "frozen", False):
+    BASE_DIR = os.path.dirname(sys.executable)
+    try:
+        os.chdir(BASE_DIR)
+    except Exception:
+        pass
+else:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 if BASE_DIR not in sys.path:
     sys.path.insert(0, BASE_DIR)
 
