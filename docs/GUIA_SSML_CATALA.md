@@ -134,6 +134,7 @@ StyleTTS 2 permet reproduir qualsevol timbre de veu català sense necessitat d'e
 ## 6. Masterització EBU R128 i exportació
 
 En finalitzar la síntesi de totes les intervencions, l'aplicació aplica un procés de masterització professional:
-- **Normalització de sonoria EBU R128**: Ajusta el volum integrat a **-16 LUFS** (l'estàndard internacional per a pòdcasts i plataformes digitals) amb un sostre de pic màxim de **-1 dBTP**.
+- **Integració de música o ambient de fons**: Si s'ha seleccionat una pista d'àudio (MP3, WAV, OGG, FLAC), es mescla automàticament amb la locució en bucle continu (*loop*) amb *cross-fade* de 20 ms, esvaïment d'entrada (*fade-in* d'1 s) i sortida (*fade-out* de 2 s), i un limitador suau de pic abans de la normalització.
+- **Normalització de sonoritat EBU R128**: Ajusta el volum integrat a **-16 LUFS** (l'estàndard internacional per a pòdcasts i plataformes digitals) amb un sostre de pic màxim de **-1 dBTP**.
 - **Respiració entre intervencions**: Intercala un respir natural de 650 ms (`PAUSA_INTERLOCUCIO`) entre canvis de veu per evitar talls sobtats.
 - **Format d'exportació**: **MP3 a 160 kbps CBR estèreo**, que garanteix la màxima claredat en freqüències vocals mantenint fitxers lleugers i àgils per distribuir.

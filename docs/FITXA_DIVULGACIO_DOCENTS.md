@@ -17,6 +17,7 @@ Aquest document és una **guia completa de context i indicacions de referència*
 | **Llengua i varietats** | Català en totes les seves variants territorials (central, balear, valencià, nord-occidental i septentrional/rossellonès) |
 | **Motors de veu** | 1. **StyleTTS 2 Català** (BSC-LT, difusió neuronal amb veus d'estil i clonació zero-shot, motor predeterminat)<br>2. **Matxa-TTS v2 multiaccent** (BSC-LT, 16 veus territorials en format ONNX, 100% offline)<br>3. **alVoCat 22kHz** (Projecte AINA, vocoder d'alta fidelitat i normalitzador lingüístic)<br>4. **Microsoft Neural ca-ES** (servei al núvol alternatiu) |
 | **Privadesa** | **100% local i confidencial** amb els models Matxa-TTS i StyleTTS 2 (cap text ni àudio surt de l'equip; apte per a la normativa RGPD) |
+| **Música i ambient de fons** | Pista d'acompanyament (MP3, WAV, OGG, FLAC) en bucle continu (*loop*), control de volum dinàmic, prova instantània i transicions suaus (*fade-in*/*fade-out*) |
 | **Cost i llicència** | Gratuït, lliure i de codi obert (fons públics del Projecte AINA i el BSC-LT) |
 | **Repositori oficial** | [GitHub: miquelangelfuentes/podcasts-amb-estil-i-matxa](https://github.com/miquelangelfuentes/podcasts-amb-estil-i-matxa) |
 
@@ -39,6 +40,12 @@ Aquest document és una **guia completa de context i indicacions de referència*
 4. **Masterització de so automàtica amb estàndard professional:**
    - Integra el normalitzador lingüístic alVoCat per pronunciar correctament xifres, sigles, ordinals i dates en català.
    - Masteritza l'episodi final d'acord amb la normativa internacional de radiodifusió **EBU R128 (-16 LUFS)**, garantint un volum homogeni i exportació directa a MP3 a 160 kbps.
+
+5. **Música i ambientació sonora de fons (MP3, WAV, OGG, FLAC):**
+   - Permet incorporar fàcilment una sintonia d'obertura, melodia o ambient acústic d'acompanyament (pluja, bosc, cafeteria, sintetitzadors, piano).
+   - Reproducció automàtica en **bucle continu (*loop*)** amb transició suau (*cross-fade* de 20 ms) per evitar salts sobtats o clics entre repeticions.
+   - **Control de volum dinàmic** ajustable de l'1% al 100% (calibrat per defecte al 15% per preservar la màxima claredat de la parla) i botó de reproducció de prova instantània (`▶ Prova` / `■ Atura`).
+   - Mescla d'estudi amb esvaïment progressiu d'entrada (*fade-in* d'1 s) i sortida (*fade-out* de 2 s), combinada amb un limitador suau de pic per garantir zero distorsió abans de la normalització final.
 
 ---
 
@@ -93,7 +100,10 @@ Aquest document és una **guia completa de context i indicacions de referència*
    - Eina idònia per a aules d'acollida, escoles d'adults (CFA) i centres de normalització lingüística (CPNL), amb velocitat ajustable per a exercicis de comprensió oral.
 
 6. **Projectes de ràdio escolar i comunicació audiovisual:**
-   - L'alumnat esdevé guionista: redacta, revisa l'ortografia i la sintaxi, i l'eina genera el programa de ràdio sonoritzat i masteritzat sense complicacions tècniques.
+   - L'alumnat esdevé guionista: redacta, revisa l'ortografia i la sintaxi, tria la sintonia musical o ambientació sonora de fons en bucle i l'eina genera el programa de ràdio sonoritzat i masteritzat sense complicacions tècniques ni necessitat d'editors externs.
+
+7. **Narració sonora immersiva, audiocontes i teatre llegit:**
+   - La combinació de diàlegs expressius a 2 o 3 veus amb música de fons (paisatges sonors de natura, melodies d'època o ambients de ciència-ficció) permet crear audiocontes, reconstruccions històriques o representacions literàries amb un alt grau d'immersió emocional i motivadora.
 
 ---
 
@@ -135,10 +145,10 @@ A continuació es detallen plantilles d'instrucció que pots copiar i enganxar d
 ```text
 Actua com a especialista en comunicació educativa i tecnologia en català. A partir de la fitxa adjunta de «Pòdcasts amb Estil i Matxa», escriu un fil de Twitter/X de 5 a 6 piulades:
 - Piulada 1 (Ganxo): Destaca la fita de tenir una eina d'estudi de ràdio en català, gratuïta, 100% offline i creada amb els models del BSC-LT i Projecte AINA.
-- Piulada 2: Explica com ajuda els docents (creació de pòdcasts a 1, 2 o 3 veus en minuts, sense haver d'editar so).
+- Piulada 2: Explica com ajuda els docents (creació de pòdcasts a 1, 2 o 3 veus en minuts, música de fons en bucle amb volum regulable i sense haver d'editar so externament).
 - Piulada 3: Parla de la riquesa dialectal (16 veus: central, balear, valencià, lleidatà, rossellonès) i StyleTTS 2.
 - Piulada 4: Emfatitza la privadesa (0% dades al núvol, ideal per a escoles i instituts, compleix el RGPD).
-- Piulada 5: Usos pedagògics concrets (DUA, dislèxia, microlearning, ràdio escolar).
+- Piulada 5: Usos pedagògics concrets (DUA, dislèxia, microlearning, ràdio escolar, audiocontes immersius).
 - Piulada 6 (Crida a l'acció): Enllaç al projecte a GitHub i invitació a provar-ho.
 To: engrescador, divulgatiu, rigorós i proper. Fes servir icones i hashtags com #EducaCat #ProjecteAINA #BSCLT #IAenCatala. Recorda que en català no va majúscula després dels dos punts.
 ```
@@ -146,9 +156,9 @@ To: engrescador, divulgatiu, rigorós i proper. Fes servir icones i hashtags com
 ### Prompt 2: Publicació professional per a LinkedIn
 ```text
 Actua com a docent innovador i assessor pedagògic en competència digital docent. Escriu una publicació per a LinkedIn sobre l'aplicació «Pòdcasts amb Estil i Matxa»:
-- Enfocament: Innovació educativa, sobirania tecnològica i aplicació real a l'aula (DUA, comprensió oral, situacions d'aprenentatge).
+- Enfocament: Innovació educativa, sobirania tecnològica i aplicació real a l'aula (DUA, comprensió oral, situacions d'aprenentatge, expressió radiofònica).
 - Explica per què és rellevant per a equips directius, coordinadors digitals i professorat de llengua o d'altres matèries.
-- Destaca que no envia dades a cap servidor (privadesa dels centres) i que és una tecnologia d'accés obert creada pel BSC-LT i Projecte AINA.
+- Destaca que no envia dades a cap servidor (privadesa dels centres), que incorpora música i ambientació de fons automàtica i que és una tecnologia d'accés obert creada pel BSC-LT i Projecte AINA.
 - Estructura amb punts clau, to professional i reflexiu, i crida a la reflexió per als docents.
 Recorda aplicar la normativa del català (minúscula després dels dos punts).
 ```
@@ -158,9 +168,9 @@ Recorda aplicar la normativa del català (minúscula després dels dos punts).
 Dissenya el contingut d'un carrusel d'Instagram de 6 diapositives per a docents sobre «Pòdcasts amb Estil i Matxa»:
 - Diapositiva 1 (Portada): Títol impactant sobre com crear pòdcasts educatius en català amb IA en 1 minut.
 - Diapositiva 2: El problema (la manca de temps dels docents per editar àudio i la manca de veus catalanes de qualitat).
-- Diapositiva 3: La solució (com funciona l'eina: escrius el guió, tries les veus i generes l'episodi).
-- Diapositiva 4: Característiques clau (100% offline, 16 accents territorials, privadesa per a menors).
-- Diapositiva 5: 3 idees per a l'aula demà mateix (càpsules de repàs, entrevistes històriques, suport DUA a la lectura).
+- Diapositiva 3: La solució (com funciona l'eina: escrius el guió, tries les veus, afegeixes música de fons i generes l'episodi).
+- Diapositiva 4: Característiques clau (100% offline, 16 accents territorials, música de fons en bucle amb volum calibrat, privadesa per a menors).
+- Diapositiva 5: 3 idees per a l'aula demà mateix (càpsules de repàs, entrevistes històriques, audiocontes sonoritzats, suport DUA a la lectura).
 - Diapositiva 6: Com descarregar-la gratuïtament i crida a compartir amb el claustre.
 Inclou indicacions de text visual i el text del peu de foto (caption) amb hashtags rellevants.
 ```
@@ -168,5 +178,5 @@ Inclou indicacions de text visual i el text del peu de foto (caption) amb hashta
 ### Prompt 4: Circular o butlletí pedagògic per a claustres i coordinadors
 ```text
 Redacta un text informatiu breu (300-400 paraules) per a un butlletí pedagògic escolar o correu de coordinació digital adreçat a tot el claustre de professors, presentant «Pòdcasts amb Estil i Matxa» com a eina recomanada per al nou curs:
-- Explica què és, com s'instal·la (executable per a Windows), quins avantatges té per a l'atenció a la diversitat i com respecta la protecció de dades dels estudiants.
+- Explica què és, com s'instal·la (executable per a Windows), quins avantatges té per a l'atenció a la diversitat, com permet ambientar sonors amb música de fons i com respecta la protecció de dades dels estudiants.
 ```

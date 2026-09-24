@@ -36,4 +36,4 @@ Veu 2: A més, l'aplicació integra dos motors neuronals d'alta tecnologia desen
 
 [PAUSA: 500ms]
 
-Veu presentadora: Un cop acabada la síntesi, el processador d'àudio acobla les pistes, normalitza la sonoritat a menys setze LUFS segons la norma EBU R128 i genera un fitxer MP3 a cent seixanta quilobits per segon llest per descarregar i compartir. Moltes gràcies per acompanyar-nos i esperem que gaudiu creant els vostres pòdcasts educatius!
+Veu presentadora: Un cop acabada la síntesi, el processador d'àudio acobla les pistes, afegeix si ho desitgeu una sintonia o música de fons en bucle amb el volum idoni, normalitza la sonoritat a menys setze LUFS segons la norma EBU R128 i genera un fitxer MP3 a cent seixanta quilobits per segon llest per descarregar i compartir. Moltes gràcies per acompanyar-nos i esperem que gaudiu creant els vostres pòdcasts educatius!

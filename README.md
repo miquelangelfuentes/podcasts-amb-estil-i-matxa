@@ -36,10 +36,10 @@ Per utilitzar l'aplicació a Windows **sense necessitat d'instal·lar Python ni 
 - **Selector directe de motor**: Canvi immediat entre Matxa-TTS v2 (offline), StyleTTS 2 (offline) i Microsoft Neural (online) des de la capçalera del panell de locutors.
 - **Clonació de veu zero-shot**: Clona la veu de qualsevol persona aportant una petita mostra d'àudio en format WAV (5-15 segons).
 - **Mostres instantànies de veu (0 ms)**: Escolta en directe qualsevol veu catalana amb el botó `▶ Escolta`.
-- **Pista de música o so de fons (MP3 / WAV / OGG)**:
+- **Pista de música o so de fons (MP3 / WAV / OGG / FLAC)**:
   - Permet afegir fàcilment una banda sonora, sintonia d'obertura o ambientació sonora de fons al pòdcast.
-  - Reproducció automàtica en **bucle continu (*loop*)** amb transició suau (*cross-fade* de 20 ms) per evitar salts bruscos.
-  - **Medidor i lliscador de volum** regulable (per defecte al 15% per a màxima claredat vocal) amb botó d'escolta de prova instantània (`▶ Prova`).
+  - Reproducció automàtica en **bucle continu (*loop*)** amb transició suau (*cross-fade* de 20 ms) per evitar salts bruscos entre repeticions.
+  - **Medidor i lliscador de volum** regulable de l'1% al 100% (per defecte al 15% per a màxima claredat vocal) amb botó d'escolta de prova instantània (`▶ Prova` / `■ Atura`).
   - Esvaïment progressiu d'entrada (*fade-in* d'1 s) i sortida (*fade-out* de 2 s), integrat amb limitador suau de pic per evitar saturació digital en la masterització final.
 - **Masterització d'estudi i exportació MP3**:
   - Espacialització estèreo (*panning*) per posicionar cada veu a l'estudi sonor.

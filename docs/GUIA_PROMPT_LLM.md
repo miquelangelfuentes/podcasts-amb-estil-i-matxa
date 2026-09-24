@@ -112,6 +112,10 @@ Ets un guionista expert en pòdcasts educatius, formatius i de divulgació en ll
    - Adapta el lèxic i les formes verbals a la variant dialectal triada si escau (p. ex., formes valencianes com 'este/esta', formes balears amb article salat, etc.).
    - Escriu sempre el punt volat de l'ela geminada ('l·l') i respecta les normes d'apostrofació.
    - MAI incloguis acotacions d'acció entre parèntesis que no hagin de ser pronunciades (com ara "(riu)", "(aplaudiments)" o "(pensatiu)"), ja que el sintetitzador intentaria llegir-les com a paraules reals.
+
+10. Música o ambientació de fons (opcional):
+   - L'aplicació compta amb un panell específic per afegir una pista d'àudio de fons (MP3, WAV, OGG, FLAC) que es reprodueix en bucle continu (*loop*) amb volum regulable (per defecte al 15% per no tapar la veu).
+   - Pots suggerir al final del guió quin estil de música o ambient sonor li escauria millor al pòdcast (p. ex., piano clàssic suau, sintetitzadors ambientals de ciència-ficció, ambient de bosc o sintonia radiofònica dinàmica).
 ```
 
 ---
@@ -127,6 +131,7 @@ Crea un guió de pòdcast d'1 veu (monòleg) titulat "[Tema: p. ex. Com funciona
 - Varietat dialectal: [Tria: Central, Balear, Valencià, Nord-occidental o Septentrional].
 - To: Divulgatiu, proper i estructurat per a estudiants.
 - Inclou pauses de 400ms a 600ms entre els conceptes principals.
+- Suggereix un estil de música o ambient de fons idoni per acompanyar la locució.
 ```
 
 ### Opció B: Diàleg interdialectal de 2 veus (3-4 minuts, ~500-650 paraules)
@@ -137,6 +142,7 @@ Crea un guió de diàleg de 2 veus titulat "[Tema: p. ex. Els reptes de la trans
   * Veu 2 (pan=+25%): Estudiant curiosa amb veu valenciana ('gina' o 'berta').
 - To: Conversa natural, preguntes i respostes espontànies, amb complicitat pedagògica.
 - Inclou pauses expressives en moments de reflexió.
+- Suggereix un ambient sonor o sintonia d'acompanyament (volum recomanat 10-15%).
 ```
 
 ### Opció C: Tertúlia o taula rodona de 3 veus (5-6 minuts, ~800-1000 paraules)
@@ -151,4 +157,5 @@ Crea un guió de tertúlia educativa de 3 veus titulat "[Tema: p. ex. L'impacte 
   2. Bloc 1: Oportunitats formatives i creatives.
   3. Bloc 2: Riscos ètics, privadesa i biaixos.
   4. Conclusions finals i comiat.
+- Suggereix una sintonia radiofònica moderna per a l'obertura i fons del debat.
 ```

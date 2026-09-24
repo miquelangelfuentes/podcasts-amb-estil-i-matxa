@@ -27,4 +27,4 @@ Veu presentadora: Des de la taula de control, podeu triar el model de síntesi q
 
 [PAUSA: 400ms]
 
-Veu presentadora: Quan tingueu el text enllestit, premeu «Generar pòdcast complet». L'aplicació processarà l'àudio, aplicarà la masterització estàndard EBU R128 a menys setze LUFS i podreu exportar el vostre fitxer MP3 a cent seixanta quilobits per segon llest per compartir. Així de fàcil i ràpid!
+Veu presentadora: Quan tingueu el text enllestit, podeu triar si voleu una pista de música o ambientació de fons amb el volum al quinze per cent i prémer «Generar pòdcast complet». L'aplicació processarà l'àudio, aplicarà la masterització estàndard EBU R128 a menys setze LUFS i podreu exportar el vostre fitxer MP3 a cent seixanta quilobits per segon llest per compartir. Així de fàcil i ràpid!
