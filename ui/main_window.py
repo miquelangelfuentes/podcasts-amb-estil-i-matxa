@@ -1674,11 +1674,15 @@ class MainWindow(ctk.CTk):
 
         try:
             if not pygame.mixer.get_init():
-                pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=1024)
+                try:
+                    pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=1024)
+                except Exception as me:
+                    print(f"Avís inicialitzant mixer: {me}")
 
             if self.bg_music_audio_data is not None:
                 audio = self.bg_music_audio_data
             else:
+                self._set_status("Carregant pista d'àudio...")
                 audio = self.audio_processor.load_audio_file(self.bg_music_path, target_sr=22050)
                 self.bg_music_audio_data = audio
 
@@ -1686,26 +1690,60 @@ class MainWindow(ctk.CTk):
                 self._set_status("No s'ha pogut obtenir àudio del fitxer seleccionat.")
                 return
 
-            # Agafem fins a 5 segons de mostra
-            max_samples = int(5.0 * 22050)
-            chunk = audio[:, :min(audio.shape[1], max_samples)]
+            # Agafem un fragment representatiu de fins a 7 segons
+            max_samples = int(7.0 * 22050)
+            chunk = np.copy(audio[:, :min(audio.shape[1], max_samples)])
 
-            # Convertim a int16 per a sndarray
-            scaled = chunk * float(self.bg_music_volume)
-            clipped = np.clip(scaled, -1.0, 1.0)
-            int_data = (clipped * 32767.0).astype(np.int16).T
+            # Esvaïment suau a les puntes (50 ms d'inici i 400 ms al final) per evitar qualsevol clic
+            fade_in = min(int(0.05 * 22050), chunk.shape[1] // 4)
+            fade_out = min(int(0.40 * 22050), chunk.shape[1] // 4)
+            if fade_in > 0:
+                chunk[:, :fade_in] *= np.linspace(0.0, 1.0, fade_in, dtype=np.float32)
+            if fade_out > 0:
+                chunk[:, -fade_out:] *= np.linspace(1.0, 0.0, fade_out, dtype=np.float32)
 
-            self._bg_preview_sound = pygame.sndarray.make_sound(int_data)
-            self._bg_preview_sound.play()
+            # Normalitzem a -1.0 .. 1.0
+            clipped = np.clip(chunk, -1.0, 1.0)
+
+            # Escrivim un fitxer WAV temporal PCM de 16 bits per a compatibilitat total
+            tmp_dir = os.path.join(tempfile.gettempdir(), "podcasts_matxa_preview")
+            os.makedirs(tmp_dir, exist_ok=True)
+            self._bg_preview_tmp_wav = os.path.join(tmp_dir, f"bg_preview_{os.getpid()}.wav")
+            sf.write(self._bg_preview_tmp_wav, clipped.T, 22050, subtype="PCM_16")
+
+            vol = max(0.0, min(1.0, float(self.bg_music_volume)))
+            played = False
+
+            if pygame.mixer.get_init():
+                try:
+                    self._bg_preview_sound = pygame.mixer.Sound(self._bg_preview_tmp_wav)
+                    self._bg_preview_sound.set_volume(vol)
+                    self._bg_preview_sound.play()
+                    played = True
+                except Exception as pe:
+                    print(f"Avís reproduint amb pygame.mixer.Sound: {pe}")
+
+            if not played and sys.platform == "win32":
+                try:
+                    import winsound
+                    sf.write(self._bg_preview_tmp_wav, (clipped * vol).T, 22050, subtype="PCM_16")
+                    winsound.PlaySound(self._bg_preview_tmp_wav, winsound.SND_FILENAME | winsound.SND_ASYNC)
+                    played = True
+                except Exception as we:
+                    print(f"Avís winsound fallback: {we}")
+
+            if not played:
+                raise RuntimeError("No s'ha pogut inicialitzar cap sortida d'àudio per a la prova.")
 
             self.btn_bg_preview.configure(
                 text="■ Atura",
                 fg_color="#2E5E41",
                 text_color="#FFFFFF"
             )
-            self._set_status("Reproduint mostra de fons (5s)...")
+            dur_secs = chunk.shape[1] / 22050.0
+            self._set_status(f"Reproduint prova de música de fons ({dur_secs:.1f}s)...")
 
-            dur_ms = int((chunk.shape[1] / 22050.0) * 1000) + 150
+            dur_ms = int(dur_secs * 1000) + 150
             if self._bg_preview_timer_id:
                 try:
                     self.after_cancel(self._bg_preview_timer_id)
@@ -1745,6 +1783,13 @@ class MainWindow(ctk.CTk):
             except Exception:
                 pass
             self._bg_preview_sound = None
+
+        if sys.platform == "win32":
+            try:
+                import winsound
+                winsound.PlaySound(None, winsound.SND_PURGE)
+            except Exception:
+                pass
 
         try:
             self.btn_bg_preview.configure(
