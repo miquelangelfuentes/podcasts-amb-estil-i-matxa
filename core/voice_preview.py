@@ -55,11 +55,13 @@ class VoicePreviewManager:
         # Matxa-TTS Septentrional
         "laura": "Hola, soc la Laura. Aquesta és la meva veu en català septentrional.",
         "jordi": "Hola, soc en Jordi. Aquesta és la meva veu en català septentrional de Perpinyà.",
-        # StyleTTS Veus
+        # StyleTTS / Veus generals
         "bet": "Hola, soc la Bet. Aquesta és la meva veu en català per als vostres pòdcasts.",
         "teia": "Hola, soc la Teia. Aquesta és la meva veu narrativa en català.",
         "joana": "Hola, soc la Joana. Aquesta és la meva veu estàndard en català.",
-        "enric": "Hola, soc l'Enric. Aquesta és la meva veu masculina en català."
+        "enric": "Hola, soc l'Enric. Aquesta és la meva veu masculina en català.",
+        # UPC FestCat
+        "upc_ona": "Hola, soc l'Ona. Aquesta és la meva veu neuronal de la UPC en català."
     }
 
     GENERIC_SAMPLE = "Hola, aquesta és una mostra de la meva veu en català per al pòdcast."

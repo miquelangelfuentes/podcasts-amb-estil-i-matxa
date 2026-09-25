@@ -40,8 +40,10 @@ from ui.player_widget import AudioPlayerWidget
 from core.script_parser import ScriptParser, PodcastScript, SpeakerConfig
 from core.tts_engine import StyleTTS2CatalanEngine
 from core.matxa_tts_engine import MatxaTTSCatalanEngine
+from core.upc_ona_engine import UPCOnaCatalanEngine
 from core.audio_processor import AudioProcessor
 from core.voice_preview import VoicePreviewManager
+from ui.version_check_modal import VersionCheckModal
 
 class MainWindow(ctk.CTk):
     """Finestra principal d'estudi de pòdcasts amb interfície moderna i accessible."""
@@ -82,6 +84,10 @@ class MainWindow(ctk.CTk):
         "enric": "Enric — Microsoft Neural (Masc, ca-ES estàndard)"
     }
 
+    UPC_VOICE_DESCRIPTIONS = {
+        "ona": "Ona — UPC FestCat (Fem, d'alta fidelitat 100% offline)"
+    }
+
     def __init__(self):
         super().__init__()
 
@@ -102,11 +108,12 @@ class MainWindow(ctk.CTk):
         self._ui_queue = queue.Queue()
         self.after(35, self._process_ui_queue)
 
-        # Motors interns: per defecte s'obre amb StyleTTS 2 Català (amb suport per a Matxa-TTS)
+        # Motors interns: per defecte s'obre amb Matxa-TTS v2 (100% Offline)
         self.script_parser = ScriptParser()
-        self.styletts_engine = StyleTTS2CatalanEngine()
         self.matxa_engine = MatxaTTSCatalanEngine()
-        self.tts_engine = self.styletts_engine
+        self.upc_engine = UPCOnaCatalanEngine()
+        self.styletts_engine = StyleTTS2CatalanEngine()
+        self.tts_engine = self.matxa_engine
         self.audio_processor = AudioProcessor(sample_rate=self.tts_engine.sample_rate)
         self.voice_preview_manager = VoicePreviewManager()
 
@@ -253,7 +260,7 @@ class MainWindow(ctk.CTk):
 
         self.badge = ctk.CTkLabel(
             brand_frame,
-            text="BSC-LT StyleTTS 2 Català (PyTorch / Zero-Shot) & alVoCat 22kHz",
+            text="BSC-LT Matxa-TTS v2 (100% Offline) & alVoCat 22kHz",
             font=MatchaTheme.FONT_SMALL,
             text_color=MatchaTheme.TEXT_MUTED
         )
@@ -319,6 +326,16 @@ class MainWindow(ctk.CTk):
             command=self._show_components_manager
         )
         btn_models.pack(side="left", padx=3)
+
+        btn_version = CleanButton(
+            help_frame,
+            style="ghost",
+            text="🔄 Comprova versió",
+            width=135,
+            height=28,
+            command=self._show_version_check_modal
+        )
+        btn_version.pack(side="left", padx=3)
 
         # 2. Barra d'estructura de veus global a la part superior (1 veu, 2 veus o 3 veus)
         top_bar = ctk.CTkFrame(self, fg_color="transparent")
@@ -626,8 +643,8 @@ class MainWindow(ctk.CTk):
         self.engine_combo = ctk.CTkComboBox(
             engine_row,
             values=[
-                "🎙️ StyleTTS 2 Català (BSC-LT / Neural — 9 veus d'estil)",
                 "🍵 Matxa-TTS v2 (100% Offline — 16 veus BSC-LT)",
+                "🎙️ UPC Ona FestCat (100% Offline — Veu neuronal 63 MB)",
                 "☁️ Microsoft Neural ca-ES (Online — Joana i Enric)"
             ],
             height=28,
@@ -643,7 +660,7 @@ class MainWindow(ctk.CTk):
             command=self._on_engine_change
         )
         self.engine_combo.pack(side="left", fill="x", expand=True)
-        self.engine_combo.set("🎙️ StyleTTS 2 Català (BSC-LT / Neural — 9 veus d'estil)")
+        self.engine_combo.set("🍵 Matxa-TTS v2 (100% Offline — 16 veus BSC-LT)")
 
         # Contenidor per als locutors amb alçada dinàmica (evita malbaratar 180 px amb 1 sola veu)
         self.speakers_container = ctk.CTkFrame(
@@ -1120,25 +1137,33 @@ class MainWindow(ctk.CTk):
 
     def _get_voice_catalog(self) -> dict:
         engine_str = self.engine_combo.get() if hasattr(self, "engine_combo") else ""
-        if "Matxa" in engine_str:
+        if "UPC" in engine_str:
+            return self.UPC_VOICE_DESCRIPTIONS
+        elif "Matxa" in engine_str:
             return self.MATXA_VOICE_DESCRIPTIONS
         elif "Microsoft" in engine_str:
             return self.MICROSOFT_VOICE_DESCRIPTIONS
         elif "StyleTTS" in engine_str:
             return self.STYLETTS_VOICE_DESCRIPTIONS
+        if hasattr(self.tts_engine, "UPC_SPEAKERS"):
+            return self.UPC_VOICE_DESCRIPTIONS
         if hasattr(self.tts_engine, "MATXA_SPEAKERS"):
             return self.MATXA_VOICE_DESCRIPTIONS
-        return self.STYLETTS_VOICE_DESCRIPTIONS
+        return self.MATXA_VOICE_DESCRIPTIONS
 
     def _get_voice_label(self, voice_id: str) -> str:
         cat = self._get_voice_catalog()
         v_key = str(voice_id).lower().strip()
         if v_key in cat:
             return cat[v_key]
-        if v_key in self.STYLETTS_VOICE_DESCRIPTIONS:
-            return self.STYLETTS_VOICE_DESCRIPTIONS[v_key]
+        if hasattr(self, "UPC_VOICE_DESCRIPTIONS") and v_key in self.UPC_VOICE_DESCRIPTIONS:
+            return self.UPC_VOICE_DESCRIPTIONS[v_key]
         if v_key in self.MATXA_VOICE_DESCRIPTIONS:
             return self.MATXA_VOICE_DESCRIPTIONS[v_key]
+        if v_key in self.MICROSOFT_VOICE_DESCRIPTIONS:
+            return self.MICROSOFT_VOICE_DESCRIPTIONS[v_key]
+        if v_key in self.STYLETTS_VOICE_DESCRIPTIONS:
+            return self.STYLETTS_VOICE_DESCRIPTIONS[v_key]
         return f"{v_key.capitalize()} — Català"
 
     def _get_voice_id_from_label(self, label: str) -> str:
@@ -1254,17 +1279,15 @@ class MainWindow(ctk.CTk):
         is_matxa = "Matxa" in engine_choice or hasattr(self.tts_engine, "MATXA_SPEAKERS")
         for i, (spk_name, spk_cfg) in enumerate(self.current_script.speakers.items()):
             if spk_cfg.voice_id not in available_ids:
-                if is_matxa:
+                if "UPC" in engine_choice:
+                    spk_cfg.voice_id = "ona"
+                elif is_matxa:
                     spk_cfg.voice_id = available_ids[min(i, len(available_ids) - 1)]
                 elif "Microsoft" in engine_choice:
                     is_masc = any(m in spk_name.lower() for m in ["masc", "home", "enric", "pau", "jordi", "pere", "noi", "veu 2"])
                     spk_cfg.voice_id = "enric" if is_masc else "joana"
-                else:  # StyleTTS 2 Català
-                    is_masc = any(m in spk_name.lower() for m in ["masc", "home", "enric", "pau", "jordi", "pere", "noi", "veu 2"])
-                    if is_masc:
-                        spk_cfg.voice_id = "pau" if i % 2 == 0 else "jordi"
-                    else:
-                        spk_cfg.voice_id = "ona" if i % 2 == 0 else "bet"
+                else:
+                    spk_cfg.voice_id = available_ids[0] if available_ids else "ona"
 
             card = ctk.CTkFrame(
                 self.speakers_container,
@@ -1349,15 +1372,18 @@ class MainWindow(ctk.CTk):
             pan_seg.pack(side="left", fill="x", expand=True, padx=(4, 0))
 
     def _on_engine_change(self, choice):
-        if "Matxa" in choice:
+        if "UPC" in choice:
+            self.tts_engine = self.upc_engine
+            self.badge.configure(text="UPC FestCat Ona (Piper Neural 100% Offline, 63 MB) & alVoCat 22kHz")
+        elif "Matxa" in choice:
             self.tts_engine = self.matxa_engine
             self.badge.configure(text="BSC-LT Matxa-TTS v2 (100% Offline) & alVoCat 22kHz")
         elif "Microsoft" in choice:
             self.tts_engine = self.styletts_engine
-            self.badge.configure(text="Microsoft Neural ca-ES (Online directe Joana i Enric) & alVoCat 22kHz")
-        else:  # StyleTTS 2 Català
-            self.tts_engine = self.styletts_engine
-            self.badge.configure(text="BSC-LT StyleTTS 2 Català (PyTorch / Zero-Shot) & alVoCat 22kHz")
+            self.badge.configure(text="Microsoft Neural ca-ES (Online — Joana i Enric) & alVoCat 22kHz")
+        else:
+            self.tts_engine = self.matxa_engine
+            self.badge.configure(text="BSC-LT Matxa-TTS v2 (100% Offline) & alVoCat 22kHz")
         self._refresh_speakers_ui()
 
     def _sync_speaker_config_to_editor(self, spk_name: str):
@@ -1567,6 +1593,10 @@ class MainWindow(ctk.CTk):
 
     def _show_components_manager(self):
         ComponentsManagerModal(self, on_update_callback=self._on_models_updated)
+
+    def _show_version_check_modal(self):
+        from ui.version_check_modal import VersionCheckModal
+        VersionCheckModal(self)
 
     def _on_models_updated(self):
         """Callback executat en descarregar o eliminar models."""

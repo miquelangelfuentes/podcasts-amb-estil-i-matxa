@@ -27,13 +27,14 @@ Per utilitzar l'aplicació a Windows **sense necessitat d'instal·lar Python ni 
   - **2 veus (diàleg)**: converses i entrevistes naturals entre dues veus interlocutores (`-25%` i `+25%`, sense presentador).
   - **3 veus (tertúlia)**: taules rodones amb veu presentadora al centre (`pan=0%`) i dues veus col·laboradores als laterals (`-25%` i `+25%`).
 - **Sense límit de durada**: genera des de càpsules breus de 2 minuts fins a lliçons o debats de 30-60 minuts gràcies a la síntesi per blocs oracionals.
-- **100% local i privat**: no envia cap dada ni text a internet. Apte per a escoles, instituts i universitats (privadesa total per a docents i alumnat).
+- **100% local i privat**: no envia cap dada ni text a internet amb els motors autònoms. Apte per a escoles, instituts i universitats (privadesa total per a docents i alumnat).
 - **Models de llengua oberts de Catalunya**:
   - **`BSC-LT/Matxa-TTS-v2-Multiaccent`**: model acústic d'última generació basat en transport òptim i flow matching (100% offline), amb 16 variants dialectals del català (central, balear, valencià, nord-occidental i septentrional).
-  - **`BSC-LT/StyleTTS2-Catalan`**: model neuronal basat en difusió d'estil i alta expressivitat, amb 9 veus i suport per a clonació de veu zero-shot.
+  - **`UPC FestCat Ona (Piper Neural)`**: veu neuronal d'alta definició de la Universitat Politècnica de Catalunya (100% offline), pes de només 63 MB i gran calidesa acústica.
   - **`projecte-aina/alvocat-vocos-22khz`**: vocoder neuronal Vocos i normalitzador desenvolupat en el marc del Projecte AINA (100% offline).
   - **`Microsoft Neural ca-ES (Online)`**: servei al núvol integrat opcionalment per a síntesi ràpida (veus Joana i Enric).
-- **Selector directe de motor**: canvi immediat entre Matxa-TTS v2 (offline), StyleTTS 2 (offline) i Microsoft Neural (online) des de la capçalera del panell de locutors.
+- **Comprovador d'actualitzacions integrat (`🔄 Comprova versió`)**: verifica directament contra el repositori GitHub si hi ha noves versions o millores i permet actualitzar l'aplicació en un sol clic.
+- **Selector directe de motor**: canvi immediat entre Matxa-TTS v2 (offline), UPC Ona (offline) i Microsoft Neural (online) des de la capçalera del panell de locutors.
 - **Clonació de veu zero-shot**: clona la veu de qualsevol persona aportant una petita mostra d'àudio en format WAV (5-15 segons).
 - **Mostres instantànies de veu (0 ms)**: escolta en directe qualsevol veu catalana amb el botó `▶ Escolta`.
 - **Pista de música o so de fons (MP3 / WAV / OGG / FLAC)**:
@@ -59,16 +60,18 @@ Per utilitzar l'aplicació a Windows **sense necessitat d'instal·lar Python ni 
 │   ├── 📄 script_parser.py       # Analitzador sintàctic del guió .txt
 │   ├── 📄 text_normalizer.py     # Normalitzador lingüístic en català (alVoCat)
 │   ├── 📄 matxa_tts_engine.py    # Motor Matxa-TTS v2 multiaccent (BSC-LT)
-│   ├── 📄 tts_engine.py          # Motor StyleTTS 2 i clonació de veu
+│   ├── 📄 upc_ona_engine.py      # Motor UPC Ona FestCat (Piper Neural 100% offline)
+│   ├── 📄 tts_engine.py          # Motor al núvol Microsoft Neural (Edge TTS)
 │   ├── 📄 vocoder_alvocat.py     # Vocoder neural Vocos 22kHz (AINA)
 │   ├── 📄 voice_preview.py       # Gestor de mostres i memòria cau d'àudio
-│   ├── 📄 audio_processor.py     # Panning estèreo, LUFS i exportació MP3 160k
+│   ├── 📄 audio_processor.py     # Panning estèreo, bucle de música, LUFS i MP3
 │   ├── 📄 model_downloader.py    # Gestor de descàrrega asíncrona des d'Hugging Face
 │   └── 📄 system_checker.py      # Diagnòstic automàtic de maquinari (CPU, GPU, RAM, disc)
 ├── 📁 ui/                        # Interfície d'usuari (CustomTkinter)
 │   ├── 📄 theme.py               # Paleta de colors Te Matxa Pastel
 │   ├── 📄 main_window.py         # Finestra principal amb editor i selecció d'1, 2 o 3 veus
 │   ├── 📄 components_modal.py    # Gestor visual de models i comprovació del sistema
+│   ├── 📄 version_check_modal.py # Comprovador d'actualitzacions i descàrrega GitHub
 │   ├── 📄 voice_clone_modal.py   # Modal per a clonació de veu zero-shot
 │   └── 📄 player_widget.py       # Reproductor d'àudio i exportador MP3
 ├── 📁 docs/                      # Guies i documentació

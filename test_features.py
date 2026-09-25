@@ -273,6 +273,38 @@ def test_background_music_mixing():
                 pass
 
 
+def test_upc_ona_engine():
+    print("\n--- 9. Provant motor UPC Ona FestCat (Piper Neural 100% Offline) ---")
+    import numpy as np
+    from core.upc_ona_engine import UPCOnaCatalanEngine
+    engine = UPCOnaCatalanEngine()
+    assert engine.name == "UPC Ona FestCat"
+    assert engine.sample_rate == 22050
+    assert "ona" in engine.UPC_SPEAKERS
+
+    # Verificació de càrrega i síntesi
+    loaded = engine.ensure_loaded()
+    assert loaded is True, "El motor UPC Ona s'hauria de carregar correctament"
+    assert engine.is_loaded() is True
+
+    # Síntesi d'una frase
+    wav = engine.synthesize_utterance("Hola, soc l'Ona de la Universitat Politècnica de Catalunya.")
+    assert len(wav) > 0, "L'àudio generat no ha d'estar buit"
+    assert wav.ndim == 1, "L'àudio ha de ser mono float32"
+    assert wav.dtype == np.float32
+
+    print(f"[OK] Motor UPC Ona FestCat verificat correctament (durada generada: {len(wav)/22050:.2f} s).")
+
+
+def test_version_check():
+    print("\n--- 10. Provant comprovador d'actualitzacions i versió GitHub ---")
+    from ui.version_check_modal import APP_VERSION, GITHUB_OWNER, GITHUB_REPO
+    assert APP_VERSION == "1.1.0"
+    assert GITHUB_OWNER == "miquelangelfuentes"
+    assert GITHUB_REPO == "podcasts-amb-estil-i-matxa"
+    print(f"[OK] Comprovador de versió configurat: v{APP_VERSION} a {GITHUB_OWNER}/{GITHUB_REPO}")
+
+
 if __name__ == "__main__":
     test_voice_descriptions()
     test_script_synchronization()
@@ -282,4 +314,7 @@ if __name__ == "__main__":
     test_default_model_and_naming()
     test_components_manager()
     test_background_music_mixing()
+    test_upc_ona_engine()
+    test_version_check()
     print("\n*** TOTES LES PROVES S'HAN SUPERAT AMB ÈXIT! ***")
+

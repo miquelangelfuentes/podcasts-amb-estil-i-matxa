@@ -15,10 +15,11 @@ Aquest document és una **guia completa de context i indicacions de referència*
 | **Finalitat principal** | Creació àgil, intuïtiva i professional de pòdcasts educatius i institucionals en català mitjançant intel·ligència artificial neuronal |
 | **Públic destinatari** | Docents de Primària, Secundària, Batxillerat, FP, Escoles Oficials d'Idiomes, Universitats, centres de formació d'adults (CFA) i creadors de contingut pedagògic |
 | **Llengua i varietats** | Català en totes les seves variants territorials (central, balear, valencià, nord-occidental i septentrional/rossellonès) |
-| **Motors de veu** | 1. **StyleTTS 2 Català** (BSC-LT, difusió neuronal amb veus d'estil i clonació zero-shot, motor predeterminat)<br>2. **Matxa-TTS v2 multiaccent** (BSC-LT, 16 veus territorials en format ONNX, 100% offline)<br>3. **alVoCat 22kHz** (Projecte AINA, vocoder d'alta fidelitat i normalitzador lingüístic)<br>4. **Microsoft Neural ca-ES** (servei al núvol alternatiu) |
-| **Privadesa** | **100% local i confidencial** amb els models Matxa-TTS i StyleTTS 2 (cap text ni àudio surt de l'equip; apte per a la normativa RGPD) |
+| **Motors de veu** | 1. **Matxa-TTS v2 multiaccent** (BSC-LT, 16 veus territorials en format ONNX, 100% offline, motor predeterminat)<br>2. **UPC Ona FestCat** (UPC / Piper Neural, veu FestCat de 63 MB, 100% offline d'alta definició)<br>3. **Microsoft Neural ca-ES** (servei al núvol alternatiu amb connexió a internet)<br>4. **alVoCat 22kHz** (Projecte AINA, vocoder i normalitzador lingüístic) |
+| **Privadesa** | **100% local i confidencial** amb els models Matxa-TTS v2 i UPC Ona (cap text ni àudio surt de l'equip; apte per a la normativa RGPD) |
+| **Actualitzacions** | Botó integrat «Comprova versió» que contrasta directament amb el repositori GitHub i permet actualitzar l'aplicació en un clic |
 | **Música i ambient de fons** | Pista d'acompanyament (MP3, WAV, OGG, FLAC) en bucle continu (*loop*), control de volum dinàmic, prova instantània i transicions suaus (*fade-in*/*fade-out*) |
-| **Cost i llicència** | Gratuït, lliure i de codi obert (fons públics del Projecte AINA i el BSC-LT) |
+| **Cost i llicència** | Gratuït, lliure i de codi obert (fons públics del Projecte AINA, la UPC i el BSC-LT) |
 | **Repositori oficial** | [GitHub: miquelangelfuentes/podcasts-amb-estil-i-matxa](https://github.com/miquelangelfuentes/podcasts-amb-estil-i-matxa) |
 
 ---
@@ -51,23 +52,9 @@ Aquest document és una **guia completa de context i indicacions de referència*
 
 ## 3. Catàleg de motors i veus disponibles
 
-### Motor 1: 🎙️ StyleTTS 2 Català (motor predeterminat)
-- **Model:** Checkpoint complet de pesos PyTorch de difusió neuronal del BSC-LT (`epoch_2nd_00070.pth`, ~2,05 GB descarregat a disc) condicionat amb alVoCat.
-- **Característiques:** Gran expressivitat humana, modulació acústica de velocitat i to, i capacitat de clonació de veu zero-shot a partir d'arxius d'àudio de referència.
-- **Veus integrades (9 veus d'estil):**
-  - **Ona:** veu femenina central, to càlid, professional i corporatiu.
-  - **Pau:** veu masculina central, to comunicatiu, dinàmic i proper.
-  - **Bet:** veu femenina central, to didàctic, vivaç i expressiu.
-  - **Jordi:** veu masculina central, to acadèmic, pausat i serè.
-  - **Teia:** veu femenina central, to narratiu, calmat i reflexiu.
-  - **Pere:** veu masculina valenciana, to natural i fluid.
-  - **Lluc:** veu masculina balear, to genuí mallorquí.
-  - **Joana:** veu femenina central estàndard.
-  - **Enric:** veu masculina central estàndard.
-
-### Motor 2: 🍵 Matxa-TTS v2 multiaccent (100% offline)
-- **Model:** Model de síntesi autònoma en format ONNX Runtime (~260 MB) desenvolupat pel BSC-LT.
-- **Característiques:** Ràpid, ultra-lleuger, d'execució directa per CPU sense necessitat de targeta gràfica dedicada.
+### Motor 1: 🍵 Matxa-TTS v2 multiaccent (100% offline — motor predeterminat)
+- **Model:** Model de síntesi autònoma en format ONNX Runtime (~260 MB) desenvolupat pel **Barcelona Supercomputing Center (BSC-LT)**.
+- **Característiques:** Ràpid, ultra-lleuger, d'execució directa per CPU sense necessitat de targeta gràfica dedicada ni connexió a internet.
 - **16 veus catalanes genuïnes per a totes les variants dialectals:**
   - **Central:** Èlia (Fem, Barcelona), Grau (Masc, Girona), Ona (Fem), Pau (Masc).
   - **Balear:** Olga (Fem, Mallorca), Quim (Masc, Menorca), Bernat (Masc, Mallorca).
@@ -75,9 +62,20 @@ Aquest document és una **guia completa de context i indicacions de referència*
   - **Nord-occidental:** Emma (Fem, Lleida), Pere (Masc, Lleida), Estel (Fem, Pirineu).
   - **Septentrional / Rossellonès:** Laura (Fem, Rosselló), Jordi (Masc, Perpinyà).
 
+### Motor 2: 🎙️ UPC Ona FestCat (100% offline)
+- **Model:** Model neuronal en format Piper ONNX (~63 MB) basat en les gravacions del corpus **FestCat** de la **Universitat Politècnica de Catalunya (UPC)**.
+- **Característiques:** Qualitat i calidesa de locució humana excepcionals, pes molt reduït (63 MB), funcionament 100% autònom sense internet i gran naturalitat pedagògica.
+- **Veu integrades:**
+  - **Ona (UPC FestCat):** veu femenina central, càlida, didàctica i institucional.
+
 ### Motor 3: ☁️ Microsoft Neural ca-ES (Online)
-- **Model:** Servei de connexió directa amb Microsoft Edge TTS al núvol.
-- **Característiques:** No requereix espai al disc local (0 MB), però depèn d'internet constant i envia el text a servidors externs. Inclou les veus Joana i Enric.
+- **Model:** Servei de connexió al núvol mitjançant Edge TTS.
+- **Característiques:** Útil com a alternativa ràpida; no requereix espai al disc local (0 MB), però requereix connexió constant a internet i transmet el text als servidors de Microsoft.
+- **Veus integrades:** Joana (veu femenina) i Enric (veu masculina).
+
+> [!NOTE]
+> **Nota tècnica i transparència sobre StyleTTS 2:**
+> El checkpoint de StyleTTS 2 del BSC-LT (`epoch_2nd_00070.pth`, ~2,05 GB) és un model d'investigació que requereix un entorn PyTorch complet amb mòduls addicionals (PL-BERT, WavLM i aligners) i targeta gràfica dedicada (GPU). Per garantir que qualsevol ordinador d'escola o institut pugui generar pòdcasts en català de forma immediata, 100% autònoma i sense despesa de servidors, aquesta aplicació empra **Matxa-TTS v2 (BSC-LT)** i **UPC Ona (FestCat)** com a motors offline principals.
 
 ---
 

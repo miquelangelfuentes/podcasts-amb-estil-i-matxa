@@ -1,8 +1,9 @@
 """
-Motor de Síntesi de Veu StyleTTS 2 en Català (StyleTTS 2 Catalan Engine).
-Integra els models neuronals de parla en català (BSC-LT i Microsoft Neural ca-ES),
-clonació de veu zero-shot a partir de mostres de referència,
-normalitzador alVoCat de Projecte AINA i gestió de durada il·limitada.
+Motor de Síntesi al Núvol Microsoft Neural ca-ES (Edge TTS).
+Utilitza els serveis de parla en línia de Microsoft (veus Joana i Enric) amb ajustos
+de to i velocitat per oferir diferents matisos de veu.
+Nota: aquest motor requereix connexió activa a internet i envia el text a Microsoft.
+Per a un ús 100% autònom, local i privat es recomana utilitzar Matxa-TTS v2 o UPC Ona.
 """
 
 import os
@@ -22,8 +23,8 @@ from core.text_normalizer import CatalanTextNormalizer
 from core.vocoder_alvocat import AlvocatVocoder
 from core.model_downloader import ModelDownloader
 
-class StyleTTS2CatalanEngine:
-    """Motor central de síntesi de veu per a pòdcasts en català."""
+class MicrosoftNeuralCatalanEngine:
+    """Motor de síntesi al núvol basat en Microsoft Neural ca-ES (Edge TTS)."""
 
     # Catàleg de veus catalanes amb mapeig de personatges i modulació de timbre
     CATALAN_VOICES = {
@@ -102,7 +103,7 @@ class StyleTTS2CatalanEngine:
     }
 
     def __init__(self, models_dir: Optional[str] = None):
-        self.name = "StyleTTS 2"
+        self.name = "Microsoft Neural ca-ES"
         self.sample_rate = 22050
         self.text_normalizer = CatalanTextNormalizer()
         self.downloader = ModelDownloader(models_dir)
@@ -362,3 +363,8 @@ class StyleTTS2CatalanEngine:
                     output_audio_list.append((sentence_audio, seg.pan, pause_ms))
 
         return output_audio_list
+
+
+# Àlies de compatibilitat retroactiva
+StyleTTS2CatalanEngine = MicrosoftNeuralCatalanEngine
+

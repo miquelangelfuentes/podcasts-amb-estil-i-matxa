@@ -44,6 +44,19 @@ class ModelDownloader:
             "category": "Vocoder essencial (Offline)",
             "is_cloud": False
         },
+        "upc_ona": {
+            "name": "Veu UPC Ona FestCat (100% Offline)",
+            "provider": "UPC / Rhasspy Piper",
+            "repo_id": "rhasspy/piper-voices",
+            "files": {
+                "ca/ca_ES/upc_ona/medium/ca_ES-upc_ona-medium.onnx": "ca_ES-upc_ona-medium.onnx",
+                "ca/ca_ES/upc_ona/medium/ca_ES-upc_ona-medium.onnx.json": "ca_ES-upc_ona-medium.onnx.json"
+            },
+            "desc": "Model neuronal d'alta fidelitat de la UPC basat en el corpus FestCat (63 MB). 100% autònom, ràpid i privat.",
+            "expected_size_mb": 60.3,
+            "category": "Motor autònom FestCat (Offline)",
+            "is_cloud": False
+        },
         "styletts2_ca": {
             "name": "StyleTTS 2 Català (BSC-LT Checkpoint 2.05 GB)",
             "provider": "BSC-LT",
@@ -52,9 +65,9 @@ class ModelDownloader:
                 "epoch_2nd_00070.pth": "epoch_2nd_00070.pth",
                 "config.yml": "config.yml"
             },
-            "desc": "Checkpoint PyTorch complet de difusió neuronal del BSC-LT (~2,05 GB). Descarrega el model complet a disc.",
+            "desc": "Pesos PyTorch del model de recerca del BSC-LT (~2,05 GB). Nota: requereix entorn PyTorch complet amb GPU; per a ús autònom d'escriptori es recomana Matxa-TTS v2 o UPC Ona.",
             "expected_size_mb": 2050.1,
-            "category": "Model complet (PyTorch 2.05 GB)",
+            "category": "Model experimental (PyTorch 2.05 GB)",
             "is_cloud": False
         },
         "edge_tts_cloud": {
@@ -85,6 +98,8 @@ class ModelDownloader:
 
     def get_model_path(self, model_key: str, filename: str) -> str:
         """Retorna la ruta local on s'espera trobar el fitxer del model."""
+        if model_key == "upc_ona":
+            return os.path.join(self.cache_dir, "piper_voices", filename)
         return os.path.join(self.cache_dir, model_key, filename)
 
     def is_model_downloaded(self, model_key: str) -> bool:
