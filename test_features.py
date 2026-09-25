@@ -193,7 +193,7 @@ def test_default_model_and_naming():
     from ui.main_window import MainWindow
     src = inspect.getsource(MainWindow)
     assert "self.tts_engine = self.matxa_engine" in src or "self.tts_engine = self.styletts_engine" in src, "El motor per defecte ha d'estar definit correctament"
-    assert 'self.title("Pòdcasts amb Estil i Matxa")' in src, "El títol ha de ser 'Pòdcasts amb Estil i Matxa'"
+    assert 'self.title(f"Pòdcasts amb Estil i Matxa v{APP_VERSION}")' in src or 'self.title("Pòdcasts amb Estil i Matxa")' in src, "El títol ha de ser 'Pòdcasts amb Estil i Matxa'"
     print("[OK] Motor predeterminat configurat i nom oficial actualitzat.")
 
 

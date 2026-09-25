@@ -43,7 +43,7 @@ from core.matxa_tts_engine import MatxaTTSCatalanEngine
 from core.upc_ona_engine import UPCOnaCatalanEngine
 from core.audio_processor import AudioProcessor
 from core.voice_preview import VoicePreviewManager
-from ui.version_check_modal import VersionCheckModal
+from ui.version_check_modal import VersionCheckModal, APP_VERSION
 
 class MainWindow(ctk.CTk):
     """Finestra principal d'estudi de pòdcasts amb interfície moderna i accessible."""
@@ -94,7 +94,7 @@ class MainWindow(ctk.CTk):
         # Configuració bàsica de la finestra i títol renovat.
         # CustomTkinter escala les dimensions segons el DPI de Windows;
         # adaptem la geometria a l'àrea útil de treball per no superar la pantalla a 150%.
-        self.title("Pòdcasts amb Estil i Matxa")
+        self.title(f"Pòdcasts amb Estil i Matxa v{APP_VERSION}")
         self._fit_window_to_work_area()
 
         # Configuració d'aparença neta
@@ -244,7 +244,19 @@ class MainWindow(ctk.CTk):
             font=("Segoe UI", 16, "bold"),
             text_color=MatchaTheme.TEXT_MAIN
         )
-        app_title.pack(side="left", padx=(0, 8))
+        app_title.pack(side="left", padx=(0, 6))
+
+        version_badge = ctk.CTkLabel(
+            brand_frame,
+            text=f"v{APP_VERSION}",
+            font=MatchaTheme.FONT_TINY,
+            fg_color=MatchaTheme.PRIMARY_LIGHT,
+            text_color=MatchaTheme.PRIMARY,
+            corner_radius=8,
+            padx=7,
+            pady=1
+        )
+        version_badge.pack(side="left", padx=(0, 8))
 
         tag_badge = ctk.CTkLabel(
             brand_frame,

@@ -8,8 +8,10 @@ import os
 import sys
 import shutil
 import subprocess
-
 import time
+import zipfile
+
+from ui.version_check_modal import APP_VERSION
 
 def build():
     print("=" * 60)
@@ -136,6 +138,30 @@ def build():
                 print(f"  {dest_exe}")
             except Exception as e:
                 print(f"  [AVÍS] Error sincronitzant dist/{alias_name}: {e}")
+
+        # Empaquetar a fitxer ZIP oficial amb el nom de la versió actual
+        zip_name = f"PodcastsAmbEstilIMatxa-v{APP_VERSION}-Windows.zip"
+        zip_path = os.path.join(dist_dir, zip_name)
+        print(f"\n  Empaquetant a arxiu comprimit oficial: {zip_name}...")
+        with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zipf:
+            for root, dirs, files in os.walk(new_dist):
+                for file in files:
+                    full_path = os.path.join(root, file)
+                    rel_path = os.path.relpath(full_path, dist_dir)
+                    zipf.write(full_path, rel_path)
+        zip_mb = os.path.getsize(zip_path) / (1024 * 1024)
+        print(f"  [OK] Fitxer ZIP generat amb èxit ({zip_mb:.1f} MB):")
+        print(f"  {zip_path}")
+
+        # Sincronitzar còpia directa al directori Downloads de l'usuari si existeix
+        user_downloads = os.path.join(os.path.expanduser("~"), "Downloads")
+        if os.path.exists(user_downloads):
+            try:
+                dest_zip_downloads = os.path.join(user_downloads, zip_name)
+                shutil.copy2(zip_path, dest_zip_downloads)
+                print(f"  [OK] Còpia de descàrrega sincronitzada a: {dest_zip_downloads}")
+            except Exception as e:
+                print(f"  [AVÍS] No s'ha pogut copiar a Downloads: {e}")
 
         # Neteja del directori staging temporal
         try:
