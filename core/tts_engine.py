@@ -3,7 +3,7 @@ Motor de Síntesi al Núvol Microsoft Neural ca-ES (Edge TTS).
 Utilitza els serveis de parla en línia de Microsoft (veus Joana i Enric) amb ajustos
 de to i velocitat per oferir diferents matisos de veu.
 Nota: aquest motor requereix connexió activa a internet i envia el text a Microsoft.
-Per a un ús 100% autònom, local i privat es recomana utilitzar Matxa-TTS v2 o UPC Ona.
+Per a un ús 100% autònom, local i privat es recomana utilitzar Matxa-TTS v2 o UPC FestCat (Ona i Pau).
 """
 
 import os

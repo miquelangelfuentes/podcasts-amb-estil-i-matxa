@@ -4,7 +4,7 @@ Gestiona la descàrrega autònoma, verificació d'integritat, estat local
 i memòria cau dels models de Hugging Face:
 - BSC-LT/matxa-tts-v2-ca-multiaccent-graphemes
 - projecte-aina/alvocat-vocos-22khz
-- rhasspy/piper-voices (UPC Ona)
+- rhasspy/piper-voices (UPC FestCat Ona i Pau)
 """
 
 import os
@@ -45,27 +45,27 @@ class ModelDownloader:
             "is_cloud": False
         },
         "upc_ona": {
-            "name": "Veu UPC Ona FestCat (100% Offline)",
+            "name": "Veu femenina UPC Ona FestCat (100% Offline)",
             "provider": "UPC / Rhasspy Piper",
             "repo_id": "rhasspy/piper-voices",
             "files": {
                 "ca/ca_ES/upc_ona/medium/ca_ES-upc_ona-medium.onnx": "ca_ES-upc_ona-medium.onnx",
                 "ca/ca_ES/upc_ona/medium/ca_ES-upc_ona-medium.onnx.json": "ca_ES-upc_ona-medium.onnx.json"
             },
-            "desc": "Model neuronal d'alta fidelitat de la UPC basat en el corpus FestCat (63 MB). 100% autònom, ràpid i privat.",
+            "desc": "Model neuronal femení d'alta fidelitat de la UPC basat en el corpus FestCat (63 MB). 100% autònom, ràpid i privat.",
             "expected_size_mb": 60.3,
             "category": "Motor autònom FestCat (Offline)",
             "is_cloud": False
         },
         "upc_pau": {
-            "name": "Veu UPC Pau FestCat (100% Offline)",
+            "name": "Veu masculina UPC Pau FestCat (100% Offline)",
             "provider": "UPC / Rhasspy Piper",
             "repo_id": "rhasspy/piper-voices",
             "files": {
                 "ca/ca_ES/upc_pau/x_low/ca_ES-upc_pau-x_low.onnx": "ca_ES-upc_pau-x_low.onnx",
                 "ca/ca_ES/upc_pau/x_low/ca_ES-upc_pau-x_low.onnx.json": "ca_ES-upc_pau-x_low.onnx.json"
             },
-            "desc": "Model neuronal masculí de la UPC basat en el corpus FestCat (28 MB). 100% autònom, ràpid i privat.",
+            "desc": "Model neuronal masculí de la UPC basat en el corpus FestCat (27 MB). 100% autònom, ràpid i privat.",
             "expected_size_mb": 26.8,
             "category": "Motor autònom FestCat (Offline)",
             "is_cloud": False

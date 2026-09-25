@@ -85,7 +85,7 @@ class MainWindow(ctk.CTk):
 
     UPC_VOICE_DESCRIPTIONS = {
         "ona": "Ona — UPC FestCat (Fem, d'alta fidelitat 100% offline)",
-        "pau": "Pau — UPC FestCat (Masc, 100% offline)"
+        "pau": "Pau — UPC FestCat (Masc, d'alta fidelitat 100% offline)"
     }
 
     def __init__(self):
@@ -432,7 +432,7 @@ class MainWindow(ctk.CTk):
 
         lbl_credits = ctk.CTkLabel(
             footer_box,
-            text=" · Models: BSC-LT & Projecte AINA",
+            text=" · Models: BSC-LT, UPC & Projecte AINA",
             font=MatchaTheme.FONT_SMALL,
             text_color=MatchaTheme.TEXT_MUTED
         )

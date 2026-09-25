@@ -54,7 +54,7 @@ class UPCOnaCatalanEngine:
     }
 
     def __init__(self, models_dir: Optional[str] = None):
-        self.name = "UPC Ona FestCat"
+        self.name = "UPC FestCat"
         self.sample_rate = 22050
         self.text_normalizer = CatalanTextNormalizer()
         self.downloader = ModelDownloader(models_dir)

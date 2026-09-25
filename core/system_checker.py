@@ -39,13 +39,13 @@ class SystemChecker:
             free_gb = round(usage.free / (1024 ** 3), 2)
             total_gb = round(usage.total / (1024 ** 3), 2)
 
-            # Requisits: Matxa-TTS, alVoCat i UPC Ona ocupen ~370 MB en total
+            # Requisits: Matxa-TTS, alVoCat i UPC FestCat (Ona i Pau) ocupen ~398 MB en total
             if free_gb >= 2.0:
                 status = "ok"
                 msg = f"{free_gb} GB lliures de {total_gb} GB (Més que suficient per instal·lar tots els models autònoms)"
             elif free_gb >= 1.0:
                 status = "ok"
-                msg = f"{free_gb} GB lliures de {total_gb} GB (Suficient per a la síntesi autònoma Matxa-TTS v2 i alVoCat)"
+                msg = f"{free_gb} GB lliures de {total_gb} GB (Suficient per a la síntesi autònoma Matxa-TTS v2, alVoCat i UPC FestCat)"
             elif free_gb >= 0.5:
                 status = "warning"
                 msg = f"{free_gb} GB lliures de {total_gb} GB (Espai ajustat per als models bàsics; es recomana alliberar espai)"

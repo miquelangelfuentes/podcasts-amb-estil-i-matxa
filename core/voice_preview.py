@@ -1,7 +1,7 @@
 """
 Gestor de Mostres de Veu (Voice Preview Manager).
 Sintetitza i emmagatzema en memòria cau fragments breus d'àudio per a cada veu
-catalana (Matxa-TTS, UPC Ona i veus neuronals) per permetre l'escolta prèvia a la interfície.
+catalana (Matxa-TTS, UPC FestCat Ona i Pau i veus neuronals) per permetre l'escolta prèvia a la interfície.
 """
 
 import os

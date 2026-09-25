@@ -1,6 +1,6 @@
 """
 Finestra Modal del Gestor de Models i Components (Components Manager Modal).
-Permet comprovar l'estat dels models d'intel·ligència artificial (alVoCat, Matxa-TTS, UPC Ona),
+Permet comprovar l'estat dels models d'intel·ligència artificial (alVoCat, Matxa-TTS, UPC FestCat Ona i Pau),
 la seva mida en disc i integritat, i descarregar-los per separat des d'Hugging Face.
 Inclou diagnòstic de compatibilitat del sistema i guia d'implicacions d'instal·lació offline.
 """
@@ -416,7 +416,7 @@ class ComponentsManagerModal(ctk.CTkToplevel):
 
         desc_lbl = ctk.CTkLabel(
             header,
-            text="Comprova la instal·lació dels models neuronals de parla del BSC-LT i el Projecte AINA.\nPots descarregar o reinstal·lar cada component per separat.",
+            text="Comprova la instal·lació dels models neuronals de parla del BSC-LT, la UPC i el Projecte AINA.\nPots descarregar o reinstal·lar cada component per separat.",
             font=MatchaTheme.FONT_SMALL,
             text_color=MatchaTheme.TEXT_SECONDARY,
             justify="left"
