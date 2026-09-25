@@ -35,9 +35,9 @@ Per utilitzar l'aplicació a Windows **sense necessitat d'instal·lar Python ni 
   - **`BSC-LT/Matxa-TTS-v2-Multiaccent`**: model acústic d'última generació basat en transport òptim i flow matching (100% offline), amb 16 variants dialectals del català (central, balear, valencià, nord-occidental i septentrional).
   - **`UPC FestCat Ona (Piper Neural)`**: veu neuronal d'alta definició de la Universitat Politècnica de Catalunya (100% offline), pes de només 63 MB i gran calidesa acústica.
   - **`projecte-aina/alvocat-vocos-22khz`**: vocoder neuronal Vocos i normalitzador desenvolupat en el marc del Projecte AINA (100% offline).
-  - **`Microsoft Neural ca-ES (Online)`**: servei al núvol integrat opcionalment per a síntesi ràpida (veus Joana i Enric).
+  - **`Veus d'estil i Microsoft Neural (Online)`**: servei al núvol integrat per a 9 estils expressius de veu (Joana, Enric, Ona, Pau, etc.).
 - **Comprovador d'actualitzacions integrat (`🔄 Comprova versió`)**: verifica directament contra el repositori GitHub si hi ha noves versions o millores i permet actualitzar l'aplicació en un sol clic.
-- **Selector directe de motor**: canvi immediat entre Matxa-TTS v2 (offline), StyleTTS 2 Català (neural), UPC Ona (offline) i Microsoft Neural (online) des de la capçalera del panell de locutors.
+- **Selector directe de motor**: canvi immediat entre Matxa-TTS v2 (offline, 16 veus), UPC Ona (offline, 63 MB) i Veus d'estil / Microsoft Neural (online, 9 estils) des de la capçalera del panell de locutors.
 - **Clonació de veu zero-shot**: clona la veu de qualsevol persona aportant una petita mostra d'àudio en format WAV (5-15 segons).
 - **Mostres instantànies de veu (0 ms)**: escolta en directe qualsevol veu catalana amb el botó `▶ Escolta`.
 - **Pista de música o so de fons (MP3 / WAV / OGG / FLAC)**:

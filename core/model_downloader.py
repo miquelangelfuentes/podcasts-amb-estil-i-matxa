@@ -57,25 +57,12 @@ class ModelDownloader:
             "category": "Motor autònom FestCat (Offline)",
             "is_cloud": False
         },
-        "styletts2_ca": {
-            "name": "StyleTTS 2 Català (BSC-LT Checkpoint 2.05 GB)",
-            "provider": "BSC-LT",
-            "repo_id": "BSC-LT/styletts2-catalan-multispeaker",
-            "files": {
-                "epoch_2nd_00070.pth": "epoch_2nd_00070.pth",
-                "config.yml": "config.yml"
-            },
-            "desc": "Pesos PyTorch del model de recerca del BSC-LT (~2,05 GB). Nota: requereix entorn PyTorch complet amb GPU; per a ús autònom d'escriptori es recomana Matxa-TTS v2 o UPC Ona.",
-            "expected_size_mb": 2050.1,
-            "category": "Model experimental (PyTorch 2.05 GB)",
-            "is_cloud": False
-        },
         "edge_tts_cloud": {
-            "name": "Microsoft Neural ca-ES (Online)",
+            "name": "Veus d'estil i Microsoft Neural (Online)",
             "provider": "Microsoft Edge Cloud",
             "repo_id": "microsoft/edge-tts-catalan",
             "files": {},
-            "desc": "Servei al núvol (veus Joana i Enric). Ocupa 0 MB locals però envia el text a Microsoft i requereix internet constant. Subjecte a límits de peticions (rate limiting) i sense SLA.",
+            "desc": "Servei al núvol amb 9 estils expressius de veu (Joana, Enric, Ona, Pau, Bet, etc.). Ocupa 0 MB locals però requereix connexió activa a internet i envia el text al servei al núvol.",
             "expected_size_mb": 0.0,
             "category": "Servei al núvol (Online)",
             "is_cloud": True

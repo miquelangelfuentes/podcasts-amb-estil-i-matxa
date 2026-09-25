@@ -1,6 +1,6 @@
 """
 Finestra Modal del Gestor de Models i Components (Components Manager Modal).
-Permet comprovar l'estat dels models d'intel·ligència artificial (alVoCat, Matxa-TTS, StyleTTS),
+Permet comprovar l'estat dels models d'intel·ligència artificial (alVoCat, Matxa-TTS, UPC Ona),
 la seva mida en disc i integritat, i descarregar-los per separat des d'Hugging Face.
 Inclou diagnòstic de compatibilitat del sistema i guia d'implicacions d'instal·lació offline.
 """
@@ -270,19 +270,20 @@ class InstallGuideModal(ctk.CTkToplevel):
 
         sections = [
             (
-                "📦 Espai total necessari (311 MB o 2,36 GB)",
-                "• Configuració 100% Offline recomanada (~311 MB):\n"
+                "📦 Espai total necessari (311 MB a 371 MB)",
+                "• Configuració 100% Offline recomanada (~311 MB a 371 MB):\n"
                 "  - Matxa-TTS v2 multiaccent (BSC-LT): ~260 MB (16 veus catalanes autònomes).\n"
-                "  - Vocoder alVoCat 22kHz (Projecte AINA): ~51 MB (reconstrucció acústica i normalitzador d'ortografia).\n\n"
-                "• Checkpoint complet StyleTTS 2 (~2,05 GB):\n"
-                "  - Checkpoint PyTorch oficial de difusió neuronal del BSC-LT per a ús avançat complet a disc.\n\n"
-                "A diferència dels models lingüístics pesats (LLM) que pesen de 4 a 10 GB, els models Matxa-TTS estan altament optimitzats en format ONNX per cabre en qualsevol ordinador i consumir molt poca memòria RAM."
+                "  - Vocoder alVoCat 22kHz (Projecte AINA): ~51 MB (reconstrucció acústica i normalitzador d'ortografia).\n"
+                "  - Veu UPC Ona FestCat (UPC): ~60 MB (veu neuronal d'alta fidelitat 100% offline).\n\n"
+                "• Veus d'estil expressives (Online — 0 MB):\n"
+                "  - No ocupen espai a disc; requereixen connexió activa a internet.\n\n"
+                "💡 Nota sobre StyleTTS 2: el checkpoint de recerca del BSC-LT (~2,05 GB en PyTorch) requereix entorns d'investigació amb GPU dedicada. Per garantir la màxima rapidesa en ordinadors educatius estàndard (CPU), l'aplicació empra models ONNX altament optimitzats (Matxa-TTS v2 i UPC Ona)."
             ),
             (
                 "⚡ Cal ONNX també? Per a què serveix?",
                 "• Sí! El format ONNX (Open Neural Network Exchange) és la clau de la rapidesa i eficiència de l'aplicació.\n"
-                "• Permet que Matxa-TTS i alVoCat s'executin directament sobre la CPU de qualsevol PC o portàtil (Intel o AMD) sense necessitat d'instal·lar paquets feixucs de PyTorch ni entorns gegants de CUDA.\n"
-                "• L'aplicació ja porta el motor d'execució ONNX Runtime integrat; només cal que descarreguis els fitxers .onnx dels models (311 MB) per començar a parlar."
+                "• Permet que Matxa-TTS, alVoCat i UPC Ona s'executin directament sobre la CPU de qualsevol PC o portàtil (Intel o AMD) sense necessitat d'instal·lar paquets feixucs de PyTorch ni entorns gegants de CUDA.\n"
+                "• L'aplicació ja porta el motor d'execució ONNX Runtime integrat; només cal que descarreguis els fitxers .onnx dels models per començar a parlar."
             ),
             (
                 "✈️ Descàrrega única vs. Ús permanent sense connexió",
@@ -291,7 +292,7 @@ class InstallGuideModal(ctk.CTkToplevel):
             ),
             (
                 "🔒 Privadesa total (0% dades al núvol)",
-                "Quan generes un podcast amb Matxa-TTS i alVoCat:\n"
+                "Quan generes un podcast amb Matxa-TTS, alVoCat o UPC Ona:\n"
                 "• Cap fragment de text, guió o nom s'envia a servidors externs.\n"
                 "• Cap mostra de veu o àudio enregistrat surt mai de l'ordinador.\n"
                 "• Compleix estrictament les normatives de protecció de dades (RGPD) en entorns educatius i corporatius."
@@ -304,25 +305,25 @@ class InstallGuideModal(ctk.CTkToplevel):
             ),
             (
                 "🗣️ Diferència entre els motors disponibles",
-                "• Matxa-TTS v2 multiaccent (100% Offline - Recomanat per defecte):\n"
+                "• Matxa-TTS v2 multiaccent (100% Offline — Recomanat per defecte):\n"
                 "  model autònom en ONNX del Barcelona Supercomputing Center amb 16 veus catalanes (central, balear, valencià, nord-occidental i rossellonès). Ràpid i sense dependre de la xarxa.\n\n"
-                "• StyleTTS 2 Català (Offline complet, ~2,05 GB):\n"
-                "  checkpoint de pesos PyTorch complet del BSC-LT descarregat íntegrament al disc local.\n\n"
-                "• Microsoft Neural ca-ES (Online):\n"
-                "  pont de connexió que utilitza les veus al núvol de Microsoft (Joana i Enric). Ocupa 0 MB al disc, però requereix connexió constant a internet."
+                "• UPC Ona FestCat (100% Offline — Veu neuronal 63 MB):\n"
+                "  veu femenina d'alta fidelitat de la UPC basada en el corpus FestCat. 100% privada i autònoma.\n\n"
+                "• Veus d'estil i Microsoft Neural (Online):\n"
+                "  9 estils de veu expressius (Joana, Enric, Ona, Pau, Bet, etc.) connectats al servei de veus al núvol. Ocupa 0 MB al disc, però requereix connexió constant a internet."
             ),
             (
-                "☁️ Limitacions d'ús de Microsoft Neural ca-ES (Online)",
+                "☁️ Limitacions d'ús del servei al núvol (Online)",
                 "Tot i que és una alternativa ràpida que no requereix espai de disc (0 MB locals), presenta limitacions clau:\n\n"
                 "• Connexió permanent requerida: si cau la xarxa Wi-Fi o no hi ha internet, la síntesi no funcionarà.\n"
-                "• Privadesa de les dades: el guió s'envia a servidors de Microsoft al núvol; no és apte per a dades personals o privades protegides pel RGPD.\n"
-                "• Límits de peticions (Rate Limiting): Microsoft aplica límits de volum de peticions per IP; sol·licituds consecutives molt intenses poden retornar errors de bloqueig temporal (HTTP 429 Too Many Requests).\n"
-                "• Sense garantia de servei (SLA): l'endpoint gratuït pot patir canvis d'accés o talls sobtats sense previ avís per part de Microsoft.\n"
-                "• Varietats limitades: només disposa de 2 veus (Joana i Enric) en català central, sense opció de dialectes balears o valencians."
+                "• Privadesa de les dades: el guió s'envia a servidors al núvol; no és apte per a dades personals o privades protegides pel RGPD.\n"
+                "• Límits de peticions (Rate Limiting): sessions consecutives molt intenses poden retornar errors de bloqueig temporal (HTTP 429 Too Many Requests).\n"
+                "• Sense garantia de servei (SLA): l'endpoint gratuït pot patir canvis d'accés o talls sobtats sense previ avís.\n"
+                "• Per a total privadesa i independència, es recomana prioritzar sempre els motors offline (Matxa-TTS v2 o UPC Ona)."
             ),
             (
                 "📜 Llicències i suport institucional",
-                "Tots els models integrats han estat desenvolupats amb fons públics pel Barcelona Supercomputing Center (BSC-LT) i la Generalitat de Catalunya a través del Projecte AINA, amb llicències obertes aptes per a docència, divulgació i ús institucional."
+                "Tots els models integrats han estat desenvolupats amb fons públics pel Barcelona Supercomputing Center (BSC-LT), la Universitat Politècnica de Catalunya (UPC) i la Generalitat de Catalunya a través del Projecte AINA, amb llicències obertes aptes per a docència, divulgació i ús institucional."
             )
         ]
 

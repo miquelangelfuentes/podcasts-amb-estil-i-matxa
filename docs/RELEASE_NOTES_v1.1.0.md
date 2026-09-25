@@ -27,11 +27,10 @@ Versió oficial actualitzada de **Pòdcasts amb Estil i Matxa**, l'estudi d'escr
   - El paquet binari autònom per a Windows es distribueix amb el nom de fitxer corresponent a la versió: `PodcastsAmbEstilIMatxa-v1.1.0-Windows.zip`.
 - **Motors de veu integrats**:
   - **Matxa-TTS v2 multiaccent (100% offline)**: 16 veus per a totes les variants dialectals del català (balear, central, nord-occidental, septentrional i valencià) combinades amb el vocoder neuronal **alVoCat 22kHz**.
-  - **UPC Ona FestCat (100% offline)**: veu de la Universitat Politècnica de Catalunya d'alta claredat docent.
-  - **Microsoft Neural ca-ES (Online)**: servei al núvol ràpid amb les veus Joana i Enric.
-  - **StyleTTS 2 Català (Offline)**: checkpoint experimental de recerca del BSC-LT.
+  - **UPC Ona FestCat (100% offline)**: veu femenina d'alta fidelitat de la Universitat Politècnica de Catalunya (63 MB).
+  - **Veus d'estil i Microsoft Neural (Online)**: servei al núvol amb 9 estils expressius (Joana, Enric, Ona, Pau, etc.).
 - **Gestor integrat de components i models (📦 Models)**:
-  - Descàrrega autònoma i modular des d'Hugging Face.
+  - Descàrrega autònoma i modular des d'Hugging Face per a Matxa-TTS v2, alVoCat i UPC Ona.
   - Eina **«Comprovar el meu equip»** amb diagnòstic automàtic de maquinari (CPU, GPU, RAM, disc i AVX2).
 - **Control de qualitat**:
   - Bateria completa de proves automatitzades (`test_features.py`) amb 10/10 tests superats.

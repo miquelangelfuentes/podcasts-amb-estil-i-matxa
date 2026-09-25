@@ -33,7 +33,7 @@ Tots els canvis rellevants, correccions (*fixes*) i novetats del projecte **Pòd
 ### 🐛 Correccions i transparència tècnica
 * **Clarificació i transparència dels motors de veu:**
   * S'ha anomenat i identificat obertament el motor **`Microsoft Neural ca-ES (Online)`** com a servei al núvol (veus Joana i Enric mitjançant Edge TTS), evitant qualsevol confusió sobre la necessitat de connexió a internet i privadesa.
-  * S'ha incorporat una nota tècnica transparent respecte al checkpoint de StyleTTS 2 del BSC-LT (`epoch_2nd_00070.pth`, 2,05 GB): es documenta que és un model experimental de recerca que requereix PyTorch+GPU, i que per a síntesi autònoma d'escriptori en equips educatius els motors principals són **Matxa-TTS v2 (16 veus)** i **UPC Ona (63 MB)**.
+  * S'ha eliminat la descàrrega del checkpoint de 2,05 GB de StyleTTS 2 del gestor de models: en tractar-se d'un model de recerca en PyTorch que requereix entorns d'investigació amb GPU, l'aplicació autònoma per a CPU no el podia carregar a disc i malbaratava espai. S'ha unificat i clarificat el catàleg: els dos motors 100% autònoms i offline són **Matxa-TTS v2 (16 veus)** i **UPC Ona (63 MB)**, mentre que les 9 veus d'estil queden identificades obertament com a servei Online.
 * **Correcció d'estil lingüístic:**
   * S'ha revisat i aplicat la norma gramatical catalana de mantenir minúscula després dels dos punts (`:`) a tots els textos informatius i etiquetes de la interfície.
 * **Motor predeterminat per defecte:**

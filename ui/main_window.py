@@ -68,15 +68,15 @@ class MainWindow(ctk.CTk):
     }
 
     STYLETTS_VOICE_DESCRIPTIONS = {
-        "ona": "Ona — StyleTTS 2 (Fem, càlida i professional)",
-        "pau": "Pau — StyleTTS 2 (Masc, dinàmic i proper)",
-        "bet": "Bet — StyleTTS 2 (Fem, didàctica i expressiva)",
-        "jordi": "Jordi — StyleTTS 2 (Masc, acadèmic)",
-        "teia": "Teia — StyleTTS 2 (Fem, narrativa)",
-        "pere": "Pere — StyleTTS 2 (Masc, valencià natural)",
-        "lluc": "Lluc — StyleTTS 2 (Masc, balear mallorquí)",
-        "joana": "Joana — StyleTTS 2 / Neural (Fem, estàndard)",
-        "enric": "Enric — StyleTTS 2 / Neural (Masc, estàndard)"
+        "ona": "Ona — Estil expressiu (Fem, càlida i professional)",
+        "pau": "Pau — Estil expressiu (Masc, dinàmic i proper)",
+        "bet": "Bet — Estil expressiu (Fem, didàctica i expressiva)",
+        "jordi": "Jordi — Estil expressiu (Masc, acadèmic)",
+        "teia": "Teia — Estil expressiu (Fem, narrativa)",
+        "pere": "Pere — Estil expressiu (Masc, valencià natural)",
+        "lluc": "Lluc — Estil expressiu (Masc, balear mallorquí)",
+        "joana": "Joana — Microsoft Neural (Fem, ca-ES estàndard)",
+        "enric": "Enric — Microsoft Neural (Masc, ca-ES estàndard)"
     }
 
     MICROSOFT_VOICE_DESCRIPTIONS = {
@@ -656,9 +656,8 @@ class MainWindow(ctk.CTk):
             engine_row,
             values=[
                 "🍵 Matxa-TTS v2 (100% Offline — 16 veus BSC-LT)",
-                "🎙️ StyleTTS 2 Català (BSC-LT / Neural — 9 veus d'estil)",
                 "🎙️ UPC Ona FestCat (100% Offline — Veu neuronal 63 MB)",
-                "☁️ Microsoft Neural ca-ES (Online — Joana i Enric)"
+                "☁️ Veus d'estil i Microsoft Neural (Online — 9 veus expressives)"
             ],
             height=28,
             corner_radius=14,
@@ -1154,9 +1153,7 @@ class MainWindow(ctk.CTk):
             return self.UPC_VOICE_DESCRIPTIONS
         elif "Matxa" in engine_str:
             return self.MATXA_VOICE_DESCRIPTIONS
-        elif "Microsoft" in engine_str:
-            return self.MICROSOFT_VOICE_DESCRIPTIONS
-        elif "StyleTTS" in engine_str:
+        elif any(k in engine_str for k in ["Online", "Estil", "Microsoft", "StyleTTS"]):
             return self.STYLETTS_VOICE_DESCRIPTIONS
         if hasattr(self.tts_engine, "UPC_SPEAKERS"):
             return self.UPC_VOICE_DESCRIPTIONS
@@ -1296,11 +1293,8 @@ class MainWindow(ctk.CTk):
                     spk_cfg.voice_id = "ona"
                 elif is_matxa:
                     spk_cfg.voice_id = available_ids[min(i, len(available_ids) - 1)]
-                elif "StyleTTS" in engine_choice:
+                elif any(k in engine_choice for k in ["Online", "Estil", "Microsoft", "StyleTTS"]):
                     spk_cfg.voice_id = available_ids[min(i, len(available_ids) - 1)]
-                elif "Microsoft" in engine_choice:
-                    is_masc = any(m in spk_name.lower() for m in ["masc", "home", "enric", "pau", "jordi", "pere", "noi", "veu 2"])
-                    spk_cfg.voice_id = "enric" if is_masc else "joana"
                 else:
                     spk_cfg.voice_id = available_ids[0] if available_ids else "ona"
 
@@ -1393,12 +1387,9 @@ class MainWindow(ctk.CTk):
         elif "Matxa" in choice:
             self.tts_engine = self.matxa_engine
             self.badge.configure(text="BSC-LT Matxa-TTS v2 (100% Offline) & alVoCat 22kHz")
-        elif "StyleTTS" in choice:
+        elif any(k in choice for k in ["Online", "Estil", "Microsoft", "StyleTTS"]):
             self.tts_engine = self.styletts_engine
-            self.badge.configure(text="BSC-LT StyleTTS 2 Català (Neural — 9 veus d'estil) & alVoCat 22kHz")
-        elif "Microsoft" in choice:
-            self.tts_engine = self.styletts_engine
-            self.badge.configure(text="Microsoft Neural ca-ES (Online — Joana i Enric) & alVoCat 22kHz")
+            self.badge.configure(text="Veus d'estil i Microsoft Neural (Online — Requereix internet) & alVoCat 22kHz")
         else:
             self.tts_engine = self.matxa_engine
             self.badge.configure(text="BSC-LT Matxa-TTS v2 (100% Offline) & alVoCat 22kHz")

@@ -194,11 +194,10 @@ def test_default_model_and_naming():
     src = inspect.getsource(MainWindow)
     assert "self.tts_engine = self.matxa_engine" in src or "self.tts_engine = self.styletts_engine" in src, "El motor per defecte ha d'estar definit correctament"
     assert 'self.title(f"Pòdcasts amb Estil i Matxa v{APP_VERSION}")' in src or 'self.title("Pòdcasts amb Estil i Matxa")' in src, "El títol ha de ser 'Pòdcasts amb Estil i Matxa'"
-    assert "StyleTTS 2 Català" in src, "El motor StyleTTS 2 Català ha de figurar al desplegable de motors"
     assert "Matxa-TTS v2" in src, "El motor Matxa-TTS v2 ha de figurar al desplegable de motors"
     assert "UPC Ona FestCat" in src, "El motor UPC Ona FestCat ha de figurar al desplegable de motors"
-    assert "Microsoft Neural ca-ES" in src, "El motor Microsoft Neural ca-ES ha de figurar al desplegable de motors"
-    print("[OK] Motors de síntesi (Matxa, StyleTTS 2, UPC Ona, Microsoft) i nom oficial verificats.")
+    assert "Veus d'estil i Microsoft Neural" in src, "El motor de veus d'estil i Microsoft Neural ha de figurar al desplegable"
+    print("[OK] Motors de síntesi (Matxa-TTS v2, UPC Ona, Veus d'estil Online) i nom oficial verificats.")
 
 
 def test_components_manager():
@@ -211,7 +210,7 @@ def test_components_manager():
 
     assert "alvocat_vocos" in statuses, "alVoCat ha de figurar al catàleg de components"
     assert "matxa_tts" in statuses, "Matxa-TTS ha de figurar al catàleg de components"
-    assert "styletts2_ca" in statuses, "StyleTTS 2 ha de figurar al catàleg de components"
+    assert "upc_ona" in statuses, "UPC Ona ha de figurar al catàleg de components"
 
     # Verificar que els models instal·lats localment es detecten
     alvocat = statuses["alvocat_vocos"]
