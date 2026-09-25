@@ -270,18 +270,19 @@ class InstallGuideModal(ctk.CTkToplevel):
 
         sections = [
             (
-                "📦 Espai total necessari (311 MB a 371 MB)",
-                "• Configuració 100% Offline recomanada (~311 MB a 371 MB):\n"
+                "📦 Espai total necessari (311 MB a 398 MB)",
+                "• Configuració 100% Offline recomanada (~311 MB a 398 MB):\n"
                 "  - Matxa-TTS v2 multiaccent (BSC-LT): ~260 MB (16 veus catalanes autònomes).\n"
                 "  - Vocoder alVoCat 22kHz (Projecte AINA): ~51 MB (reconstrucció acústica i normalitzador d'ortografia).\n"
-                "  - Veu UPC Ona FestCat (UPC): ~60 MB (veu neuronal d'alta fidelitat 100% offline).\n\n"
+                "  - Veu UPC Ona FestCat (UPC): ~60 MB (veu neuronal femenina d'alta fidelitat 100% offline).\n"
+                "  - Veu UPC Pau FestCat (UPC): ~27 MB (veu neuronal masculina 100% offline).\n\n"
                 "• Veus neuronals expressives (Online — 0 MB):\n"
                 "  - No ocupen espai a disc; requereixen connexió activa a internet."
             ),
             (
                 "⚡ Cal ONNX també? Per a què serveix?",
                 "• Sí! El format ONNX (Open Neural Network Exchange) és la clau de la rapidesa i eficiència de l'aplicació.\n"
-                "• Permet que Matxa-TTS, alVoCat i UPC Ona s'executin directament sobre la CPU de qualsevol PC o portàtil (Intel o AMD) sense necessitat d'instal·lar paquets feixucs de PyTorch ni entorns gegants de CUDA.\n"
+                "• Permet que Matxa-TTS, alVoCat i UPC FestCat (Ona i Pau) s'executin directament sobre la CPU de qualsevol PC o portàtil (Intel o AMD) sense necessitat d'instal·lar paquets feixucs de PyTorch ni entorns gegants de CUDA.\n"
                 "• L'aplicació ja porta el motor d'execució ONNX Runtime integrat; només cal que descarreguis els fitxers .onnx dels models per començar a parlar."
             ),
             (
@@ -291,7 +292,7 @@ class InstallGuideModal(ctk.CTkToplevel):
             ),
             (
                 "🔒 Privadesa total (0% dades al núvol)",
-                "Quan generes un podcast amb Matxa-TTS, alVoCat o UPC Ona:\n"
+                "Quan generes un podcast amb Matxa-TTS, alVoCat o UPC FestCat (Ona i Pau):\n"
                 "• Cap fragment de text, guió o nom s'envia a servidors externs.\n"
                 "• Cap mostra de veu o àudio enregistrat surt mai de l'ordinador.\n"
                 "• Compleix estrictament les normatives de protecció de dades (RGPD) en entorns educatius i corporatius."
@@ -306,8 +307,8 @@ class InstallGuideModal(ctk.CTkToplevel):
                 "🗣️ Diferència entre els motors disponibles",
                 "• Matxa-TTS v2 multiaccent (100% Offline — Recomanat per defecte):\n"
                 "  model autònom en ONNX del Barcelona Supercomputing Center amb 16 veus catalanes (central, balear, valencià, nord-occidental i rossellonès). Ràpid i sense dependre de la xarxa.\n\n"
-                "• UPC Ona FestCat (100% Offline — Veu neuronal 63 MB):\n"
-                "  veu femenina d'alta fidelitat de la UPC basada en el corpus FestCat. 100% privada i autònoma.\n\n"
+                "• UPC FestCat — Ona i Pau (100% Offline):\n"
+                "  veus femenina (~60 MB) i masculina (~27 MB) d'alta fidelitat de la UPC basades en el corpus FestCat. 100% privades i autònomes.\n\n"
                 "• Veus neuronals ca-ES (Online):\n"
                 "  9 veus expressives (Joana, Enric, Ona, Pau, Bet, etc.) connectades al servei de veus al núvol. Ocupa 0 MB al disc, però requereix connexió constant a internet."
             ),
@@ -318,7 +319,7 @@ class InstallGuideModal(ctk.CTkToplevel):
                 "• Privadesa de les dades: el guió s'envia a servidors al núvol; no és apte per a dades personals o privades protegides pel RGPD.\n"
                 "• Límits de peticions (Rate Limiting): sessions consecutives molt intenses poden retornar errors de bloqueig temporal (HTTP 429 Too Many Requests).\n"
                 "• Sense garantia de servei (SLA): l'endpoint gratuït pot patir canvis d'accés o talls sobtats sense previ avís.\n"
-                "• Per a total privadesa i independència, es recomana prioritzar sempre els motors offline (Matxa-TTS v2 o UPC Ona)."
+                "• Per a total privadesa i independència, es recomana prioritzar sempre els motors offline (Matxa-TTS v2 o UPC FestCat)."
             ),
             (
                 "📜 Llicències i suport institucional",

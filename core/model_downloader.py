@@ -57,6 +57,19 @@ class ModelDownloader:
             "category": "Motor autònom FestCat (Offline)",
             "is_cloud": False
         },
+        "upc_pau": {
+            "name": "Veu UPC Pau FestCat (100% Offline)",
+            "provider": "UPC / Rhasspy Piper",
+            "repo_id": "rhasspy/piper-voices",
+            "files": {
+                "ca/ca_ES/upc_pau/x_low/ca_ES-upc_pau-x_low.onnx": "ca_ES-upc_pau-x_low.onnx",
+                "ca/ca_ES/upc_pau/x_low/ca_ES-upc_pau-x_low.onnx.json": "ca_ES-upc_pau-x_low.onnx.json"
+            },
+            "desc": "Model neuronal masculí de la UPC basat en el corpus FestCat (28 MB). 100% autònom, ràpid i privat.",
+            "expected_size_mb": 26.8,
+            "category": "Motor autònom FestCat (Offline)",
+            "is_cloud": False
+        },
         "edge_tts_cloud": {
             "name": "Veus neuronals ca-ES (Online)",
             "provider": "Microsoft Edge Cloud",
@@ -85,7 +98,7 @@ class ModelDownloader:
 
     def get_model_path(self, model_key: str, filename: str) -> str:
         """Retorna la ruta local on s'espera trobar el fitxer del model."""
-        if model_key == "upc_ona":
+        if model_key in ("upc_ona", "upc_pau"):
             return os.path.join(self.cache_dir, "piper_voices", filename)
         return os.path.join(self.cache_dir, model_key, filename)
 
@@ -149,15 +162,25 @@ class ModelDownloader:
         """Elimina els fitxers d'un model per alliberar espai de disc."""
         if model_key not in self.MODEL_REPOSITORIES:
             return False
-        model_dir = os.path.join(self.cache_dir, model_key)
-        if os.path.exists(model_dir):
-            try:
-                shutil.rmtree(model_dir, ignore_errors=True)
-                return not os.path.exists(model_dir)
-            except Exception as e:
-                print(f"Error eliminant component {model_key}: {e}")
-                return False
-        return True
+        model_info = self.MODEL_REPOSITORIES[model_key]
+        success = True
+        for local_file in model_info["files"].values():
+            file_path = self.get_model_path(model_key, local_file)
+            if os.path.exists(file_path):
+                try:
+                    os.remove(file_path)
+                except Exception as e:
+                    print(f"Error eliminant fitxer {file_path}: {e}")
+                    success = False
+
+        if model_key not in ("upc_ona", "upc_pau"):
+            model_dir = os.path.join(self.cache_dir, model_key)
+            if os.path.exists(model_dir):
+                try:
+                    shutil.rmtree(model_dir, ignore_errors=True)
+                except Exception:
+                    pass
+        return success
 
     def download_file(self, url: str, destination_path: str, progress_callback: Optional[Callable[[int, int, str, float], None]] = None) -> bool:
         """

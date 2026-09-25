@@ -13,10 +13,11 @@ Tots els canvis rellevants, correccions (*fixes*) i novetats del projecte **Pòd
 * **Retirada de referències a StyleTTS i supressió de la clonació de veu:**
   * S'ha suprimit la funcionalitat de clonació de veu de la interfície i el fitxer `voice_clone_modal.py`.
   * S'han retirat totes les mencions a StyleTTS de desplegables, diàlegs i documentació, classificant transparentment les veus alternatives al núvol com a **`Veus neuronals ca-ES (Online)`**.
-* **Integració de la veu neural UPC Ona FestCat (100% offline):**
-  * S'ha afegit un nou motor autònom basat en `piper-tts` i el model ONNX (`ca_ES-upc_ona-medium.onnx`, 63,2 MB) procedent de les gravacions del corpus FestCat de la **Universitat Politècnica de Catalunya (UPC)**.
-  * Veu femenina central d'extraordinària calidesa, naturalitat i fidelitat acústica a 22.050 Hz, ideal per a continguts docents i institucionals.
-  * Funciona de forma 100% local, autònoma i sense dependència de connexió a internet.
+* **Integració de les veus neurals UPC FestCat — Ona i Pau (100% offline):**
+  * S'ha afegit el motor autònom basat en `piper-tts` i els models ONNX procedents de les gravacions del corpus FestCat de la **Universitat Politècnica de Catalunya (UPC)**:
+    * **Ona** (`ca_ES-upc_ona-medium.onnx`, 63,2 MB): veu femenina central d'extraordinària calidesa, naturalitat i fidelitat acústica a 22.050 Hz.
+    * **Pau** (`ca_ES-upc_pau-x_low.onnx`, 26,8 MB): veu masculina central autònoma de la UPC.
+  * Ambdues veus funcionen de forma 100% local, autònoma i sense dependència de connexió a internet.
 * **Comprovador d'actualitzacions integrat («🔄 Comprova versió»):**
   * S'ha afegit un botó d'accés directe a la barra superior que obre el diàleg `VersionCheckModal`.
   * Consulta l'API oficial de GitHub (`miquelangelfuentes/podcasts-amb-estil-i-matxa`) per contrastar la versió local amb l'últim commit o release disponible.
@@ -31,15 +32,15 @@ Tots els canvis rellevants, correccions (*fixes*) i novetats del projecte **Pòd
   * S'ha substituït l'etiqueta d'una sola línia del modal de versions per un component `CTkTextbox` amb ajust automàtic de paraules (`wrap="word"`), evitant que cap missatge de commit o actualització surti retallat.
   * S'ha incorporat el distintiu visual `v1.1.0` a la capçalera de l'aplicació i s'ha actualitzat el títol de la finestra amb la versió instal·lada.
   * Nomenclatura oficial del paquet comprimit per a Windows amb el número de versió corresponent: `PodcastsAmbMatxa-v1.1.0-Windows.zip`.
-* **Previsualitzacions d'àudio integrades per a la veu UPC Ona:**
-  * S'han generat i empaquetat mostres d'àudio WAV (`preview_upc_ona.wav`) a `assets/previews/` per permetre l'escolta instantània (0 ms) de la nova veu de la UPC.
+* **Previsualitzacions d'àudio integrades per a les veus UPC Ona i Pau:**
+  * S'han generat i empaquetat mostres d'àudio WAV (`preview_upc_ona.wav` i `preview_upc_pau.wav`) a `assets/previews/` per permetre l'escolta instantània (0 ms) de les veus de la UPC.
 * **Gestor de descàrrega de models actualitzat:**
-  * S'ha incorporat `upc_ona` a `ModelDownloader` i a la finestra de gestió de models (`ComponentsManagerModal`), permetent comprovar el seu estat d'instal·lació, mida a disc (60,3 MB) i descarregar-la o suprimir-la fàcilment.
+  * S'han incorporat `upc_ona` i `upc_pau` a `ModelDownloader` i a la finestra de gestió de models (`ComponentsManagerModal`), permetent comprovar el seu estat d'instal·lació, mida a disc (60,3 MB i 26,8 MB) i descarregar-les o suprimir-les fàcilment.
 
 ### 🐛 Correccions i transparència tècnica
 * **Clarificació i transparència dels motors de veu:**
   * S'ha anomenat i identificat obertament el motor **`Veus neuronals ca-ES (Online)`** com a servei al núvol, evitant qualsevol confusió sobre la necessitat de connexió a internet i privadesa.
-  * S'ha retirat el checkpoint de recerca de 2,05 GB de StyleTTS 2 que no era apte per a CPU autònom. Els dos motors 100% autònoms i offline són **Matxa-TTS v2 (16 veus)** i **UPC Ona (63 MB)**.
+  * S'ha retirat el checkpoint de recerca de 2,05 GB de StyleTTS 2 que no era apte per a CPU autònom. Els motors 100% autònoms i offline són **Matxa-TTS v2 (16 veus)** i **UPC FestCat Ona i Pau (63 MB i 27 MB)**.
 * **Correcció d'estil lingüístic:**
   * S'ha revisat i aplicat la norma gramatical catalana de mantenir minúscula després dels dos punts (`:`) a tots els textos informatius i etiquetes de la interfície.
 * **Motor predeterminat per defecte:**

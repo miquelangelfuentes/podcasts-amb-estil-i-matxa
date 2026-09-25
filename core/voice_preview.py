@@ -61,11 +61,12 @@ class VoicePreviewManager:
         "joana": "Hola, soc la Joana. Aquesta és la meva veu estàndard en català.",
         "enric": "Hola, soc l'Enric. Aquesta és la meva veu masculina en català.",
         # UPC FestCat
-        "upc_ona": "Hola, soc l'Ona. Aquesta és la meva veu neuronal de la UPC en català."
+        "upc_ona": "Hola, soc l'Ona. Aquesta és la meva veu neuronal de la UPC en català.",
+        "upc_pau": "Hola, soc en Pau. Aquesta és la meva veu neuronal de la UPC en català."
     }
 
     GENERIC_SAMPLE = "Hola, aquesta és una mostra de la meva veu en català per al pòdcast."
-    CACHE_VERSION = "v5_enric_male_fix"
+    CACHE_VERSION = "v6_upc_pau_added"
 
     def __init__(self, cache_dir: str = None):
         if cache_dir:
@@ -116,9 +117,14 @@ class VoicePreviewManager:
         except Exception:
             pass
 
-    def get_sample_phrase(self, voice_id: str) -> str:
+    def get_sample_phrase(self, voice_id: str, engine_name: str = "") -> str:
         """Retorna la frase de mostra per a un identificador de veu."""
         v_key = voice_id.lower().strip()
+        if "upc" in engine_name.lower():
+            if v_key in ("pau", "upc_pau"):
+                return "Hola, soc en Pau. Aquesta és la meva veu neuronal de la UPC en català."
+            if v_key in ("ona", "upc_ona"):
+                return "Hola, soc l'Ona. Aquesta és la meva veu neuronal de la UPC en català."
         return self.VOICE_SAMPLE_PHRASES.get(v_key, self.GENERIC_SAMPLE)
 
     def get_cached_path(self, engine_name: str, voice_id: str) -> str:
@@ -131,12 +137,23 @@ class VoicePreviewManager:
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         bundled_candidates = [
             os.path.join(base_dir, "assets", "previews", filename),
+            os.path.join(base_dir, "assets", "previews", f"preview_{safe_voice}.wav"),
         ]
+        if "upc" in safe_engine or "upc" in safe_voice:
+            bundled_candidates.extend([
+                os.path.join(base_dir, "assets", "previews", f"preview_upc_{safe_voice}.wav"),
+                os.path.join(base_dir, "assets", "previews", f"preview_upc_ona_festcat_{safe_voice}.wav"),
+                os.path.join(base_dir, "assets", "previews", f"preview_upc_festcat_{safe_voice}.wav")
+            ])
         if hasattr(sys, "_MEIPASS"):
             bundled_candidates.insert(0, os.path.join(sys._MEIPASS, "assets", "previews", filename))
+            if "upc" in safe_engine or "upc" in safe_voice:
+                bundled_candidates.insert(1, os.path.join(sys._MEIPASS, "assets", "previews", f"preview_upc_{safe_voice}.wav"))
         if getattr(sys, "executable", None):
             bundled_candidates.append(os.path.join(os.path.dirname(sys.executable), "_internal", "assets", "previews", filename))
             bundled_candidates.append(os.path.join(os.path.dirname(sys.executable), "assets", "previews", filename))
+            if "upc" in safe_engine or "upc" in safe_voice:
+                bundled_candidates.append(os.path.join(os.path.dirname(sys.executable), "_internal", "assets", "previews", f"preview_upc_{safe_voice}.wav"))
 
         for cand in bundled_candidates:
             if os.path.exists(cand) and os.path.getsize(cand) > 1000:
@@ -170,10 +187,13 @@ class VoicePreviewManager:
                     filename = f"preview_{safe_engine}_{safe_voice}.wav"
                     cache_path = os.path.join(self.cache_dir, filename)
 
-                    phrase = self.get_sample_phrase(voice_id)
+                    phrase = self.get_sample_phrase(voice_id, engine_name=engine_name)
                     # Assegurar que el motor està llest
                     if hasattr(engine, "ensure_loaded"):
-                        engine.ensure_loaded()
+                        try:
+                            engine.ensure_loaded(voice_id=voice_id)
+                        except TypeError:
+                            engine.ensure_loaded()
 
                     sample_rate = getattr(engine, "sample_rate", 22050)
 

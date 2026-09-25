@@ -3,10 +3,10 @@
 Versió oficial actualitzada de **Pòdcasts amb Matxa**, l'estudi d'escriptori autònom per a la creació i locució de guions de pòdcast en català amb intel·ligència artificial. Aquesta compilació incorpora les noves funcionalitats de veu neural, ambientació sonora, suport per a Linux i comprovació integrada de versions.
 
 ### ✨ Novetats destacades de la versió 1.1.0
-- **Nou motor de veu neural UPC Ona FestCat (100% offline)**:
-  - Síntesi local d'alta fidelitat acústica a 22.050 Hz basada en el model ONNX de la Universitat Politècnica de Catalunya (`ca_ES-upc_ona-medium.onnx`, 63,2 MB).
-  - Veu femenina central natural, clara i càlida, ideal per a l'àmbit docent i divulgatiu.
-  - Escolta prèvia instantània (0 ms) integrada al panell de locutors (`preview_upc_ona.wav`).
+- **Nou motor de veu neural UPC FestCat — Ona i Pau (100% offline)**:
+  - Síntesi local d'alta fidelitat acústica a 22.050 Hz basada en els models ONNX de la Universitat Politècnica de Catalunya: Ona (`ca_ES-upc_ona-medium.onnx`, 63,2 MB) i Pau (`ca_ES-upc_pau-x_low.onnx`, 26,8 MB).
+  - Veus femenina (Ona) i masculina (Pau) de registre central, naturals, clares i ideals per a l'àmbit docent i divulgatiu.
+  - Escolta prèvia instantània (0 ms) integrada al panell de locutors (`preview_upc_ona.wav` i `preview_upc_pau.wav`).
 - **Pista de música i ambientació sonora de fons**:
   - Suport per a fitxers MP3, WAV, OGG i FLAC per a sintonia o música d'acompanyament.
   - Reproducció automàtica en bucle continu (*loop*) amb transició suau (*cross-fade* de 20 ms).
@@ -27,10 +27,10 @@ Versió oficial actualitzada de **Pòdcasts amb Matxa**, l'estudi d'escriptori a
   - El paquet binari autònom per a Windows es distribueix amb el nom de fitxer corresponent a la versió: `PodcastsAmbMatxa-v1.1.0-Windows.zip`.
 - **Motors de veu integrats**:
   - **Matxa-TTS v2 multiaccent (100% offline)**: 16 veus per a totes les variants dialectals del català (balear, central, nord-occidental, septentrional i valencià) combinades amb el vocoder neuronal **alVoCat 22kHz**.
-  - **UPC Ona FestCat (100% offline)**: veu femenina d'alta fidelitat de la Universitat Politècnica de Catalunya (63 MB).
+  - **UPC FestCat Ona i Pau (100% offline)**: veus femenina (63 MB) i masculina (27 MB) d'alta fidelitat de la Universitat Politècnica de Catalunya.
   - **Veus neuronals ca-ES (Online)**: servei al núvol amb 9 veus expressives (Joana, Enric, Ona, Pau, etc.).
 - **Gestor integrat de components i models (📦 Models)**:
-  - Descàrrega autònoma i modular des d'Hugging Face per a Matxa-TTS v2, alVoCat i UPC Ona.
+  - Descàrrega autònoma i modular des d'Hugging Face per a Matxa-TTS v2, alVoCat, UPC Ona i UPC Pau.
   - Eina **«Comprovar el meu equip»** amb diagnòstic automàtic de maquinari (CPU, GPU, RAM, disc i AVX2).
 - **Control de qualitat**:
   - Bateria completa de proves automatitzades (`test_features.py`) amb 10/10 tests superats.

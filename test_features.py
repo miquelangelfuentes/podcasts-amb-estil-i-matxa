@@ -50,6 +50,11 @@ def test_voice_descriptions():
     assert "pere" in neural_descs and "valencià" in neural_descs["pere"].lower()
     print("[OK] Totes les veus neuronals expressives tenen descripció correcta (incloent-hi Central, Balear i Valencià).")
 
+    upc_descs = MainWindow.UPC_VOICE_DESCRIPTIONS
+    assert "ona" in upc_descs and "pau" in upc_descs
+    assert "FestCat" in upc_descs["ona"] and "FestCat" in upc_descs["pau"]
+    print("[OK] Totes les veus de UPC FestCat (Ona i Pau) tenen descripció correcta.")
+
 
 def test_script_synchronization():
     print("\n--- 2. Provant sincronització de veus amb Veu presentadora i etiquetes inclusives ---")
@@ -195,9 +200,9 @@ def test_default_model_and_naming():
     assert "self.tts_engine = self.matxa_engine" in src, "El motor per defecte ha d'estar definit correctament"
     assert 'self.title(f"Pòdcasts amb Matxa v{APP_VERSION}")' in src or 'self.title("Pòdcasts amb Matxa")' in src, "El títol ha de ser 'Pòdcasts amb Matxa'"
     assert "Matxa-TTS v2" in src, "El motor Matxa-TTS v2 ha de figurar al desplegable de motors"
-    assert "UPC Ona FestCat" in src, "El motor UPC Ona FestCat ha de figurar al desplegable de motors"
+    assert "UPC FestCat" in src, "El motor UPC FestCat ha de figurar al desplegable de motors"
     assert "Veus neuronals ca-ES" in src, "El motor de veus neuronals ca-ES ha de figurar al desplegable"
-    print("[OK] Motors de síntesi (Matxa-TTS v2, UPC Ona, Veus neuronals Online) i nom oficial verificats.")
+    print("[OK] Motors de síntesi (Matxa-TTS v2, UPC FestCat Ona i Pau, Veus neuronals Online) i nom oficial verificats.")
 
 
 def test_components_manager():
@@ -211,6 +216,7 @@ def test_components_manager():
     assert "alvocat_vocos" in statuses, "alVoCat ha de figurar al catàleg de components"
     assert "matxa_tts" in statuses, "Matxa-TTS ha de figurar al catàleg de components"
     assert "upc_ona" in statuses, "UPC Ona ha de figurar al catàleg de components"
+    assert "upc_pau" in statuses, "UPC Pau ha de figurar al catàleg de components"
 
     # Verificar que els models instal·lats localment es detecten
     alvocat = statuses["alvocat_vocos"]
@@ -221,7 +227,11 @@ def test_components_manager():
     assert matxa["is_installed"], "Matxa-TTS ha d'estar marcat com a instal·lat"
     assert matxa["installed_size_mb"] >= 250.0, f"Mida inesperada per Matxa-TTS: {matxa['installed_size_mb']} MB"
 
-    print(f"[OK] Estat de components verificat: alVoCat ({alvocat['installed_size_mb']} MB), Matxa-TTS ({matxa['installed_size_mb']} MB).")
+    pau = statuses["upc_pau"]
+    assert pau["is_installed"], "UPC Pau ha d'estar marcat com a instal·lat"
+    assert pau["installed_size_mb"] >= 25.0, f"Mida inesperada per UPC Pau: {pau['installed_size_mb']} MB"
+
+    print(f"[OK] Estat de components verificat: alVoCat ({alvocat['installed_size_mb']} MB), Matxa-TTS ({matxa['installed_size_mb']} MB), UPC Pau ({pau['installed_size_mb']} MB).")
 
 
 def test_background_music_mixing():
@@ -276,27 +286,37 @@ def test_background_music_mixing():
                 pass
 
 
-def test_upc_ona_engine():
-    print("\n--- 9. Provant motor UPC Ona FestCat (Piper Neural 100% Offline) ---")
+def test_upc_engine():
+    print("\n--- 9. Provant motor UPC FestCat Ona i Pau (Piper Neural 100% Offline) ---")
     import numpy as np
     from core.upc_ona_engine import UPCOnaCatalanEngine
     engine = UPCOnaCatalanEngine()
-    assert engine.name == "UPC Ona FestCat"
+    assert "UPC" in engine.name
     assert engine.sample_rate == 22050
     assert "ona" in engine.UPC_SPEAKERS
+    assert "pau" in engine.UPC_SPEAKERS
 
-    # Verificació de càrrega i síntesi
-    loaded = engine.ensure_loaded()
-    assert loaded is True, "El motor UPC Ona s'hauria de carregar correctament"
-    assert engine.is_loaded() is True
+    # Verificació de càrrega i síntesi Ona
+    loaded_ona = engine.ensure_loaded("ona")
+    assert loaded_ona is True, "El model UPC Ona s'hauria de carregar correctament"
+    assert engine.is_loaded("ona") is True
 
-    # Síntesi d'una frase
-    wav = engine.synthesize_utterance("Hola, soc l'Ona de la Universitat Politècnica de Catalunya.")
-    assert len(wav) > 0, "L'àudio generat no ha d'estar buit"
-    assert wav.ndim == 1, "L'àudio ha de ser mono float32"
-    assert wav.dtype == np.float32
+    wav_ona = engine.synthesize_utterance("Hola, soc l'Ona de la Universitat Politècnica de Catalunya.", voice_id="ona")
+    assert len(wav_ona) > 0, "L'àudio generat per Ona no ha d'estar buit"
+    assert wav_ona.ndim == 1, "L'àudio ha de ser mono float32"
+    assert wav_ona.dtype == np.float32
 
-    print(f"[OK] Motor UPC Ona FestCat verificat correctament (durada generada: {len(wav)/22050:.2f} s).")
+    # Verificació de càrrega i síntesi Pau
+    loaded_pau = engine.ensure_loaded("pau")
+    assert loaded_pau is True, "El model UPC Pau s'hauria de carregar correctament"
+    assert engine.is_loaded("pau") is True
+
+    wav_pau = engine.synthesize_utterance("Hola, soc en Pau de la Universitat Politècnica de Catalunya.", voice_id="pau")
+    assert len(wav_pau) > 0, "L'àudio generat per Pau no ha d'estar buit"
+    assert wav_pau.ndim == 1, "L'àudio ha de ser mono float32"
+    assert wav_pau.dtype == np.float32
+
+    print(f"[OK] Motor UPC FestCat verificat correctament (Ona: {len(wav_ona)/22050:.2f} s, Pau: {len(wav_pau)/22050:.2f} s).")
 
 
 def test_version_check():
@@ -317,7 +337,7 @@ if __name__ == "__main__":
     test_default_model_and_naming()
     test_components_manager()
     test_background_music_mixing()
-    test_upc_ona_engine()
+    test_upc_engine()
     test_version_check()
     print("\n*** TOTES LES PROVES S'HAN SUPERAT AMB ÈXIT! ***")
 

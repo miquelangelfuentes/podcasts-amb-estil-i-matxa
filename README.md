@@ -33,11 +33,11 @@ Per utilitzar l'aplicació a Windows **sense necessitat d'instal·lar Python ni 
 - **100% local i privat**: no envia cap dada ni text a internet amb els motors autònoms. Apte per a escoles, instituts i universitats (privadesa total per a docents i alumnat).
 - **Models de llengua oberts de Catalunya**:
   - **`BSC-LT/Matxa-TTS-v2-Multiaccent`**: model acústic d'última generació basat en transport òptim i flow matching (100% offline), amb 16 variants dialectals del català (central, balear, valencià, nord-occidental i septentrional).
-  - **`UPC FestCat Ona (Piper Neural)`**: veu neuronal d'alta definició de la Universitat Politècnica de Catalunya (100% offline), pes de només 63 MB i gran calidesa acústica.
+  - **`UPC FestCat Ona i Pau (Piper Neural)`**: veus neuronals femenina (Ona, 63 MB) i masculina (Pau, 27 MB) d'alta definició de la Universitat Politècnica de Catalunya (100% offline).
   - **`projecte-aina/alvocat-vocos-22khz`**: vocoder neuronal Vocos i normalitzador desenvolupat en el marc del Projecte AINA (100% offline).
   - **`Veus neuronals ca-ES (Online)`**: servei al núvol integrat per a 9 veus expressives (Joana, Enric, Ona, Pau, etc.).
 - **Comprovador d'actualitzacions integrat (`🔄 Comprova versió`)**: verifica directament contra el repositori GitHub si hi ha noves versions o millores i permet actualitzar l'aplicació en un sol clic.
-- **Selector directe de motor**: canvi immediat entre Matxa-TTS v2 (offline, 16 veus), UPC Ona (offline, 63 MB) i Veus neuronals ca-ES (online, 9 veus) des de la capçalera del panell de locutors.
+- **Selector directe de motor**: canvi immediat entre Matxa-TTS v2 (offline, 16 veus), UPC FestCat (offline, Ona i Pau) i Veus neuronals ca-ES (online, 9 veus) des de la capçalera del panell de locutors.
 - **Mostres instantànies de veu (0 ms)**: escolta en directe qualsevol veu catalana amb el botó `▶ Escolta`.
 - **Pista de música o so de fons (MP3 / WAV / OGG / FLAC)**:
   - Permet afegir fàcilment una banda sonora, sintonia d'obertura o ambientació sonora de fons al pòdcast.
@@ -138,6 +138,7 @@ L'aplicació inclou un centre de control integrat accessible des del botó **`�
   - **Vocoder alVoCat 22kHz (100% Offline)** (~51,2 MB): vocoder neuronal del Projecte AINA d'alta fidelitat acústica a 22.050 Hz i normalització lingüística.
   - **Matxa-TTS v2 multiaccent (100% Offline)** (~260,2 MB): model acústic autònom en format ONNX amb 16 veus per a totes les variants dialectals del català (balear, central, nord-occidental, septentrional i valencià).
   - **UPC Ona FestCat (100% Offline)** (~63,2 MB): veu femenina neuronal d'alta fidelitat acústica de la Universitat Politècnica de Catalunya en format ONNX.
+  - **UPC Pau FestCat (100% Offline)** (~26,8 MB): veu masculina neuronal de la Universitat Politècnica de Catalunya en format ONNX.
 - **Gestió del servei al núvol (Microsoft Neural ca-ES)**:
   - Permet utilitzar les veus Joana i Enric ocupant 0 MB locals, amb informació transparent sobre la necessitat de connexió a internet, límits de peticions per IP (*rate limiting*) i absència de SLA.
 - **Diagnòstic de maquinari («Comprovar el meu equip»)**:

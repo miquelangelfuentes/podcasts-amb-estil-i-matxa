@@ -84,7 +84,8 @@ class MainWindow(ctk.CTk):
     }
 
     UPC_VOICE_DESCRIPTIONS = {
-        "ona": "Ona — UPC FestCat (Fem, d'alta fidelitat 100% offline)"
+        "ona": "Ona — UPC FestCat (Fem, d'alta fidelitat 100% offline)",
+        "pau": "Pau — UPC FestCat (Masc, 100% offline)"
     }
 
     def __init__(self):
@@ -646,7 +647,7 @@ class MainWindow(ctk.CTk):
             engine_row,
             values=[
                 "🍵 Matxa-TTS v2 (100% Offline — 16 veus BSC-LT)",
-                "🎙️ UPC Ona FestCat (100% Offline — Veu neuronal 63 MB)",
+                "🎙️ UPC FestCat (100% Offline — Veus neuronals Ona i Pau)",
                 "☁️ Veus neuronals ca-ES (Online — 9 veus expressives)"
             ],
             height=28,
@@ -1280,7 +1281,7 @@ class MainWindow(ctk.CTk):
         for i, (spk_name, spk_cfg) in enumerate(self.current_script.speakers.items()):
             if spk_cfg.voice_id not in available_ids:
                 if "UPC" in engine_choice:
-                    spk_cfg.voice_id = "ona"
+                    spk_cfg.voice_id = available_ids[min(i, len(available_ids) - 1)]
                 elif is_matxa:
                     spk_cfg.voice_id = available_ids[min(i, len(available_ids) - 1)]
                 elif any(k in engine_choice for k in ["Online", "Microsoft", "Neural", "Expressiva"]):
@@ -1373,7 +1374,7 @@ class MainWindow(ctk.CTk):
     def _on_engine_change(self, choice):
         if "UPC" in choice:
             self.tts_engine = self.upc_engine
-            self.badge.configure(text="UPC FestCat Ona (Piper Neural 100% Offline, 63 MB) & alVoCat 22kHz")
+            self.badge.configure(text="UPC FestCat Ona i Pau (Piper Neural 100% Offline) & alVoCat 22kHz")
         elif "Matxa" in choice:
             self.tts_engine = self.matxa_engine
             self.badge.configure(text="BSC-LT Matxa-TTS v2 (100% Offline) & alVoCat 22kHz")

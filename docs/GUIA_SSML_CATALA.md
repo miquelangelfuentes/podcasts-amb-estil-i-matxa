@@ -4,7 +4,7 @@ Aquesta guia detalla les possibilitats del **Speech Synthesis Markup Language (S
 
 L'aplicació integra els models oficials desenvolupats pel **Barcelona Supercomputing Center (BSC-LT)**, la **Universitat Politècnica de Catalunya (UPC)** i el **Projecte AINA**:
 - **BSC-LT/matxa-tts-v2-ca-multiaccent-graphemes**: model basat en *Optimal-Transport Conditional Flow Matching* (OT-CFM) i vocoder WaveNeXt, amb 16 veus autèntiques que cobreixen tots els dialectes catalans (100% offline, motor predeterminat).
-- **UPC Ona FestCat (Piper Neural)**: model acústic neuronal d'alta definició a 22.050 Hz del corpus FestCat de la UPC (100% offline, 63 MB).
+- **UPC FestCat Ona i Pau (Piper Neural)**: models acústics neuronals d'alta definició a 22.050 Hz del corpus FestCat de la UPC (100% offline, Ona 63 MB i Pau 27 MB).
 - **Microsoft Neural / Veus expressives ca-ES (Edge TTS)**: servei al núvol alternatiu amb veus Joana, Enric, Ona, Pau, Bet, etc.
 - **projecte-aina/alvocat-vocos-22khz**: vocoder d'alta fidelitat acústica a 22.050 Hz i mòdul de normalització fonètica i ortogràfica del català.
 

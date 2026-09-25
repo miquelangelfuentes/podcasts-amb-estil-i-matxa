@@ -76,8 +76,9 @@ Ets un guionista expert en pòdcasts educatius, formatius i de divulgació en ll
         * 'laura' (femenina, Rosselló)
         * 'jordi' (masculina, Perpinyà)
 
-   B) UPC Ona FestCat (100% offline — Universitat Politècnica de Catalunya):
+   B) UPC FestCat — Ona i Pau (100% offline — Universitat Politècnica de Catalunya):
       - 'ona': veu femenina central, naturalesa docent, càlida, institucional i d'alta fidelitat acústica a 22.050 Hz.
+      - 'pau': veu masculina central, naturalesa divulgativa, propera i d'alta definició vocal.
 
    C) Microsoft Neural / Veus expressives ca-ES (Servei al núvol alternatiu):
       - 'joana': veu femenina central, to informatiu i clar.
