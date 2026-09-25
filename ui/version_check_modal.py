@@ -33,9 +33,9 @@ class VersionCheckModal(ctk.CTkToplevel):
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
-        self.title("🔄 Comprovació de versió — Pòdcasts amb Estil i Matxa")
-        self.geometry("620x540")
-        self.minsize(560, 460)
+        self.title("Comprovació de versió — Pòdcasts amb Estil i Matxa")
+        self.geometry("640x560")
+        self.minsize(580, 480)
         self.configure(fg_color=MatchaTheme.BG_MAIN)
         self.transient(parent)
         self.grab_set()
@@ -66,7 +66,7 @@ class VersionCheckModal(ctk.CTkToplevel):
 
         title_lbl = ctk.CTkLabel(
             header,
-            text="🔄 Comprovació de versió i actualitzacions",
+            text="Comprovació de versió i actualitzacions",
             font=MatchaTheme.FONT_TITLE,
             text_color=MatchaTheme.TEXT_MAIN
         )
@@ -103,6 +103,7 @@ class VersionCheckModal(ctk.CTkToplevel):
             text="Connectant amb GitHub per comprovar novetats...",
             font=MatchaTheme.FONT_SMALL,
             text_color=MatchaTheme.TEXT_MUTED,
+            wraplength=580,
             justify="left"
         )
         self.state_lbl.pack(anchor="w", padx=16, pady=(0, 6))
@@ -113,29 +114,32 @@ class VersionCheckModal(ctk.CTkToplevel):
         self.prog_bar.configure(mode="indeterminate")
         self.prog_bar.start()
 
-        # 3. Contenidor de canvis recents (Scrollable)
-        self.changes_frame = ctk.CTkScrollableFrame(self, fg_color="transparent", corner_radius=10)
-        self.changes_frame.pack(fill="both", expand=True, padx=18, pady=(0, 10))
+        # 3. Contenidor de canvis recents amb ajust de línia automàtic (word-wrap)
+        changes_header = ctk.CTkFrame(self, fg_color="transparent")
+        changes_header.pack(fill="x", padx=18, pady=(4, 4))
 
         self.changes_title = ctk.CTkLabel(
-            self.changes_frame,
+            changes_header,
             text="Darreres novetats del projecte:",
             font=MatchaTheme.FONT_SMALL_BOLD,
             text_color=MatchaTheme.TEXT_MAIN
         )
-        self.changes_title.pack(anchor="w", pady=(4, 6))
+        self.changes_title.pack(side="left")
 
-        self.commits_container = ctk.CTkFrame(self.changes_frame, fg_color=MatchaTheme.BG_CARD, corner_radius=8, border_width=1, border_color=MatchaTheme.BORDER_CARD)
-        self.commits_container.pack(fill="x", expand=True)
-
-        self.commits_lbl = ctk.CTkLabel(
-            self.commits_container,
-            text="Obtenint informació de commits...",
+        self.commits_box = ctk.CTkTextbox(
+            self,
+            fg_color=MatchaTheme.BG_CARD,
+            border_width=1,
+            border_color=MatchaTheme.BORDER_CARD,
+            corner_radius=8,
             font=MatchaTheme.FONT_SMALL,
-            text_color=MatchaTheme.TEXT_MUTED,
-            justify="left"
+            text_color=MatchaTheme.TEXT_MAIN,
+            wrap="word",
+            activate_scrollbars=True
         )
-        self.commits_lbl.pack(anchor="w", padx=12, pady=10)
+        self.commits_box.pack(fill="both", expand=True, padx=18, pady=(0, 10))
+        self.commits_box.insert("1.0", "Obtenint informació de les darreres novetats...")
+        self.commits_box.configure(state="disabled")
 
         # 4. Peu d'accions
         footer = ctk.CTkFrame(self, fg_color=MatchaTheme.BG_CARD, height=52, corner_radius=12, border_width=1, border_color=MatchaTheme.BORDER_CARD)
@@ -200,9 +204,9 @@ class VersionCheckModal(ctk.CTkToplevel):
                         sha = c.get("sha", "")[:7]
                         msg = c.get("commit", {}).get("message", "").split("\n")[0]
                         dt = c.get("commit", {}).get("author", {}).get("date", "")[:10]
-                        change_lines.append(f"• [{sha}] {msg} ({dt})")
+                        change_lines.append(f"• [{sha}] {msg}\n  ({dt})")
 
-                    changes_text = "\n".join(change_lines)
+                    changes_text = "\n\n".join(change_lines)
 
                     self.after(0, lambda: self._on_check_success(self._latest_commit_sha, commit_msg, changes_text))
                     return
@@ -233,9 +237,13 @@ class VersionCheckModal(ctk.CTkToplevel):
         # Mostrem missatge
         self.state_lbl.configure(
             text=f"Darrer estat al repositori: {version_or_sha}\n{summary}",
+            wraplength=580,
             text_color=MatchaTheme.TEXT_MAIN
         )
-        self.commits_lbl.configure(text=details, justify="left")
+        self.commits_box.configure(state="normal")
+        self.commits_box.delete("1.0", "end")
+        self.commits_box.insert("1.0", details)
+        self.commits_box.configure(state="disabled")
         self._update_available = True
         self.btn_update.configure(state="normal")
 
@@ -249,12 +257,16 @@ class VersionCheckModal(ctk.CTkToplevel):
 
         self.state_lbl.configure(
             text=f"No s'ha pogut connectar amb GitHub per verificar la versió.\n({err_msg})",
+            wraplength=580,
             text_color="#c0392b"
         )
-        self.commits_lbl.configure(
-            text="Revisa la connexió a internet o visita directament el repositori a GitHub per descarregar actualitzacions manuals.",
-            text_color=MatchaTheme.TEXT_MUTED
+        self.commits_box.configure(state="normal")
+        self.commits_box.delete("1.0", "end")
+        self.commits_box.insert(
+            "1.0",
+            "Revisa la connexió a internet o visita directament el repositori a GitHub per descarregar actualitzacions manuals."
         )
+        self.commits_box.configure(state="disabled")
 
     def _open_github_repo(self):
         webbrowser.open(f"https://github.com/{GITHUB_OWNER}/{GITHUB_REPO}")
@@ -270,14 +282,31 @@ class VersionCheckModal(ctk.CTkToplevel):
 
     def _run_auto_update(self):
         try:
-            zip_url = f"https://github.com/{GITHUB_OWNER}/{GITHUB_REPO}/archive/refs/heads/main.zip"
             temp_dir = tempfile.gettempdir()
             zip_path = os.path.join(temp_dir, "podcasts_update.zip")
 
-            self.after(0, lambda: self.state_lbl.configure(text="Descarregant el codi més recent des de GitHub...", text_color=MatchaTheme.PRIMARY))
+            if getattr(sys, "frozen", False):
+                # En executable compilat, descarregar el paquet binari oficial de la darrera release
+                rel_url = f"https://api.github.com/repos/{GITHUB_OWNER}/{GITHUB_REPO}/releases/latest"
+                zip_url = None
+                try:
+                    r_rel = requests.get(rel_url, timeout=10)
+                    if r_rel.status_code == 200:
+                        for a in r_rel.json().get("assets", []):
+                            if a.get("name", "").endswith(".zip"):
+                                zip_url = a.get("browser_download_url")
+                                break
+                except Exception:
+                    pass
+                if not zip_url:
+                    zip_url = f"https://github.com/{GITHUB_OWNER}/{GITHUB_REPO}/releases/latest/download/PodcastsAmbEstilIMatxa-v{APP_VERSION}-Windows.zip"
+            else:
+                zip_url = f"https://github.com/{GITHUB_OWNER}/{GITHUB_REPO}/archive/refs/heads/main.zip"
+
+            self.after(0, lambda: self.state_lbl.configure(text="Descarregant el paquet més recent des de GitHub...", text_color=MatchaTheme.PRIMARY))
 
             # Descarregar zip
-            r = requests.get(zip_url, stream=True, timeout=60)
+            r = requests.get(zip_url, stream=True, timeout=120)
             r.raise_for_status()
             with open(zip_path, "wb") as f:
                 for chunk in r.iter_content(chunk_size=1024 * 1024):
