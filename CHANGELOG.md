@@ -1,12 +1,18 @@
 # Registre de canvis (Changelog)
 
-Tots els canvis rellevants, correccions (*fixes*) i novetats del projecte **Pòdcasts amb Estil i Matxa** es documenten en aquest arxiu seguint el format estàndard de [Keep a Changelog](https://keepachangelog.com/ca/1.0.0/) i la numeració de versions [Semantic Versioning](https://semver.org/).
+Tots els canvis rellevants, correccions (*fixes*) i novetats del projecte **Pòdcasts amb Matxa** es documenten en aquest arxiu seguint el format estàndard de [Keep a Changelog](https://keepachangelog.com/ca/1.0.0/) i la numeració de versions [Semantic Versioning](https://semver.org/).
 
 ---
 
 ## [1.1.0] - 2026-09-25
 
 ### ✨ Novetats
+* **Reanomenament oficial de l'aplicació a «Pòdcasts amb Matxa»:**
+  * L'aplicació passa a dir-se oficialment **Pòdcasts amb Matxa** a tot arreu: títol de finestra, interfície, documentació, guions didàctics, plantilles i binaris.
+  * Nou nom d'arxiu executable: `PodcastsAmbMatxa.exe` i distribució principal `PodcastsAmbMatxa-v1.1.0-Windows.zip` (mantenint àlies de compatibilitat per als accessos directes existents).
+* **Retirada de referències a StyleTTS i supressió de la clonació de veu:**
+  * S'ha suprimit la funcionalitat de clonació de veu de la interfície i el fitxer `voice_clone_modal.py`.
+  * S'han retirat totes les mencions a StyleTTS de desplegables, diàlegs i documentació, classificant transparentment les veus alternatives al núvol com a **`Veus neuronals ca-ES (Online)`**.
 * **Integració de la veu neural UPC Ona FestCat (100% offline):**
   * S'ha afegit un nou motor autònom basat en `piper-tts` i el model ONNX (`ca_ES-upc_ona-medium.onnx`, 63,2 MB) procedent de les gravacions del corpus FestCat de la **Universitat Politècnica de Catalunya (UPC)**.
   * Veu femenina central d'extraordinària calidesa, naturalitat i fidelitat acústica a 22.050 Hz, ideal per a continguts docents i institucionals.
@@ -18,13 +24,13 @@ Tots els canvis rellevants, correccions (*fixes*) i novetats del projecte **Pòd
   * Permet descarregar l'actualització i reiniciar automàticament l'aplicació amb el botó **«Actualitza l'aplicació»**.
 * **Integració de suport oficial per a Linux:**
   * S'ha creat l'script llançador autònom `run_app.sh` que crea l'entorn virtual `.venv`, instal·la dependències i inicia l'aplicació en un sol pas.
-  * S'ha afegit el script de compilació `build_linux.py` per generar paquets binaris autònoms en arxiu comprimit (`PodcastsAmbEstilIMatxa-v1.1.0-Linux-x86_64.tar.gz`).
+  * S'ha afegit el script de compilació `build_linux.py` per generar paquets binaris autònoms en arxiu comprimit (`PodcastsAmbMatxa-v1.1.0-Linux-x86_64.tar.gz`).
   * S'ha integrat un flux de treball automatitzat de CI/CD amb GitHub Actions (`.github/workflows/build-linux.yml`) que compila la versió per a Linux sobre servidors Ubuntu a cada release.
   * Lectura nativa de memòria RAM des de `/proc/meminfo` al mòdul de comprovació de maquinari (`SystemChecker`).
 * **Visualitzador de novetats millorat i identificació de versió:**
   * S'ha substituït l'etiqueta d'una sola línia del modal de versions per un component `CTkTextbox` amb ajust automàtic de paraules (`wrap="word"`), evitant que cap missatge de commit o actualització surti retallat.
   * S'ha incorporat el distintiu visual `v1.1.0` a la capçalera de l'aplicació i s'ha actualitzat el títol de la finestra amb la versió instal·lada.
-  * Nomenclatura oficial del paquet comprimit per a Windows amb el número de versió corresponent: `PodcastsAmbEstilIMatxa-v1.1.0-Windows.zip`.
+  * Nomenclatura oficial del paquet comprimit per a Windows amb el número de versió corresponent: `PodcastsAmbMatxa-v1.1.0-Windows.zip`.
 * **Previsualitzacions d'àudio integrades per a la veu UPC Ona:**
   * S'han generat i empaquetat mostres d'àudio WAV (`preview_upc_ona.wav`) a `assets/previews/` per permetre l'escolta instantània (0 ms) de la nova veu de la UPC.
 * **Gestor de descàrrega de models actualitzat:**
@@ -32,8 +38,8 @@ Tots els canvis rellevants, correccions (*fixes*) i novetats del projecte **Pòd
 
 ### 🐛 Correccions i transparència tècnica
 * **Clarificació i transparència dels motors de veu:**
-  * S'ha anomenat i identificat obertament el motor **`Microsoft Neural ca-ES (Online)`** com a servei al núvol (veus Joana i Enric mitjançant Edge TTS), evitant qualsevol confusió sobre la necessitat de connexió a internet i privadesa.
-  * S'ha eliminat la descàrrega del checkpoint de 2,05 GB de StyleTTS 2 del gestor de models: en tractar-se d'un model de recerca en PyTorch que requereix entorns d'investigació amb GPU, l'aplicació autònoma per a CPU no el podia carregar a disc i malbaratava espai. S'ha unificat i clarificat el catàleg: els dos motors 100% autònoms i offline són **Matxa-TTS v2 (16 veus)** i **UPC Ona (63 MB)**, mentre que les 9 veus d'estil queden identificades obertament com a servei Online.
+  * S'ha anomenat i identificat obertament el motor **`Veus neuronals ca-ES (Online)`** com a servei al núvol, evitant qualsevol confusió sobre la necessitat de connexió a internet i privadesa.
+  * S'ha retirat el checkpoint de recerca de 2,05 GB de StyleTTS 2 que no era apte per a CPU autònom. Els dos motors 100% autònoms i offline són **Matxa-TTS v2 (16 veus)** i **UPC Ona (63 MB)**.
 * **Correcció d'estil lingüístic:**
   * S'ha revisat i aplicat la norma gramatical catalana de mantenir minúscula després dels dos punts (`:`) a tots els textos informatius i etiquetes de la interfície.
 * **Motor predeterminat per defecte:**

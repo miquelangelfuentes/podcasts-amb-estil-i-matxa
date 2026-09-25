@@ -14,7 +14,7 @@ Veu 2: veu=pau pan=+25% velocitat=1.0 pitch=0
 
 ---
 
-Veu 1: Hola! Si esteu escoltant aquesta mostra, esteu comprovant el funcionament de la modalitat de dues veus a l'aplicació «Pòdcasts amb Estil i Matxa».
+Veu 1: Hola! Si esteu escoltant aquesta mostra, esteu comprovant el funcionament de la modalitat de dues veus a l'aplicació «Pòdcasts amb Matxa».
 
 Veu 2: Efectivament! Aquest format està pensat per a entrevistes, converses entre docents o diàlegs pedagògics entre professorat i estudiants. Fixeu-vos en un detall clau: no necessitem cap presentador intermediari!
 
@@ -28,7 +28,7 @@ Veu 2: Aquesta separació estèreo crea una sensació acústica natural de taula
 
 Veu 1: I com es gestionen els torns de paraula? L'aplicació analitza el diàleg i aplica el paràmetre «PAUSA_INTERLOCUTOR», que per defecte és d'uns sis-cents mil·lisegons. Això garanteix que entre frase i frase hi hagi un respir orgànic i realista.
 
-Veu 2: A més, podeu canviar les veus de cadascú en qualsevol moment amb el desplegable de cada locutor, escoltar mostres instantànies amb el botó «Escolta» o fins i tot clonar una veu real a partir d'un àudio de deu segons!
+Veu 2: A més, podeu canviar les veus de cadascú en qualsevol moment amb el desplegable de cada locutor, triar entre 16 veus dialectals catalanes o escoltar mostres instantànies amb el botó «Escolta»!
 
 [PAUSA: 450ms]
 

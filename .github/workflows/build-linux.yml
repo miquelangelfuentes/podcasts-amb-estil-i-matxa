@@ -43,14 +43,14 @@ jobs:
       - name: Pujar artefacte comprimit a GitHub Actions
         uses: actions/upload-artifact@v4
         with:
-          name: PodcastsAmbEstilIMatxa-Linux-x86_64
-          path: dist/PodcastsAmbEstilIMatxa-*-Linux-x86_64.tar.gz
+          name: PodcastsAmbMatxa-Linux-x86_64
+          path: dist/PodcastsAmbMatxa-*-Linux-x86_64.tar.gz
           if-no-files-found: error
 
       - name: Adjuntar paquet a la Release de GitHub (si correspon)
         if: github.event_name == 'release'
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/PodcastsAmbEstilIMatxa-*-Linux-x86_64.tar.gz
+          files: dist/PodcastsAmbMatxa-*-Linux-x86_64.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

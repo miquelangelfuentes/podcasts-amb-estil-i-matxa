@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# Script de llançament per a Linux: Pòdcasts amb Estil i Matxa
+# Script de llançament per a Linux: Pòdcasts amb Matxa
 # Configura automàticament l'entorn virtual i arrenca l'aplicació.
 # ==============================================================================
 
@@ -11,7 +11,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
 echo "============================================================"
-echo "  🎙️🍵 Pòdcasts amb Estil i Matxa (Linux)"
+echo "  🎙️🍵 Pòdcasts amb Matxa (Linux)"
 echo "============================================================"
 
 # 1. Comprovació de Python 3

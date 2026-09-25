@@ -1,7 +1,7 @@
 """
 Script de Compilació Automatitzada a Executable Windows (.exe).
 Utilitza PyInstaller per crear un paquet independent i autònom
-amb l'aplicació 'Pòdcasts amb Estil i Matxa'.
+amb l'aplicació 'Pòdcasts amb Matxa'.
 """
 
 import os
@@ -15,7 +15,7 @@ from ui.version_check_modal import APP_VERSION
 
 def build():
     print("=" * 60)
-    print("  Iniciant compilació de 'Pòdcasts amb Estil i Matxa' (.exe)")
+    print("  Iniciant compilació de 'Pòdcasts amb Matxa' (.exe)")
     print("=" * 60)
 
     base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -25,7 +25,7 @@ def build():
 
     # Tancar instancies previes obertes a Windows per alliberar bloquejos de fitxers
     if sys.platform == "win32":
-        for exe in ["PodcastsAmbEstilIMatxa.exe", "MatxaIEstil.exe", "PodcastsAmbStyleTTS.exe"]:
+        for exe in ["PodcastsAmbMatxa.exe", "PodcastsAmbEstilIMatxa.exe", "MatxaIEstil.exe", "PodcastsAmbStyleTTS.exe"]:
             try:
                 subprocess.run(["taskkill", "/F", "/IM", exe], capture_output=True)
             except Exception:
@@ -33,7 +33,7 @@ def build():
         time.sleep(2)
 
     # Neteja preventiva del directori destí amb reintents
-    target_dist = os.path.join(dist_dir, "PodcastsAmbEstilIMatxa")
+    target_dist = os.path.join(dist_dir, "PodcastsAmbMatxa")
     if os.path.exists(target_dist):
         for _ in range(5):
             try:
@@ -52,7 +52,7 @@ def build():
     cmd = [
         sys.executable,
         "-m", "PyInstaller",
-        "--name=PodcastsAmbEstilIMatxa",
+        "--name=PodcastsAmbMatxa",
         "--noconsole",
         "--onedir",
         "--clean",
@@ -108,20 +108,21 @@ def build():
 
     result = subprocess.run(cmd, cwd=base_dir)
     if result.returncode == 0:
-        built_dir = os.path.join(staging_dist, "PodcastsAmbEstilIMatxa")
-        new_dist = os.path.join(dist_dir, "PodcastsAmbEstilIMatxa")
+        built_dir = os.path.join(staging_dist, "PodcastsAmbMatxa")
+        new_dist = os.path.join(dist_dir, "PodcastsAmbMatxa")
         os.makedirs(new_dist, exist_ok=True)
         print(f"\nCopiant fitxers generats a {new_dist}...")
         robust_copy(built_dir, new_dist)
 
-        exe_path = os.path.join(new_dist, "PodcastsAmbEstilIMatxa.exe")
+        exe_path = os.path.join(new_dist, "PodcastsAmbMatxa.exe")
         print("\n" + "=" * 60)
-        print("  [OK] Compilació de PodcastsAmbEstilIMatxa COMPLETADA AMB ÈXIT!")
+        print("  [OK] Compilació de PodcastsAmbMatxa COMPLETADA AMB ÈXIT!")
         print(f"  Executable generat a:")
         print(f"  {exe_path}")
 
-        # Sincronitzar amb dist/MatxaIEstil i dist/PodcastsAmbStyleTTS per als accessos directes existents de l'usuari
+        # Sincronitzar amb dist/PodcastsAmbEstilIMatxa, dist/MatxaIEstil i dist/PodcastsAmbStyleTTS per als accessos directes existents de l'usuari
         for alias_name, alias_exe in [
+            ("PodcastsAmbEstilIMatxa", "PodcastsAmbEstilIMatxa.exe"),
             ("MatxaIEstil", "MatxaIEstil.exe"),
             ("PodcastsAmbStyleTTS", "PodcastsAmbStyleTTS.exe")
         ]:
@@ -131,7 +132,7 @@ def build():
                 os.makedirs(alias_dist, exist_ok=True)
                 robust_copy(built_dir, alias_dist)
                 dest_exe = os.path.join(alias_dist, alias_exe)
-                orig_in_copy = os.path.join(alias_dist, "PodcastsAmbEstilIMatxa.exe")
+                orig_in_copy = os.path.join(alias_dist, "PodcastsAmbMatxa.exe")
                 if os.path.exists(orig_in_copy):
                     shutil.copy2(orig_in_copy, dest_exe)
                 print(f"  [OK] Executable de compatibilitat generat a:")
@@ -140,7 +141,7 @@ def build():
                 print(f"  [AVÍS] Error sincronitzant dist/{alias_name}: {e}")
 
         # Empaquetar a fitxer ZIP oficial amb el nom de la versió actual
-        zip_name = f"PodcastsAmbEstilIMatxa-v{APP_VERSION}-Windows.zip"
+        zip_name = f"PodcastsAmbMatxa-v{APP_VERSION}-Windows.zip"
         zip_path = os.path.join(dist_dir, zip_name)
         print(f"\n  Empaquetant a arxiu comprimit oficial: {zip_name}...")
         with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zipf:
@@ -153,6 +154,13 @@ def build():
         print(f"  [OK] Fitxer ZIP generat amb èxit ({zip_mb:.1f} MB):")
         print(f"  {zip_path}")
 
+        # Generar còpia de compatibilitat de l'arxiu ZIP amb l'antic nom
+        legacy_zip = os.path.join(dist_dir, f"PodcastsAmbEstilIMatxa-v{APP_VERSION}-Windows.zip")
+        try:
+            shutil.copy2(zip_path, legacy_zip)
+        except Exception:
+            pass
+
         # Sincronitzar còpia directa al directori Downloads de l'usuari si existeix
         user_downloads = os.path.join(os.path.expanduser("~"), "Downloads")
         if os.path.exists(user_downloads):
@@ -161,7 +169,7 @@ def build():
                 shutil.copy2(zip_path, dest_zip_downloads)
                 print(f"  [OK] Còpia de descàrrega sincronitzada a: {dest_zip_downloads}")
                 # Sincronitzar també la carpeta extreta per a execució immediata
-                unzipped_target = os.path.join(user_downloads, f"PodcastsAmbEstilIMatxa-v{APP_VERSION}-Windows", "PodcastsAmbEstilIMatxa")
+                unzipped_target = os.path.join(user_downloads, f"PodcastsAmbMatxa-v{APP_VERSION}-Windows", "PodcastsAmbMatxa")
                 if os.path.exists(os.path.dirname(unzipped_target)):
                     robust_copy(new_dist, unzipped_target)
                     print(f"  [OK] Carpeta d'execució extreta actualitzada a: {unzipped_target}")

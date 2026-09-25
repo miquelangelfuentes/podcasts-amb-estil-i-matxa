@@ -310,8 +310,8 @@ class AudioPlayerWidget(ctk.CTkFrame):
                 self.audio_processor.export_mp3(
                     self.current_audio_stereo,
                     file_path,
-                    title="Pòdcasts amb Estil i Matxa",
-                    artist="Pòdcasts amb Estil i Matxa · BSC-LT & alVoCat"
+                    title="Pòdcasts amb Matxa",
+                    artist="Pòdcasts amb Matxa · BSC-LT & alVoCat"
                 )
                 messagebox.showinfo(
                     "Pòdcast desat amb èxit",

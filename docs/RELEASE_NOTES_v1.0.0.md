@@ -1,11 +1,11 @@
-# Pòdcasts amb Estil i Matxa (versió actualitzada) 🎙️🍵
+# Pòdcasts amb Matxa (versió 1.0.0) 🎙️🍵
 
-Versió actualitzada de **Pòdcasts amb Estil i Matxa**, l'estudi d'escriptori autònom per a la creació i locució de guions de pòdcast en català amb intel·ligència artificial. Aquesta compilació substitueix la versió 1.0.0 inicial i incorpora totes les darreres millores.
+Versió inicial de **Pòdcasts amb Matxa**, l'estudi d'escriptori autònom per a la creació i locució de guions de pòdcast en català amb intel·ligència artificial. Aquesta compilació substitueix la versió 1.0.0 inicial i incorpora totes les darreres millores.
 
 ### ✨ Novetats i funcionalitats destacades
 - **Motors de síntesi de veu catalana d'última generació**:
   - **Matxa-TTS v2 multiaccent (100% Offline)**: suport complet per a totes les variants dialectals (balear, central, nord-occidental, septentrional i valencià) combinat amb el vocoder neuronal **alVoCat**.
-  - **StyleTTS 2 Català (Offline)**: locució expressiva i natural per a fins a 3 veus simultànies (`ona`, `pau`, `bet`, `jordi`, `teia`, `pere`, `lluc`, `joana`, `enric`) i clonació de veu zero-shot.
+  - **Veus neuronals expressives (Online)**: locució natural amb 9 veus catalanes (`ona`, `pau`, `bet`, `jordi`, `teia`, `pere`, `lluc`, `joana`, `enric`).
   - **Microsoft Neural ca-ES (Online)**: integració al núvol per a síntesi ràpida amb les veus Joana i Enric.
 - **Gestor integrat de components i models (📦 Models)**:
   - Descàrrega autònoma i modular dels pesos dels models des d'Hugging Face directament des de l'aplicació.

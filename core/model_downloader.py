@@ -4,7 +4,7 @@ Gestiona la descàrrega autònoma, verificació d'integritat, estat local
 i memòria cau dels models de Hugging Face:
 - BSC-LT/matxa-tts-v2-ca-multiaccent-graphemes
 - projecte-aina/alvocat-vocos-22khz
-- BSC-LT/styletts2-catalan-multispeaker
+- rhasspy/piper-voices (UPC Ona)
 """
 
 import os
@@ -58,11 +58,11 @@ class ModelDownloader:
             "is_cloud": False
         },
         "edge_tts_cloud": {
-            "name": "Veus d'estil i Microsoft Neural (Online)",
+            "name": "Veus neuronals ca-ES (Online)",
             "provider": "Microsoft Edge Cloud",
             "repo_id": "microsoft/edge-tts-catalan",
             "files": {},
-            "desc": "Servei al núvol amb 9 estils expressius de veu (Joana, Enric, Ona, Pau, Bet, etc.). Ocupa 0 MB locals però requereix connexió activa a internet i envia el text al servei al núvol.",
+            "desc": "Servei al núvol amb 9 veus expressives (Joana, Enric, Ona, Pau, Bet, etc.). Ocupa 0 MB locals però requereix connexió activa a internet i envia el text al servei al núvol.",
             "expected_size_mb": 0.0,
             "category": "Servei al núvol (Online)",
             "is_cloud": True
@@ -170,7 +170,7 @@ class ModelDownloader:
         self.last_error = ""
 
         headers = {
-            "User-Agent": "PodcastsAmbEstilIMatxa/1.0"
+            "User-Agent": "PodcastsAmbMatxa/1.0"
         }
 
         downloaded_bytes = 0

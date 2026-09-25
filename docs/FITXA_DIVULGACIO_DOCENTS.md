@@ -1,4 +1,4 @@
-# Fitxa informativa i de divulgació: «Pòdcasts amb Estil i Matxa»
+# Fitxa informativa i de divulgació: «Pòdcasts amb Matxa»
 
 Aquest document és una **guia completa de context i indicacions de referència** dissenyada per a:
 1. Proporcionar als docents i centres educatius una visió clara, rigorosa i pràctica de l'aplicació.
@@ -10,7 +10,7 @@ Aquest document és una **guia completa de context i indicacions de referència*
 
 | Paràmetre | Detall |
 | :--- | :--- |
-| **Nom de l'eina** | Pòdcasts amb Estil i Matxa |
+| **Nom de l'eina** | Pòdcasts amb Matxa |
 | **Tipus de programari** | Aplicació d'escriptori autònoma per a Windows i Linux (sense dependències externes) |
 | **Finalitat principal** | Creació àgil, intuïtiva i professional de pòdcasts educatius i institucionals en català mitjançant intel·ligència artificial neuronal |
 | **Públic destinatari** | Docents de Primària, Secundària, Batxillerat, FP, Escoles Oficials d'Idiomes, Universitats, centres de formació d'adults (CFA) i creadors de contingut pedagògic |
@@ -73,10 +73,6 @@ Aquest document és una **guia completa de context i indicacions de referència*
 - **Característiques:** Útil com a alternativa ràpida; no requereix espai al disc local (0 MB), però requereix connexió constant a internet i transmet el text als servidors de Microsoft.
 - **Veus integrades:** Joana (veu femenina) i Enric (veu masculina).
 
-> [!NOTE]
-> **Nota tècnica i transparència sobre StyleTTS 2:**
-> El checkpoint de StyleTTS 2 del BSC-LT (`epoch_2nd_00070.pth`, ~2,05 GB) és un model d'investigació que requereix un entorn PyTorch complet amb mòduls addicionals (PL-BERT, WavLM i aligners) i targeta gràfica dedicada (GPU). Per garantir que qualsevol ordinador d'escola o institut pugui generar pòdcasts en català de forma immediata, 100% autònoma i sense despesa de servidors, aquesta aplicació empra **Matxa-TTS v2 (BSC-LT)** i **UPC Ona (FestCat)** com a motors offline principals.
-
 ---
 
 ## 4. Usos educatius per a docents i aules
@@ -107,7 +103,7 @@ Aquest document és una **guia completa de context i indicacions de referència*
 
 ## 5. Limitacions tècniques i recomanacions d'ús
 
-- **Requisits de maquinari:** funciona en qualsevol ordinador amb Windows 10 o Windows 11 i en distribucions Linux (Ubuntu, Debian, Linkat, Fedora, Arch o Linux Mint). No requereix targeta gràfica dedicada (GPU); els models ONNX estan optimitzats per a processadors estàndard (Intel o AMD). Es recomanen 4 GB de memòria RAM (òptim 8 GB) i espai lliure al disc (mínim 500 MB per a Matxa-TTS; 2,5 GB si es descarrega el checkpoint complet de StyleTTS 2).
+- **Requisits de maquinari:** funciona en qualsevol ordinador amb Windows 10 o Windows 11 i en distribucions Linux (Ubuntu, Debian, Linkat, Fedora, Arch o Linux Mint). No requereix targeta gràfica dedicada (GPU); els models ONNX estan optimitzats per a processadors estàndard (Intel o AMD). Es recomanen 4 GB de memòria RAM (òptim 8 GB) i espai lliure al disc (mínim 400-500 MB per als models ONNX offline).
 - **Format del guió:** l'eina processa els guions a partir de signes de puntuació (. ! ? ;). Per a una prosòdia excel·lent, es recomana redactar frases d'una extensió equilibrada (entre 10 i 25 paraules) evitant paràgrafs densos sense punts.
 - **Mode núvol vs. mode offline:** per a ús amb menors d'edat i en entorns escolars, es recomana prioritzar sempre els motors offline (Matxa-TTS v2 o UPC Ona) per garantir la privadesa absoluta de les dades.
 
@@ -119,8 +115,8 @@ Aquest document és una **guia completa de context i indicacions de referència*
    - Cal informar sempre l'alumnat i l'audiència que les veus han estat sintetitzades amb intel·ligència artificial neuronal del BSC-LT i el Projecte AINA.
 2. **Protecció de dades de menors (RGPD):**
    - Els motors autònoms locals no guarden registres a servidors externs ni transfereixen dades a tercers, complint les normatives europees i departamentals de protecció de dades.
-3. **Ús ètic i responsable de la clonació de veu:**
-   - La funció de referència acústica (clonació zero-shot) s'ha d'utilitzar exclusivament amb el consentiment exprés de la persona titular de la veu.
+3. **Ús ètic i responsable de la síntesi de veu:**
+   - La síntesi de veu s'ha d'utilitzar amb finalitats formatives, pedagògiques o divulgatives legítimes.
    - Està estrictament prohibit utilitzar l'eina per a suplantació d'identitat, generació de falsedats (*deepfakes*) o continguts difamatoris.
 4. **Equitat dialectal i respecte lingüístic:**
    - Cap variant territorial no s'ha de considerar inferior o subordinada; l'eina promou la dignitat i presència de totes les parles catalanes.
@@ -141,10 +137,10 @@ A continuació es detallen plantilles d'instrucció que pots copiar i enganxar d
 
 ### Prompt 1: fil divulgatiu per a Twitter / X
 ```text
-Actua com a especialista en comunicació educativa i tecnologia en català. A partir de la fitxa adjunta de «Pòdcasts amb Estil i Matxa», escriu un fil de Twitter/X de 5 a 6 piulades:
+Actua com a especialista en comunicació educativa i tecnologia en català. A partir de la fitxa adjunta de «Pòdcasts amb Matxa», escriu un fil de Twitter/X de 5 a 6 piulades:
 - Piulada 1 (Ganxo): destaca la fita de tenir una eina d'estudi de ràdio en català, gratuïta, 100% offline i creada amb els models del BSC-LT i Projecte AINA.
 - Piulada 2: explica com ajuda els docents (creació de pòdcasts a 1, 2 o 3 veus en minuts, música de fons en bucle amb volum regulable i sense haver d'editar so externament).
-- Piulada 3: parla de la riquesa dialectal (16 veus: central, balear, valencià, lleidatà, rossellonès) i StyleTTS 2.
+- Piulada 3: parla de la riquesa dialectal (16 veus: central, balear, valencià, lleidatà, rossellonès) i la claredat d'UPC Ona.
 - Piulada 4: emfatitza la privadesa (0% dades al núvol, ideal per a escoles i instituts, compleix el RGPD).
 - Piulada 5: usos pedagògics concrets (DUA, dislèxia, microlearning, ràdio escolar, audiocontes immersius).
 - Piulada 6 (Crida a l'acció): enllaç al projecte a GitHub i invitació a provar-ho.
@@ -153,7 +149,7 @@ To: engrescador, divulgatiu, rigorós i proper. Fes servir icones i hashtags com
 
 ### Prompt 2: publicació professional per a LinkedIn
 ```text
-Actua com a docent innovador i assessor pedagògic en competència digital docent. Escriu una publicació per a LinkedIn sobre l'aplicació «Pòdcasts amb Estil i Matxa»:
+Actua com a docent innovador i assessor pedagògic en competència digital docent. Escriu una publicació per a LinkedIn sobre l'aplicació «Pòdcasts amb Matxa»:
 - Enfocament: innovació educativa, sobirania tecnològica i aplicació real a l'aula (DUA, comprensió oral, situacions d'aprenentatge, expressió radiofònica).
 - Explica per què és rellevant per a equips directius, coordinadors digitals i professorat de llengua o d'altres matèries.
 - Destaca que no envia dades a cap servidor (privadesa dels centres), que incorpora música i ambientació de fons automàtica i que és una tecnologia d'accés obert creada pel BSC-LT i Projecte AINA.
@@ -163,7 +159,7 @@ Recorda aplicar la normativa del català (minúscula després dels dos punts).
 
 ### Prompt 3: guió visual per a carrusel d'Instagram
 ```text
-Dissenya el contingut d'un carrusel d'Instagram de 6 diapositives per a docents sobre «Pòdcasts amb Estil i Matxa»:
+Dissenya el contingut d'un carrusel d'Instagram de 6 diapositives per a docents sobre «Pòdcasts amb Matxa»:
 - Diapositiva 1 (Portada): títol impactant sobre com crear pòdcasts educatius en català amb IA en 1 minut.
 - Diapositiva 2: el problema (la manca de temps dels docents per editar àudio i la manca de veus catalanes de qualitat).
 - Diapositiva 3: la solució (com funciona l'eina: escrius el guió, tries les veus, afegeixes música de fons i generes l'episodi).
@@ -175,6 +171,6 @@ Inclou indicacions de text visual i el text del peu de foto (caption) amb hashta
 
 ### Prompt 4: circular o butlletí pedagògic per a claustres i coordinadors
 ```text
-Redacta un text informatiu breu (300-400 paraules) per a un butlletí pedagògic escolar o correu de coordinació digital adreçat a tot el claustre de professors, presentant «Pòdcasts amb Estil i Matxa» com a eina recomanada per al nou curs:
+Redacta un text informatiu breu (300-400 paraules) per a un butlletí pedagògic escolar o correu de coordinació digital adreçat a tot el claustre de professors, presentant «Pòdcasts amb Matxa» com a eina recomanada per al nou curs:
 - Explica què és, com s'instal·la (executable autònom per a Windows o paquet per a Linux), quins avantatges té per a l'atenció a la diversitat, com permet ambientar sonors amb música de fons i com respecta la protecció de dades dels estudiants.
 ```

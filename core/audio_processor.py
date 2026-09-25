@@ -143,8 +143,8 @@ class AudioProcessor:
         final_mastered = self.normalize_loudness(combined, target_lufs=-16.0, max_peak_db=-1.0)
         return final_mastered
 
-    def export_mp3(self, stereo_audio: np.ndarray, output_path: str, title: str = "Pòdcast amb StyleTTS",
-                   artist: str = "StyleTTS 2 Catalan & alVoCat") -> str:
+    def export_mp3(self, stereo_audio: np.ndarray, output_path: str, title: str = "Pòdcast amb Matxa",
+                   artist: str = "Pòdcasts amb Matxa · BSC-LT & alVoCat") -> str:
         """
         Exporta l'àudio estèreo a format MP3 a 160 kbps CBR mitjançant FFmpeg.
         (160 kbps és el màxim estàndard ISO MPEG-2 Layer 3 per a la freqüència de 22.05 kHz).

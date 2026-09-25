@@ -1,5 +1,5 @@
 """
-Finestra Principal de l'Aplicació: Pòdcasts amb Estil i Matxa.
+Finestra Principal de l'Aplicació: Pòdcasts amb Matxa.
 Disseny modern, elegant, accessible i minimalista (Clean Studio UI).
 Garanteix conformitat estricta amb el contrast de colors (WCAG AAA):
 - Fons verds -> SEMPRE text blanc pur (#FFFFFF). Mai text fosc sobre verd.
@@ -34,11 +34,10 @@ if sys.platform == "win32":
 
 from ui.theme import MatchaTheme
 from ui.components import PillSelector, CleanButton
-from ui.voice_clone_modal import VoiceCloneModal
 from ui.components_modal import ComponentsManagerModal
 from ui.player_widget import AudioPlayerWidget
 from core.script_parser import ScriptParser, PodcastScript, SpeakerConfig
-from core.tts_engine import StyleTTS2CatalanEngine
+from core.tts_engine import MicrosoftNeuralCatalanEngine
 from core.matxa_tts_engine import MatxaTTSCatalanEngine
 from core.upc_ona_engine import UPCOnaCatalanEngine
 from core.audio_processor import AudioProcessor
@@ -67,14 +66,14 @@ class MainWindow(ctk.CTk):
         "jordi": "Jordi — Septentrional (Masc, Perpinyà)"
     }
 
-    STYLETTS_VOICE_DESCRIPTIONS = {
-        "ona": "Ona — Estil expressiu (Fem, càlida i professional)",
-        "pau": "Pau — Estil expressiu (Masc, dinàmic i proper)",
-        "bet": "Bet — Estil expressiu (Fem, didàctica i expressiva)",
-        "jordi": "Jordi — Estil expressiu (Masc, acadèmic)",
-        "teia": "Teia — Estil expressiu (Fem, narrativa)",
-        "pere": "Pere — Estil expressiu (Masc, valencià natural)",
-        "lluc": "Lluc — Estil expressiu (Masc, balear mallorquí)",
+    NEURAL_VOICE_DESCRIPTIONS = {
+        "ona": "Ona — Veu expressiva (Fem, càlida i professional)",
+        "pau": "Pau — Veu expressiva (Masc, dinàmic i proper)",
+        "bet": "Bet — Veu expressiva (Fem, didàctica i expressiva)",
+        "jordi": "Jordi — Veu expressiva (Masc, acadèmic)",
+        "teia": "Teia — Veu expressiva (Fem, narrativa)",
+        "pere": "Pere — Veu expressiva (Masc, valencià natural)",
+        "lluc": "Lluc — Veu expressiva (Masc, balear mallorquí)",
         "joana": "Joana — Microsoft Neural (Fem, ca-ES estàndard)",
         "enric": "Enric — Microsoft Neural (Masc, ca-ES estàndard)"
     }
@@ -94,7 +93,7 @@ class MainWindow(ctk.CTk):
         # Configuració bàsica de la finestra i títol renovat.
         # CustomTkinter escala les dimensions segons el DPI de Windows;
         # adaptem la geometria a l'àrea útil de treball per no superar la pantalla a 150%.
-        self.title(f"Pòdcasts amb Estil i Matxa v{APP_VERSION}")
+        self.title(f"Pòdcasts amb Matxa v{APP_VERSION}")
         self._fit_window_to_work_area()
 
         # Configuració d'aparença neta
@@ -112,7 +111,7 @@ class MainWindow(ctk.CTk):
         self.script_parser = ScriptParser()
         self.matxa_engine = MatxaTTSCatalanEngine()
         self.upc_engine = UPCOnaCatalanEngine()
-        self.styletts_engine = StyleTTS2CatalanEngine()
+        self.neural_engine = MicrosoftNeuralCatalanEngine()
         self.tts_engine = self.matxa_engine
         self.audio_processor = AudioProcessor(sample_rate=self.tts_engine.sample_rate)
         self.voice_preview_manager = VoicePreviewManager()
@@ -240,7 +239,7 @@ class MainWindow(ctk.CTk):
 
         app_title = ctk.CTkLabel(
             brand_frame,
-            text="Pòdcasts amb Estil i Matxa",
+            text="Pòdcasts amb Matxa",
             font=("Segoe UI", 16, "bold"),
             text_color=MatchaTheme.TEXT_MAIN
         )
@@ -631,15 +630,6 @@ class MainWindow(ctk.CTk):
         )
         spk_title.pack(side="left")
 
-        clone_btn = CleanButton(
-            spk_header,
-            style="subtle",
-            text="🌿 Clonar veu...",
-            height=26,
-            command=self._open_clone_modal
-        )
-        clone_btn.pack(side="right")
-
         # Selector destacat de motor de veus (Matxa-TTS vs. Microsoft Neural)
         engine_row = ctk.CTkFrame(speakers_card, fg_color="transparent", height=1)
         engine_row.pack(fill="x", padx=18, pady=(2, 8))
@@ -657,7 +647,7 @@ class MainWindow(ctk.CTk):
             values=[
                 "🍵 Matxa-TTS v2 (100% Offline — 16 veus BSC-LT)",
                 "🎙️ UPC Ona FestCat (100% Offline — Veu neuronal 63 MB)",
-                "☁️ Veus d'estil i Microsoft Neural (Online — 9 veus expressives)"
+                "☁️ Veus neuronals ca-ES (Online — 9 veus expressives)"
             ],
             height=28,
             corner_radius=14,
@@ -1153,8 +1143,8 @@ class MainWindow(ctk.CTk):
             return self.UPC_VOICE_DESCRIPTIONS
         elif "Matxa" in engine_str:
             return self.MATXA_VOICE_DESCRIPTIONS
-        elif any(k in engine_str for k in ["Online", "Estil", "Microsoft", "StyleTTS"]):
-            return self.STYLETTS_VOICE_DESCRIPTIONS
+        elif any(k in engine_str for k in ["Online", "Microsoft", "Neural", "Expressiva"]):
+            return self.NEURAL_VOICE_DESCRIPTIONS
         if hasattr(self.tts_engine, "UPC_SPEAKERS"):
             return self.UPC_VOICE_DESCRIPTIONS
         if hasattr(self.tts_engine, "MATXA_SPEAKERS"):
@@ -1172,8 +1162,8 @@ class MainWindow(ctk.CTk):
             return self.MATXA_VOICE_DESCRIPTIONS[v_key]
         if v_key in self.MICROSOFT_VOICE_DESCRIPTIONS:
             return self.MICROSOFT_VOICE_DESCRIPTIONS[v_key]
-        if v_key in self.STYLETTS_VOICE_DESCRIPTIONS:
-            return self.STYLETTS_VOICE_DESCRIPTIONS[v_key]
+        if v_key in self.NEURAL_VOICE_DESCRIPTIONS:
+            return self.NEURAL_VOICE_DESCRIPTIONS[v_key]
         return f"{v_key.capitalize()} — Català"
 
     def _get_voice_id_from_label(self, label: str) -> str:
@@ -1181,7 +1171,7 @@ class MainWindow(ctk.CTk):
         for v_id, desc in cat.items():
             if desc == label:
                 return v_id
-        for full_cat in (self.STYLETTS_VOICE_DESCRIPTIONS, self.MATXA_VOICE_DESCRIPTIONS, self.MICROSOFT_VOICE_DESCRIPTIONS):
+        for full_cat in (self.NEURAL_VOICE_DESCRIPTIONS, self.MATXA_VOICE_DESCRIPTIONS, self.MICROSOFT_VOICE_DESCRIPTIONS):
             for v_id, desc in full_cat.items():
                 if desc == label:
                     return v_id
@@ -1293,7 +1283,7 @@ class MainWindow(ctk.CTk):
                     spk_cfg.voice_id = "ona"
                 elif is_matxa:
                     spk_cfg.voice_id = available_ids[min(i, len(available_ids) - 1)]
-                elif any(k in engine_choice for k in ["Online", "Estil", "Microsoft", "StyleTTS"]):
+                elif any(k in engine_choice for k in ["Online", "Microsoft", "Neural", "Expressiva"]):
                     spk_cfg.voice_id = available_ids[min(i, len(available_ids) - 1)]
                 else:
                     spk_cfg.voice_id = available_ids[0] if available_ids else "ona"
@@ -1344,7 +1334,7 @@ class MainWindow(ctk.CTk):
             voice_combo.pack(side="left", fill="x", expand=True, padx=(4, 6))
             voice_combo.set(current_voice_label)
 
-            # Botó Escolta: Estil suau amb text fosc o blanc quan reprodueix
+            # Botó Escolta: Disseny suau amb text fosc o blanc quan reprodueix
             sample_btn = CleanButton(
                 top_line,
                 style="subtle",
@@ -1387,9 +1377,9 @@ class MainWindow(ctk.CTk):
         elif "Matxa" in choice:
             self.tts_engine = self.matxa_engine
             self.badge.configure(text="BSC-LT Matxa-TTS v2 (100% Offline) & alVoCat 22kHz")
-        elif any(k in choice for k in ["Online", "Estil", "Microsoft", "StyleTTS"]):
-            self.tts_engine = self.styletts_engine
-            self.badge.configure(text="Veus d'estil i Microsoft Neural (Online — Requereix internet) & alVoCat 22kHz")
+        elif any(k in choice for k in ["Online", "Microsoft", "Neural", "Expressiva"]):
+            self.tts_engine = self.neural_engine
+            self.badge.configure(text="Veus neuronals ca-ES (Online — Requereix internet) & alVoCat 22kHz")
         else:
             self.tts_engine = self.matxa_engine
             self.badge.configure(text="BSC-LT Matxa-TTS v2 (100% Offline) & alVoCat 22kHz")
@@ -1577,15 +1567,6 @@ class MainWindow(ctk.CTk):
                 f.write(full_to_save)
             messagebox.showinfo("Desat", "El guió complet s'ha desat correctament.")
 
-    def _open_clone_modal(self):
-        VoiceCloneModal(self, self.tts_engine, on_clone_success_callback=self._on_voice_cloned)
-
-    def _on_voice_cloned(self, speaker_name, audio_path):
-        if speaker_name not in self.current_script.speakers:
-            self.current_script.speakers[speaker_name] = SpeakerConfig(name=speaker_name, voice_id="ona", clone_audio_path=audio_path)
-        self._refresh_speakers_ui()
-        messagebox.showinfo("Veu clonada", f"La veu per a «{speaker_name}» s'ha configurat amb èxit!")
-
     def _show_ssml_guide(self):
         doc_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "docs", "GUIA_SSML_CATALA.md")
         if os.path.exists(doc_path):
@@ -1598,7 +1579,7 @@ class MainWindow(ctk.CTk):
         if os.path.exists(doc_path):
             with open(doc_path, "r", encoding="utf-8") as f:
                 doc_text = f.read()
-            self._open_text_viewer("Indicació per a models (Pòdcasts amb Estil i Matxa)", doc_text)
+            self._open_text_viewer("Indicació per a models (Pòdcasts amb Matxa)", doc_text)
 
     def _show_components_manager(self):
         ComponentsManagerModal(self, on_update_callback=self._on_models_updated)

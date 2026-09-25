@@ -1,5 +1,5 @@
-[TITOL: Pòdcasts amb Estil i Matxa: com funciona i com s'ha construït]
-[DESCRIPCIO: episodi especial de 5 minuts on la Veu presentadora, la Veu 1 i la Veu 2 expliquen el funcionament de l'aplicació pas a pas, les seves opcions d'una, dues o tres veus, i l'arquitectura tecnològica oberta amb StyleTTS 2, Matxa-TTS v2 multiaccent i alVoCat.]
+[TITOL: Pòdcasts amb Matxa: com funciona i com s'ha construït]
+[DESCRIPCIO: episodi especial de 5 minuts on la Veu presentadora, la Veu 1 i la Veu 2 expliquen el funcionament de l'aplicació pas a pas, les seves opcions d'una, dues o tres veus, i l'arquitectura tecnològica oberta amb Matxa-TTS v2 multiaccent, UPC Ona FestCat i alVoCat.]
 [FORMAT: estèreo 160 kbps]
 [PAUSA_DEFECTE: 350ms]
 [PAUSA_INTERLOCUTOR: 700ms]
@@ -16,7 +16,7 @@ Veu 2: veu=pau pan=+25% velocitat=1.02 pitch=0
 
 ---
 
-Veu presentadora: Benvingudes i benvinguts a un episodi especial dedicat a la creació de continguts sonors en la nostra llengua. Avui presentem «Pòdcasts amb Estil i Matxa», una eina creada específicament per transformar la manera com els docents i creadors generem materials d'àudio d'alta qualitat. Us deixem amb els nostres amfitrions, la Veu 1 i la Veu 2.
+Veu presentadora: Benvingudes i benvinguts a un episodi especial dedicat a la creació de continguts sonors en la nostra llengua. Avui presentem «Pòdcasts amb Matxa», una eina creada específicament per transformar la manera com els docents i creadors generem materials d'àudio d'alta qualitat. Us deixem amb els nostres amfitrions, la Veu 1 i la Veu 2.
 
 [PAUSA: 800ms]
 
@@ -26,7 +26,7 @@ Veu 2: L'entusiasme és compartit! Com a docents, sovint ens trobem amb una gran
 
 [PAUSA: 500ms]
 
-Veu 1: Exactament. I aquí és on neix «Pòdcasts amb Estil i Matxa». L'aplicació està pensada perquè qualsevol docent pugui crear un pòdcast professional en pocs minuts. Comença amb un senzill guió de text on definim els locutors i el diàleg. A més, l'aplicació permet triar flexiblement entre tres estructures: un monòleg d'una sola veu amb la Veu presentadora al centre, una conversa dinàmica de dues veus sense presentador com la nostra, o bé una tertúlia completa de tres veus amb presentadora i dos col·laboradors.
+Veu 1: Exactament. I aquí és on neix «Pòdcasts amb Matxa». L'aplicació està pensada perquè qualsevol docent pugui crear un pòdcast professional en pocs minuts. Comença amb un senzill guió de text on definim els locutors i el diàleg. A més, l'aplicació permet triar flexiblement entre tres estructures: un monòleg d'una sola veu amb la Veu presentadora al centre, una conversa dinàmica de dues veus sense presentador com la nostra, o bé una tertúlia completa de tres veus amb presentadora i dos col·laboradors.
 
 [PAUSA: 500ms]
 
@@ -40,11 +40,11 @@ Veu 2: I ara de ben segur que molts companys i companyes es demanen: com s'ha co
 
 [PAUSA: 750ms]
 
-Veu 1: El sistema ofereix dos grans motors de síntesi que podem alternar lliurement segons les nostres necessitats: Matxa-TTS versió dos i StyleTTS 2. El primer, Matxa-TTS v2, és un model acústic desenvolupat pel Barcelona Supercomputing Center, el BSC-LT. Es basa en la tècnica de flow matching i transport òptim, entrenat amb centenars d'hores de veu catalana procedents de corpus oberts com LaFresCat, ReFresCat i EnVeuAlta. Això és el que li permet capturar amb tanta precisió les peculiaritats fonètiques de cada variant dialectal.
+Veu 1: El sistema ofereix motors de síntesi d'alta fidelitat que podem alternar lliurement segons les nostres necessitats: Matxa-TTS versió dos i UPC Ona FestCat. El primer, Matxa-TTS v2, és un model acústic desenvolupat pel Barcelona Supercomputing Center, el BSC-LT. Es basa en la tècnica de flow matching i transport òptim, entrenat amb centenars d'hores de veu catalana procedents de corpus oberts com LaFresCat, ReFresCat i EnVeuAlta. Això és el que li permet capturar amb tanta precisió les peculiaritats fonètiques de cada variant dialectal.
 
 [PAUSA: 500ms]
 
-Veu 2: I d'altra banda, disposem també del motor StyleTTS 2 Català! StyleTTS 2 és un model neuronal basat en difusió d'estil que destaca per la seva expressivitat i modelatge de la prosòdia. A més, StyleTTS 2 incorpora una funcionalitat molt potent: el clonatge de veu sota demanda. Amb només un arxiu d'àudio de referència de deu o quinze segons d'un docent o convidat, l'aplicació pot aprendre el timbre vocal i generar el guió amb aquesta nova veu personalitzada!
+Veu 2: I d'altra banda, disposem també de la veu neuronal UPC Ona! Ona és un model de síntesi neuronal basat en el corpus obert FestCat de la Universitat Politècnica de Catalunya. Destaca per la seva gran claredat articulatòria i alta definició vocal. A més, és un model molt compacte de només seixanta-tres megabytes en format ONNX, cosa que permet executar-lo de forma cent per cent autònoma i ràpida en qualsevol ordinador d'escola o institut!
 
 [PAUSA: 600ms]
 
@@ -64,4 +64,4 @@ Veu 1: Una tecnologia puntera, oberta, respectuosa amb la nostra llengua i disse
 
 [PAUSA: 600ms]
 
-Veu presentadora: Moltes gràcies per acompanyar-nos en aquest viatge tecnològic i educatiu. Esperem que «Pòdcasts amb Estil i Matxa» esdevingui una eina fonamental a les vostres aules. Fins al proper episodi!
+Veu presentadora: Moltes gràcies per acompanyar-nos en aquest viatge tecnològic i educatiu. Esperem que «Pòdcasts amb Matxa» esdevingui una eina fonamental a les vostres aules. Fins al proper episodi!

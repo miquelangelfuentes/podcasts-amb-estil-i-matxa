@@ -275,9 +275,8 @@ class InstallGuideModal(ctk.CTkToplevel):
                 "  - Matxa-TTS v2 multiaccent (BSC-LT): ~260 MB (16 veus catalanes autònomes).\n"
                 "  - Vocoder alVoCat 22kHz (Projecte AINA): ~51 MB (reconstrucció acústica i normalitzador d'ortografia).\n"
                 "  - Veu UPC Ona FestCat (UPC): ~60 MB (veu neuronal d'alta fidelitat 100% offline).\n\n"
-                "• Veus d'estil expressives (Online — 0 MB):\n"
-                "  - No ocupen espai a disc; requereixen connexió activa a internet.\n\n"
-                "💡 Nota sobre StyleTTS 2: el checkpoint de recerca del BSC-LT (~2,05 GB en PyTorch) requereix entorns d'investigació amb GPU dedicada. Per garantir la màxima rapidesa en ordinadors educatius estàndard (CPU), l'aplicació empra models ONNX altament optimitzats (Matxa-TTS v2 i UPC Ona)."
+                "• Veus neuronals expressives (Online — 0 MB):\n"
+                "  - No ocupen espai a disc; requereixen connexió activa a internet."
             ),
             (
                 "⚡ Cal ONNX també? Per a què serveix?",
@@ -309,8 +308,8 @@ class InstallGuideModal(ctk.CTkToplevel):
                 "  model autònom en ONNX del Barcelona Supercomputing Center amb 16 veus catalanes (central, balear, valencià, nord-occidental i rossellonès). Ràpid i sense dependre de la xarxa.\n\n"
                 "• UPC Ona FestCat (100% Offline — Veu neuronal 63 MB):\n"
                 "  veu femenina d'alta fidelitat de la UPC basada en el corpus FestCat. 100% privada i autònoma.\n\n"
-                "• Veus d'estil i Microsoft Neural (Online):\n"
-                "  9 estils de veu expressius (Joana, Enric, Ona, Pau, Bet, etc.) connectats al servei de veus al núvol. Ocupa 0 MB al disc, però requereix connexió constant a internet."
+                "• Veus neuronals ca-ES (Online):\n"
+                "  9 veus expressives (Joana, Enric, Ona, Pau, Bet, etc.) connectades al servei de veus al núvol. Ocupa 0 MB al disc, però requereix connexió constant a internet."
             ),
             (
                 "☁️ Limitacions d'ús del servei al núvol (Online)",

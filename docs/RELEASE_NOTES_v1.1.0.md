@@ -1,6 +1,6 @@
-# Pòdcasts amb Estil i Matxa v1.1.0 🎙️🍵
+# Pòdcasts amb Matxa v1.1.0 🎙️🍵
 
-Versió oficial actualitzada de **Pòdcasts amb Estil i Matxa**, l'estudi d'escriptori autònom per a la creació i locució de guions de pòdcast en català amb intel·ligència artificial. Aquesta compilació incorpora les noves funcionalitats de veu neural, ambientació sonora, suport per a Linux i comprovació integrada de versions.
+Versió oficial actualitzada de **Pòdcasts amb Matxa**, l'estudi d'escriptori autònom per a la creació i locució de guions de pòdcast en català amb intel·ligència artificial. Aquesta compilació incorpora les noves funcionalitats de veu neural, ambientació sonora, suport per a Linux i comprovació integrada de versions.
 
 ### ✨ Novetats destacades de la versió 1.1.0
 - **Nou motor de veu neural UPC Ona FestCat (100% offline)**:
@@ -24,11 +24,11 @@ Versió oficial actualitzada de **Pòdcasts amb Estil i Matxa**, l'estudi d'escr
   - Flux de treball CI/CD amb GitHub Actions (`.github/workflows/build-linux.yml`) per a compilació automàtica sobre servidors Ubuntu.
   - Diagnòstic de memòria RAM natiu mitjançant `/proc/meminfo`.
 - **Distribució oficial amb nom de versió**:
-  - El paquet binari autònom per a Windows es distribueix amb el nom de fitxer corresponent a la versió: `PodcastsAmbEstilIMatxa-v1.1.0-Windows.zip`.
+  - El paquet binari autònom per a Windows es distribueix amb el nom de fitxer corresponent a la versió: `PodcastsAmbMatxa-v1.1.0-Windows.zip`.
 - **Motors de veu integrats**:
   - **Matxa-TTS v2 multiaccent (100% offline)**: 16 veus per a totes les variants dialectals del català (balear, central, nord-occidental, septentrional i valencià) combinades amb el vocoder neuronal **alVoCat 22kHz**.
   - **UPC Ona FestCat (100% offline)**: veu femenina d'alta fidelitat de la Universitat Politècnica de Catalunya (63 MB).
-  - **Veus d'estil i Microsoft Neural (Online)**: servei al núvol amb 9 estils expressius (Joana, Enric, Ona, Pau, etc.).
+  - **Veus neuronals ca-ES (Online)**: servei al núvol amb 9 veus expressives (Joana, Enric, Ona, Pau, etc.).
 - **Gestor integrat de components i models (📦 Models)**:
   - Descàrrega autònoma i modular des d'Hugging Face per a Matxa-TTS v2, alVoCat i UPC Ona.
   - Eina **«Comprovar el meu equip»** amb diagnòstic automàtic de maquinari (CPU, GPU, RAM, disc i AVX2).

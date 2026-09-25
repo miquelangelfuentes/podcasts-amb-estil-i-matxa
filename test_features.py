@@ -29,7 +29,7 @@ def test_voice_descriptions():
     print("--- 1. Provant descripcions de veus ---")
     from ui.main_window import MainWindow
     matxa_descs = MainWindow.MATXA_VOICE_DESCRIPTIONS
-    style_descs = MainWindow.STYLETTS_VOICE_DESCRIPTIONS
+    neural_descs = MainWindow.NEURAL_VOICE_DESCRIPTIONS
 
     assert len(matxa_descs) == 16, f"Esperades 16 veus a Matxa-TTS, obtingudes {len(matxa_descs)}"
     assert "elia" in matxa_descs
@@ -45,10 +45,10 @@ def test_voice_descriptions():
 
     print("[OK] Totes les 16 veus de Matxa-TTS tenen descripció dialectal correcta.")
 
-    assert len(style_descs) >= 8, f"Esperades almenys 8 veus a StyleTTS, obtingudes {len(style_descs)}"
-    assert "lluc" in style_descs and "balear" in style_descs["lluc"].lower()
-    assert "pere" in style_descs and "valencià" in style_descs["pere"].lower()
-    print("[OK] Totes les veus de StyleTTS tenen descripció correcta (incloent-hi Central, Balear i Valencià).")
+    assert len(neural_descs) >= 8, f"Esperades almenys 8 veus neuronals expressives, obtingudes {len(neural_descs)}"
+    assert "lluc" in neural_descs and "balear" in neural_descs["lluc"].lower()
+    assert "pere" in neural_descs and "valencià" in neural_descs["pere"].lower()
+    print("[OK] Totes les veus neuronals expressives tenen descripció correcta (incloent-hi Central, Balear i Valencià).")
 
 
 def test_script_synchronization():
@@ -153,11 +153,11 @@ def test_voice_structure_templates():
     assert "Veu 2" in p5m.speakers
     words = sum(len(s.text.split()) for s in p5m.segments if s.segment_type == "dialogue")
     assert words >= 700, f"El guió de 5 minuts ha de tenir almenys 700 paraules, té {words}"
-    assert "Pòdcasts amb Estil i Matxa" in content_5m
+    assert "Pòdcasts amb Matxa" in content_5m
     assert "flow matching" in content_5m
-    assert "StyleTTS 2" in content_5m, "El guió de 5 minuts ha de mencionar StyleTTS 2"
+    assert "UPC Ona" in content_5m, "El guió de 5 minuts ha de mencionar UPC Ona"
     assert "alVoCat" in content_5m
-    print(f"[OK] Guió de 5 minuts verificat ({words} paraules, inclou StyleTTS 2 i Matxa-TTS v2).")
+    print(f"[OK] Guió de 5 minuts verificat ({words} paraules, inclou UPC Ona i Matxa-TTS v2).")
 
 
 def test_voice_preview_manager():
@@ -192,12 +192,12 @@ def test_default_model_and_naming():
     import inspect
     from ui.main_window import MainWindow
     src = inspect.getsource(MainWindow)
-    assert "self.tts_engine = self.matxa_engine" in src or "self.tts_engine = self.styletts_engine" in src, "El motor per defecte ha d'estar definit correctament"
-    assert 'self.title(f"Pòdcasts amb Estil i Matxa v{APP_VERSION}")' in src or 'self.title("Pòdcasts amb Estil i Matxa")' in src, "El títol ha de ser 'Pòdcasts amb Estil i Matxa'"
+    assert "self.tts_engine = self.matxa_engine" in src, "El motor per defecte ha d'estar definit correctament"
+    assert 'self.title(f"Pòdcasts amb Matxa v{APP_VERSION}")' in src or 'self.title("Pòdcasts amb Matxa")' in src, "El títol ha de ser 'Pòdcasts amb Matxa'"
     assert "Matxa-TTS v2" in src, "El motor Matxa-TTS v2 ha de figurar al desplegable de motors"
     assert "UPC Ona FestCat" in src, "El motor UPC Ona FestCat ha de figurar al desplegable de motors"
-    assert "Veus d'estil i Microsoft Neural" in src, "El motor de veus d'estil i Microsoft Neural ha de figurar al desplegable"
-    print("[OK] Motors de síntesi (Matxa-TTS v2, UPC Ona, Veus d'estil Online) i nom oficial verificats.")
+    assert "Veus neuronals ca-ES" in src, "El motor de veus neuronals ca-ES ha de figurar al desplegable"
+    print("[OK] Motors de síntesi (Matxa-TTS v2, UPC Ona, Veus neuronals Online) i nom oficial verificats.")
 
 
 def test_components_manager():

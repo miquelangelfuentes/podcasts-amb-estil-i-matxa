@@ -11,7 +11,7 @@ Veu presentadora: veu=ona pan=0% velocitat=1.0 pitch=0
 
 ---
 
-Veu presentadora: Us donem la benvinguda a aquesta guia ràpida. Avui us expliquem com funciona l'aplicació «Pòdcasts amb Estil i Matxa» en la modalitat d'una sola veu.
+Veu presentadora: Us donem la benvinguda a aquesta guia ràpida. Avui us expliquem com funciona l'aplicació «Pòdcasts amb Matxa» en la modalitat d'una sola veu.
 
 [PAUSA: 500ms]
 
@@ -23,7 +23,7 @@ Veu presentadora: Per escriure el vostre guió, només cal redactar el text enca
 
 [PAUSA: 500ms]
 
-Veu presentadora: Des de la taula de control, podeu triar el model de síntesi que preferiu: StyleTTS 2, que destaca per la seva expressivitat i clonatge de veu, o Matxa-TTS versió dos, amb setze variants dialectals catalanes. També podeu ajustar la velocitat de lectura o afegir el normalitzador alVoCat per tractar xifres i sigles de manera impecable.
+Veu presentadora: Des de la taula de control, podeu triar el model de síntesi que preferiu: Matxa-TTS versió dos, amb setze variants dialectals catalanes, o la veu neuronal UPC Ona d'alta fidelitat. També podeu ajustar la velocitat de lectura o afegir el normalitzador alVoCat per tractar xifres i sigles de manera impecable.
 
 [PAUSA: 400ms]
 

@@ -1,7 +1,7 @@
 """
 Gestor de Mostres de Veu (Voice Preview Manager).
 Sintetitza i emmagatzema en memòria cau fragments breus d'àudio per a cada veu
-catalana (Matxa-TTS i StyleTTS) per permetre l'escolta prèvia a la interfície.
+catalana (Matxa-TTS, UPC Ona i veus neuronals) per permetre l'escolta prèvia a la interfície.
 """
 
 import os
@@ -55,7 +55,7 @@ class VoicePreviewManager:
         # Matxa-TTS Septentrional
         "laura": "Hola, soc la Laura. Aquesta és la meva veu en català septentrional.",
         "jordi": "Hola, soc en Jordi. Aquesta és la meva veu en català septentrional de Perpinyà.",
-        # StyleTTS / Veus generals
+        # Veus neuronals online
         "bet": "Hola, soc la Bet. Aquesta és la meva veu en català per als vostres pòdcasts.",
         "teia": "Hola, soc la Teia. Aquesta és la meva veu narrativa en català.",
         "joana": "Hola, soc la Joana. Aquesta és la meva veu estàndard en català.",

@@ -33,7 +33,7 @@ class VersionCheckModal(ctk.CTkToplevel):
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
-        self.title("Comprovació de versió — Pòdcasts amb Estil i Matxa")
+        self.title("Comprovació de versió — Pòdcasts amb Matxa")
         self.geometry("640x560")
         self.minsize(580, 480)
         self.configure(fg_color=MatchaTheme.BG_MAIN)
@@ -184,7 +184,7 @@ class VersionCheckModal(ctk.CTkToplevel):
     def _check_github_worker(self):
         time.sleep(0.3)
         try:
-            headers = {"User-Agent": "PodcastsAmbEstilIMatxa-Updater"}
+            headers = {"User-Agent": "PodcastsAmbMatxa-Updater"}
             commits_url = f"https://api.github.com/repos/{GITHUB_OWNER}/{GITHUB_REPO}/commits?per_page=5"
 
             res = requests.get(commits_url, headers=headers, timeout=12)
@@ -299,7 +299,7 @@ class VersionCheckModal(ctk.CTkToplevel):
                 except Exception:
                     pass
                 if not zip_url:
-                    zip_url = f"https://github.com/{GITHUB_OWNER}/{GITHUB_REPO}/releases/latest/download/PodcastsAmbEstilIMatxa-v{APP_VERSION}-Windows.zip"
+                    zip_url = f"https://github.com/{GITHUB_OWNER}/{GITHUB_REPO}/releases/latest/download/PodcastsAmbMatxa-v{APP_VERSION}-Windows.zip"
             else:
                 zip_url = f"https://github.com/{GITHUB_OWNER}/{GITHUB_REPO}/archive/refs/heads/main.zip"
 
@@ -351,7 +351,7 @@ class VersionCheckModal(ctk.CTkToplevel):
                 exe_dir = os.path.dirname(sys.executable)
                 bat_path = os.path.join(temp_dir, "update_podcasts.bat")
                 bat_content = f"""@echo off
-echo Actualitzant Podcasts amb Estil i Matxa...
+echo Actualitzant Podcasts amb Matxa...
 timeout /t 2 /nobreak > nul
 robocopy "{source_root}" "{exe_dir}" /E /XO /XD models .venv /R:2 /W:2 > nul
 start "" "{sys.executable}"

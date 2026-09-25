@@ -1,10 +1,10 @@
 <p align="center">
-  <img src="assets/banner.png" alt="Pòdcasts amb Estil i Matxa" width="100%">
+  <img src="assets/banner.png" alt="Pòdcasts amb Matxa" width="100%">
 </p>
 
-# 🎙️ Pòdcasts amb Estil i Matxa
+# 🎙️🍵 Pòdcasts amb Matxa
 
-> **Aplicació d'escriptori autònoma per a Windows de creació de pòdcasts en català d'una, dues o tres veus, en local i sense límit de durada.**  
+> **Aplicació d'escriptori autònoma per a Windows i Linux de creació de pòdcasts en català d'una, dues o tres veus, en local i sense límit de durada.**  
 > Dissenyada per a materials educatius i divulgatius.  
 
 ---
@@ -13,13 +13,13 @@
 
 Per utilitzar l'aplicació a Windows **sense necessitat d'instal·lar Python ni compilar**:
 1. Descarrega el paquet complet de la **versió oficial actualitzada v1.1.0**:
-   👉 **[Descarregar PodcastsAmbEstilIMatxa v1.1.0 per a Windows (.zip)](https://github.com/miquelangelfuentes/podcasts-amb-estil-i-matxa/releases/download/v1.1.0/PodcastsAmbEstilIMatxa-v1.1.0-Windows.zip)** (~402 MB)
+   👉 **[Descarregar PodcastsAmbMatxa v1.1.0 per a Windows (.zip)](https://github.com/miquelangelfuentes/podcasts-amb-estil-i-matxa/releases/download/v1.1.0/PodcastsAmbMatxa-v1.1.0-Windows.zip)** (~402 MB)
 2. Descomprimeix el fitxer ZIP en una carpeta del teu ordinador.
-3. Executa directament `PodcastsAmbEstilIMatxa.exe`.
+3. Executa directament `PodcastsAmbMatxa.exe`.
 4. A la barra superior, fes clic a **`📦 Models`** per descarregar els models de síntesi de veu des d'Hugging Face amb un sol clic.
 
 > [!NOTE]
-> **Versió actual v1.1.0**: l'arxiu descarregat s'anomena amb el nom i número de la versió actualitzada (`PodcastsAmbEstilIMatxa-v1.1.0-Windows.zip`) i inclou el nou motor UPC Ona FestCat, la pista de música de fons amb bucle i control de volum, el comprovador de versió i el número de versió visible tant a la barra de títol com a la capçalera de l'aplicació.
+> **Versió actual v1.1.0**: l'arxiu descarregat s'anomena amb el nom i número de la versió actualitzada (`PodcastsAmbMatxa-v1.1.0-Windows.zip`) i inclou el nou motor UPC Ona FestCat, la pista de música de fons amb bucle i control de volum, el comprovador de versió i el número de versió visible tant a la barra de títol com a la capçalera de l'aplicació.
 
 ---
 
@@ -35,10 +35,9 @@ Per utilitzar l'aplicació a Windows **sense necessitat d'instal·lar Python ni 
   - **`BSC-LT/Matxa-TTS-v2-Multiaccent`**: model acústic d'última generació basat en transport òptim i flow matching (100% offline), amb 16 variants dialectals del català (central, balear, valencià, nord-occidental i septentrional).
   - **`UPC FestCat Ona (Piper Neural)`**: veu neuronal d'alta definició de la Universitat Politècnica de Catalunya (100% offline), pes de només 63 MB i gran calidesa acústica.
   - **`projecte-aina/alvocat-vocos-22khz`**: vocoder neuronal Vocos i normalitzador desenvolupat en el marc del Projecte AINA (100% offline).
-  - **`Veus d'estil i Microsoft Neural (Online)`**: servei al núvol integrat per a 9 estils expressius de veu (Joana, Enric, Ona, Pau, etc.).
+  - **`Veus neuronals ca-ES (Online)`**: servei al núvol integrat per a 9 veus expressives (Joana, Enric, Ona, Pau, etc.).
 - **Comprovador d'actualitzacions integrat (`🔄 Comprova versió`)**: verifica directament contra el repositori GitHub si hi ha noves versions o millores i permet actualitzar l'aplicació en un sol clic.
-- **Selector directe de motor**: canvi immediat entre Matxa-TTS v2 (offline, 16 veus), UPC Ona (offline, 63 MB) i Veus d'estil / Microsoft Neural (online, 9 estils) des de la capçalera del panell de locutors.
-- **Clonació de veu zero-shot**: clona la veu de qualsevol persona aportant una petita mostra d'àudio en format WAV (5-15 segons).
+- **Selector directe de motor**: canvi immediat entre Matxa-TTS v2 (offline, 16 veus), UPC Ona (offline, 63 MB) i Veus neuronals ca-ES (online, 9 veus) des de la capçalera del panell de locutors.
 - **Mostres instantànies de veu (0 ms)**: escolta en directe qualsevol veu catalana amb el botó `▶ Escolta`.
 - **Pista de música o so de fons (MP3 / WAV / OGG / FLAC)**:
   - Permet afegir fàcilment una banda sonora, sintonia d'obertura o ambientació sonora de fons al pòdcast.
@@ -75,7 +74,6 @@ Per utilitzar l'aplicació a Windows **sense necessitat d'instal·lar Python ni 
 │   ├── 📄 main_window.py         # Finestra principal amb editor i selecció d'1, 2 o 3 veus
 │   ├── 📄 components_modal.py    # Gestor visual de models i comprovació del sistema
 │   ├── 📄 version_check_modal.py # Comprovador d'actualitzacions i descàrrega GitHub
-│   ├── 📄 voice_clone_modal.py   # Modal per a clonació de veu zero-shot
 │   └── 📄 player_widget.py       # Reproductor d'àudio i exportador MP3
 ├── 📁 docs/                      # Guies i documentació
 │   ├── 📄 GUIA_PROMPT_LLM.md     # Indicació per a models de llenguatge (ChatGPT/Claude/Gemini)
@@ -101,7 +99,7 @@ Per utilitzar l'aplicació a Windows **sense necessitat d'instal·lar Python ni 
 
 ### 🪟 A Windows
 - **Llançament directe (Python)**: fes doble clic a `run_app.bat` o obre una consola PowerShell i executa `py app.py`.
-- **Compilació a executable (.exe)**: fes doble clic a `build_exe.bat` o executa `py build_exe.py`. L'executable autònom es generarà a `dist/PodcastsAmbEstilIMatxa/PodcastsAmbEstilIMatxa.exe` i es comprimirà automàticament a `dist/PodcastsAmbEstilIMatxa-v1.1.0-Windows.zip`.
+- **Compilació a executable (.exe)**: fes doble clic a `build_exe.bat` o executa `py build_exe.py`. L'executable autònom es generarà a `dist/PodcastsAmbMatxa/PodcastsAmbMatxa.exe` i es comprimirà automàticament a `dist/PodcastsAmbMatxa-v1.1.0-Windows.zip`.
 
 ### 🐧 A Linux (Ubuntu, Debian, Linkat, Fedora, Arch, Linux Mint)
 1. **Instal·la les dependències de sistema necessàries**:
@@ -127,7 +125,7 @@ Per utilitzar l'aplicació a Windows **sense necessitat d'instal·lar Python ni 
    ```bash
    python3 build_linux.py
    ```
-   Es generarà el binari autònom i el paquet comprimit `dist/PodcastsAmbEstilIMatxa-v1.1.0-Linux-x86_64.tar.gz`.
+   Es generarà el binari autònom i el paquet comprimit `dist/PodcastsAmbMatxa-v1.1.0-Linux-x86_64.tar.gz`.
 
 ---
 
@@ -139,7 +137,7 @@ L'aplicació inclou un centre de control integrat accessible des del botó **`�
 - **Descarregar per separat de forma modular**: obtenir directament des d'Hugging Face cadascun dels components amb suport per a represa automàtica i negociació de certificats SSL:
   - **Vocoder alVoCat 22kHz (100% Offline)** (~51,2 MB): vocoder neuronal del Projecte AINA d'alta fidelitat acústica a 22.050 Hz i normalització lingüística.
   - **Matxa-TTS v2 multiaccent (100% Offline)** (~260,2 MB): model acústic autònom en format ONNX amb 16 veus per a totes les variants dialectals del català (balear, central, nord-occidental, septentrional i valencià).
-  - **StyleTTS 2 Català (BSC-LT Checkpoint complet)** (~2,05 GB): checkpoint PyTorch oficial de difusió neuronal del BSC-LT per a locució expressiva d'alta fidelitat i clonació de veu zero-shot.
+  - **UPC Ona FestCat (100% Offline)** (~63,2 MB): veu femenina neuronal d'alta fidelitat acústica de la Universitat Politècnica de Catalunya en format ONNX.
 - **Gestió del servei al núvol (Microsoft Neural ca-ES)**:
   - Permet utilitzar les veus Joana i Enric ocupant 0 MB locals, amb informació transparent sobre la necessitat de connexió a internet, límits de peticions per IP (*rate limiting*) i absència de SLA.
 - **Diagnòstic de maquinari («Comprovar el meu equip»)**:

@@ -16,7 +16,7 @@ Veu 2: veu=pau pan=+25% velocitat=1.0 pitch=0
 
 ---
 
-Veu presentadora: Benvingudes i benvinguts a aquest episodi demostratiu. En aquest programa us explicarem amb detall com funciona la modalitat de tres veus a l'aplicació «Pòdcasts amb Estil i Matxa». Comptem amb la col·laboració de la Veu 1 i de la Veu 2. Veu 1, com s'estructura aquest format?
+Veu presentadora: Benvingudes i benvinguts a aquest episodi demostratiu. En aquest programa us explicarem amb detall com funciona la modalitat de tres veus a l'aplicació «Pòdcasts amb Matxa». Comptem amb la col·laboració de la Veu 1 i de la Veu 2. Veu 1, com s'estructura aquest format?
 
 [PAUSA: 500ms]
 
@@ -32,7 +32,7 @@ Veu 1: L'aplicació disposa d'un mode de guió net on només cal escriure qui pa
 
 [PAUSA: 500ms]
 
-Veu 2: A més, l'aplicació integra dos motors neuronals d'alta tecnologia desenvolupats pel Barcelona Supercomputing Center: StyleTTS 2, amb gran expressivitat i opció de clonació de veu a partir d'una mostra d'àudio curta, i Matxa-TTS versió dos, que ofereix setze veus en diferents varietats dialectals del català. Tot plegat recolzat pel normalitzador lingüístic alVoCat del Projecte AINA.
+Veu 2: A més, l'aplicació integra motors neuronals d'alta tecnologia desenvolupats en el marc del Projecte AINA i institucions catalanes: Matxa-TTS versió dos, del Barcelona Supercomputing Center, que ofereix setze veus en diferents varietats dialectals del català, i la veu neuronal UPC Ona d'alta fidelitat. Tot plegat recolzat pel normalitzador lingüístic alVoCat.
 
 [PAUSA: 500ms]
 

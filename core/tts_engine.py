@@ -117,13 +117,13 @@ class MicrosoftNeuralCatalanEngine:
         self.cloned_profiles: Dict[str, Dict[str, Any]] = {}
 
     def ensure_loaded(self, on_status_callback: Optional[Callable[[str], None]] = None) -> bool:
-        """Carrega el motor StyleTTS 2 / alVoCat si és necessari."""
+        """Carrega el motor de veus neuronals expressives / alVoCat si és necessari."""
         if on_status_callback:
-            on_status_callback("Carregant motor StyleTTS 2 / alVoCat...")
+            on_status_callback("Carregant motor de veus neuronals expressives / alVoCat...")
         return True
 
     def unload(self):
-        """Allibera recursos de memòria del motor StyleTTS 2."""
+        """Allibera recursos de memòria del motor de veus neuronals expressives."""
         if hasattr(self, "vocoder"):
             self.vocoder.unload()
         import gc

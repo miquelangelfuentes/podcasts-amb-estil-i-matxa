@@ -16,14 +16,14 @@ from ui.version_check_modal import APP_VERSION
 
 def build_linux():
     print("=" * 60)
-    print(f"  Iniciant compilació de 'Pòdcasts amb Estil i Matxa' v{APP_VERSION} (Linux)")
+    print(f"  Iniciant compilació de 'Pòdcasts amb Matxa' v{APP_VERSION} (Linux)")
     print("=" * 60)
 
     base_dir = os.path.dirname(os.path.abspath(__file__))
     dist_dir = os.path.join(base_dir, "dist")
     icon_png = os.path.join(base_dir, "assets", "icon_minimal.png")
 
-    target_dist = os.path.join(dist_dir, "PodcastsAmbEstilIMatxa-Linux")
+    target_dist = os.path.join(dist_dir, "PodcastsAmbMatxa-Linux")
     if os.path.exists(target_dist):
         shutil.rmtree(target_dist, ignore_errors=True)
 
@@ -43,7 +43,7 @@ def build_linux():
     cmd = [
         sys.executable,
         "-m", "PyInstaller",
-        "--name=PodcastsAmbEstilIMatxa",
+        "--name=PodcastsAmbMatxa",
         "--noconsole",
         "--onedir",
         "--clean",
@@ -86,13 +86,13 @@ def build_linux():
     result = subprocess.run(cmd, cwd=base_dir)
 
     if result.returncode == 0:
-        built_dir = os.path.join(dist_dir, "PodcastsAmbEstilIMatxa")
-        tar_name = f"PodcastsAmbEstilIMatxa-v{APP_VERSION}-Linux-x86_64.tar.gz"
+        built_dir = os.path.join(dist_dir, "PodcastsAmbMatxa")
+        tar_name = f"PodcastsAmbMatxa-v{APP_VERSION}-Linux-x86_64.tar.gz"
         tar_path = os.path.join(dist_dir, tar_name)
 
         print(f"\nEmpaquetant a arxiu comprimit: {tar_name}...")
         with tarfile.open(tar_path, "w:gz") as tar:
-            tar.add(built_dir, arcname="PodcastsAmbEstilIMatxa")
+            tar.add(built_dir, arcname="PodcastsAmbMatxa")
 
         tar_mb = os.path.getsize(tar_path) / (1024 * 1024)
         print("\n" + "=" * 60)

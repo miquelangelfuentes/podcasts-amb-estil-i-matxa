@@ -1,12 +1,11 @@
 # Guia d'opcions SSML, prosòdia i fonètica dialectal en català
 
-Aquesta guia detalla les possibilitats del **Speech Synthesis Markup Language (SSML)**, el control prosòdic i el tractament fonètic de les diferents varietats dialectals catalanes a l'aplicació «Pòdcasts amb Estil i Matxa».
+Aquesta guia detalla les possibilitats del **Speech Synthesis Markup Language (SSML)**, el control prosòdic i el tractament fonètic de les diferents varietats dialectals catalanes a l'aplicació «Pòdcasts amb Matxa».
 
 L'aplicació integra els models oficials desenvolupats pel **Barcelona Supercomputing Center (BSC-LT)**, la **Universitat Politècnica de Catalunya (UPC)** i el **Projecte AINA**:
 - **BSC-LT/matxa-tts-v2-ca-multiaccent-graphemes**: model basat en *Optimal-Transport Conditional Flow Matching* (OT-CFM) i vocoder WaveNeXt, amb 16 veus autèntiques que cobreixen tots els dialectes catalans (100% offline, motor predeterminat).
 - **UPC Ona FestCat (Piper Neural)**: model acústic neuronal d'alta definició a 22.050 Hz del corpus FestCat de la UPC (100% offline, 63 MB).
-- **Microsoft Neural ca-ES (Edge TTS)**: servei al núvol alternatiu amb veus Joana i Enric.
-- **BSC-LT/styletts2-catalan-multispeaker**: model basat en difusió d'estil neuronal, representacions WavLM i PL-BERT en català, i clonació de veu zero-shot.
+- **Microsoft Neural / Veus expressives ca-ES (Edge TTS)**: servei al núvol alternatiu amb veus Joana, Enric, Ona, Pau, Bet, etc.
 - **projecte-aina/alvocat-vocos-22khz**: vocoder d'alta fidelitat acústica a 22.050 Hz i mòdul de normalització fonètica i ortogràfica del català.
 
 ---
@@ -24,12 +23,12 @@ El sistema no es limita al català central, sinó que reprodueix de forma genuï
 2. **Català balear (Mallorca, Menorca, Eivissa, Formentera)**:
    - **Vocalisme illenc**: realització genuïna de la vocal neutra tònica [ə] pròpia del mallorquí tradicional.
    - **Article salat i lèxic**: sintetització fluida de les combinacions amb l'article salat (*es*, *sa*, *ses*, *s'*), amb cadències entonatives pròpies de les Illes.
-   - **Veus de referència**: 'olga' (femenina, Mallorca), 'quim' (masculina, Menorca), 'bm' (Bernat, Mallorca), 'lluc' (StyleTTS 2).
+   - **Veus de referència**: 'olga' (femenina, Mallorca), 'quim' (masculina, Menorca), 'bm' (Bernat, Mallorca).
 
 3. **Valencià (Comunitat Valenciana)**:
    - **Vocalisme occidental**: manteniment del sistema de 7 vocals tòniques sense vocal neutra, amb *e* i *o* àtones ben diferenciades d'*a* i *u*.
    - **Distinció consonàntica**: obertura de les *e* tòniques segons la norma valenciana i pronúncia genuïna de les terminacions verbals en *-e*.
-   - **Veus de referència**: 'gina' (femenina), 'lluc' (masculina), 'arnau' (masculina), 'berta' (femenina), 'pere' (StyleTTS 2).
+   - **Veus de referència**: 'gina' (femenina), 'lluc' (masculina), 'arnau' (masculina), 'berta' (femenina), 'pere' (masculina).
 
 4. **Català nord-occidental (Lleida, Alt Pirineu, Terres de Ponent i de l'Ebre)**:
    - **Vocalisme de Ponent**: oposició clara entre [a] i [e] en posició àtona inicial o interior.
@@ -44,7 +43,7 @@ El sistema no es limita al català central, sinó que reprodueix de forma genuï
 
 ## 2. La puntuació escrita com a prosòdia natural
 
-Els motors neuronals de l'aplicació (Matxa-TTS v2, UPC Ona i StyleTTS 2) extreuen la intenció prosòdica directament dels signes de puntuació:
+Els motors neuronals de l'aplicació (Matxa-TTS v2, UPC Ona i les veus expressives) extreuen la intenció prosòdica directament dels signes de puntuació:
 - **La coma `,`**: introdueix una corba melòdica ascendent suau i una pausa respiratòria d'entre 150 i 250 ms.
 - **El punt i seguit `.`**: aplica una cadència descendent declarativa conclusiva.
 - **L'interrogant `?`**: genera una elevació melòdica final característica de la pregunta en català.
@@ -121,19 +120,7 @@ L'aplicació recrea un estudi de ràdio mitjançant el posicionament de cada veu
 
 ---
 
-## 5. Clonació de veu zero-shot (StyleTTS 2)
-
-StyleTTS 2 permet reproduir qualsevol timbre de veu català sense necessitat d'entrenament previ:
-1. **Mostra de referència òptima**:
-   - Durada recomanada: entre **5 i 15 segons**.
-   - Àudio en format WAV o MP3 net, sense música de fons, reverberació ni sorolls.
-   - Veu en català expressant el to i la intenció desitjats (el model transfereix tant la resposta en freqüència com l'estil d'articulació).
-2. **Assignació**:
-   - Mitjançant el botó **`🌿 Clonar veu...`** de la interfície o afegint `veu=clon=ruta_audio.wav` a la configuració de la veu.
-
----
-
-## 6. Masterització EBU R128 i exportació
+## 5. Masterització EBU R128 i exportació
 
 En finalitzar la síntesi de totes les intervencions, l'aplicació aplica un procés de masterització professional:
 - **Integració de música o ambient de fons**: si s'ha seleccionat una pista d'àudio (MP3, WAV, OGG, FLAC), es mescla automàticament amb la locució en bucle continu (*loop*) amb *cross-fade* de 20 ms, esvaïment d'entrada (*fade-in* d'1 s) i sortida (*fade-out* de 2 s), i un limitador suau de pic abans de la normalització.

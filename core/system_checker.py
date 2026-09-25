@@ -39,10 +39,10 @@ class SystemChecker:
             free_gb = round(usage.free / (1024 ** 3), 2)
             total_gb = round(usage.total / (1024 ** 3), 2)
 
-            # Requisits: Matxa-TTS ocupa ~311 MB; StyleTTS 2 complet ocupa ~2,05 GB
-            if free_gb >= 3.0:
+            # Requisits: Matxa-TTS, alVoCat i UPC Ona ocupen ~370 MB en total
+            if free_gb >= 2.0:
                 status = "ok"
-                msg = f"{free_gb} GB lliures de {total_gb} GB (Més que suficient per instal·lar tots els models, incloent StyleTTS 2 complet)"
+                msg = f"{free_gb} GB lliures de {total_gb} GB (Més que suficient per instal·lar tots els models autònoms)"
             elif free_gb >= 1.0:
                 status = "ok"
                 msg = f"{free_gb} GB lliures de {total_gb} GB (Suficient per a la síntesi autònoma Matxa-TTS v2 i alVoCat)"
