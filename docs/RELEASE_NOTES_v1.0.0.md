@@ -1,6 +1,6 @@
-# Pòdcasts amb Estil i Matxa v1.0.0 🎙️🍵
+# Pòdcasts amb Estil i Matxa (versió actualitzada) 🎙️🍵
 
-Primer llançament oficial de **Pòdcasts amb Estil i Matxa**, l'estudi d'escriptori autònom per a la creació i locució de guions de pòdcast en català amb intel·ligència artificial.
+Versió actualitzada de **Pòdcasts amb Estil i Matxa**, l'estudi d'escriptori autònom per a la creació i locució de guions de pòdcast en català amb intel·ligència artificial. Aquesta compilació substitueix la versió 1.0.0 inicial i incorpora totes les darreres millores.
 
 ### ✨ Novetats i funcionalitats destacades
 - **Motors de síntesi de veu catalana d'última generació**:

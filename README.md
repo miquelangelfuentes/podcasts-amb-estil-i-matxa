@@ -12,11 +12,14 @@
 ## 📥 Descarrega directa per a Windows (.exe)
 
 Per utilitzar l'aplicació a Windows **sense necessitat d'instal·lar Python ni compilar**:
-1. Descarrega el paquet complet de la darrera versió:
-   👉 **[Descarregar PodcastsAmbEstilIMatxa-v1.0.0-Windows.zip](https://github.com/miquelangelfuentes/podcasts-amb-estil-i-matxa/releases/download/v1.0.0/PodcastsAmbEstilIMatxa-v1.0.0-Windows.zip)** (~397 MB)
+1. Descarrega el paquet complet de la **versió actualitzada** (ja no es baixa la versió 1.0.0 inicial, sinó la darrera compilació amb la funció de música de fons, prova d'àudio instantània i rendiment optimitzat):
+   👉 **[Descarregar la versió actualitzada de PodcastsAmbEstilIMatxa per a Windows (.zip)](https://github.com/miquelangelfuentes/podcasts-amb-estil-i-matxa/releases/latest/download/PodcastsAmbEstilIMatxa-v1.0.0-Windows.zip)** (~402 MB)
 2. Descomprimeix el fitxer ZIP en una carpeta del teu ordinador.
 3. Executa directament `PodcastsAmbEstilIMatxa.exe`.
 4. A la barra superior, fes clic a **`📦 Models`** per descarregar els models de síntesi de veu des d'Hugging Face amb un sol clic.
+
+> [!NOTE]
+> **Important sobre la descàrrega**: l'enllaç superior descarrega directament la darrera compilació actualitzada de l'aplicació. Encara que el fitxer ZIP mantingui el nom base per compatibilitat amb l'enllaç de la release, ja no es baixa la versió 1.0.0 inicial, sinó la versió revisada i actualitzada amb la pista de música de fons i millores de rendiment.
 
 ---
 
