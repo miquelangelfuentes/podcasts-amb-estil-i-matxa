@@ -126,8 +126,9 @@ Aquest document és una **guia completa de context i indicacions de referència*
 
 ## 7. Llicències i autoria
 
-- **Models lingüístics i xarxes neuronals:** desenvolupats pel **Barcelona Supercomputing Center (BSC-LT)** en el marc del **Projecte AINA**, finançats pel Departament de Polítiques Digitals de la Generalitat de Catalunya.
-- **Codi font de l'aplicació:** distribuït com a programari lliure sota llicència oberta a GitHub per a la comunitat educativa i la societat civil.
+- **Models lingüístics i xarxes neuronals:** desenvolupats pel **Barcelona Supercomputing Center (BSC-LT)**, la **Universitat Politècnica de Catalunya (UPC)** i el **Projecte AINA** (Generalitat de Catalunya).
+- **Autoria i desenvolupament:** creat mitjançant programació guiada per intencions (*vibe coding*) amb Google Antigravity per **Miquel Àngel Fuentes**, amb validació humana integral segons la guia de Vibe Coding Educatiu Responsable (VCER).
+- **Codi font de l'aplicació:** distribuït com a programari lliure sota llicència GNU AGPL v3 a GitHub per a la comunitat educativa i la societat civil.
 - **Llicència de documentació i exemples:** Creative Commons Reconeixement-CompartirIgual 4.0 Internacional (CC BY-SA 4.0).
 
 ---

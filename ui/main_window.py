@@ -138,6 +138,7 @@ class MainWindow(ctk.CTk):
         self._is_bg_previewing: bool = False
 
         self._build_ui()
+        self._bind_keyboard_shortcuts()
         self._load_default_sample()
 
     def _get_logical_work_area(self):
@@ -278,6 +279,19 @@ class MainWindow(ctk.CTk):
         )
         self.badge.pack(side="left")
 
+        # Insígnia de mode escola (oculta per defecte, visible quan el mode està actiu)
+        self.escola_badge = ctk.CTkLabel(
+            brand_frame,
+            text="🛡️ Mode escola: 0% dades a internet (RGPD protegit)",
+            font=MatchaTheme.FONT_SMALL_BOLD,
+            fg_color="#D4EDDA",
+            text_color="#1A4731",
+            corner_radius=8,
+            padx=8,
+            pady=2
+        )
+        # No es fa pack() aquí; s'activa amb _toggle_escola_mode
+
         # Botons d'ajuda i accessibilitat a la dreta amb contrast accessible
         help_frame = ctk.CTkFrame(header, fg_color="transparent")
         help_frame.pack(side="right", padx=18, pady=10)
@@ -348,6 +362,18 @@ class MainWindow(ctk.CTk):
             command=self._show_version_check_modal
         )
         btn_version.pack(side="left", padx=3)
+
+        # Commutador «Mode escola 100% offline» — inhabilita el motor al núvol
+        self._escola_mode = False
+        self.btn_escola = CleanButton(
+            help_frame,
+            style="ghost",
+            text="🏫 Mode escola",
+            width=110,
+            height=28,
+            command=self._toggle_escola_mode
+        )
+        self.btn_escola.pack(side="left", padx=3)
 
         # 2. Barra d'estructura de veus global a la part superior (1 veu, 2 veus o 3 veus)
         top_bar = ctk.CTkFrame(self, fg_color="transparent")
@@ -1592,6 +1618,60 @@ class MainWindow(ctk.CTk):
     def _on_models_updated(self):
         """Callback executat en descarregar o eliminar models."""
         pass
+
+    def _toggle_escola_mode(self):
+        """Activa o desactiva el Mode escola (100% offline sense motor al núvol)."""
+        self._escola_mode = not self._escola_mode
+
+        if self._escola_mode:
+            # Activat: marca el botó, mostra insígnia, elimina motor al núvol
+            self.btn_escola.configure(
+                fg_color=MatchaTheme.PRIMARY,
+                text_color="#FFFFFF",
+                text="🏫 Mode escola ✔"
+            )
+            self.badge.pack_forget()
+            self.escola_badge.pack(side="left", padx=(8, 0))
+
+            # Elimina l'opció Online del desplegable si hi és
+            current_values = list(self.engine_combo.cget("values"))
+            offline_values = [v for v in current_values if "Online" not in v]
+            self.engine_combo.configure(values=offline_values)
+            # Si l'usuari estava al motor Online, torna al Matxa-TTS
+            if "Online" in self.engine_combo.get():
+                self.engine_combo.set("🍵 Matxa-TTS v2 (100% Offline — 16 veus BSC-LT)")
+                self._on_engine_change("🍵 Matxa-TTS v2 (100% Offline — 16 veus BSC-LT)")
+        else:
+            # Desactivat: restaura el botó, oculta insígnia, torna el motor al núvol
+            self.btn_escola.configure(
+                fg_color="#FFFFFF",
+                text_color="#223E2A",
+                text="🏫 Mode escola"
+            )
+            self.escola_badge.pack_forget()
+            self.badge.pack(side="left")
+
+            # Restaura l'opció Online al desplegable
+            all_engines = [
+                "🍵 Matxa-TTS v2 (100% Offline — 16 veus BSC-LT)",
+                "🎙️ UPC FestCat (100% Offline — Veus neuronals Ona i Pau)",
+                "☁️ Veus neuronals ca-ES (Online — 9 veus expressives)"
+            ]
+            self.engine_combo.configure(values=all_engines)
+
+    def _bind_keyboard_shortcuts(self):
+        """Vincula les dreceres de teclat globals d'accessibilitat."""
+        # Ctrl+G o Ctrl+Intro: Generar pòdcast
+        self.bind_all("<Control-g>", lambda e: self._start_generation())
+        self.bind_all("<Control-Return>", lambda e: self._start_generation())
+        # Ctrl+S: Desar guió
+        self.bind_all("<Control-s>", lambda e: self._save_script_file())
+        # Ctrl+O: Obrir guió
+        self.bind_all("<Control-o>", lambda e: self._open_script_file())
+        # F1: Obrir guia SSML
+        self.bind_all("<F1>", lambda e: self._show_ssml_guide())
+        # Escape durant la generació: cancel·lar
+        self.bind_all("<Escape>", lambda e: self._cancel_generation() if self.is_generating else None)
 
     def _open_text_viewer(self, title, text):
         viewer = ctk.CTkToplevel(self)

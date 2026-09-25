@@ -168,7 +168,18 @@ Per distribuir l'aplicació a altres usuaris:
 
 ## 📜 Llicència i crèdits
 
-- **Autoria**: aplicació creada mitjançant codificació per intencions amb Google Antigravity per Miquel Àngel Fuentes.
+- **Autoria**: aplicació creada mitjançant codificació per intencions (*vibe coding*) amb Google Antigravity per Miquel Àngel Fuentes.
 - **Llicència de codi**: [AGPL v3](https://www.gnu.org/licenses/agpl-3.0.en.html)
-- **Llicència de continguts i materials didàctics**: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.es)
-- **Models de veu**: **Barcelona Supercomputing Center (BSC-LT)** i **Projecte AINA**.
+- **Llicència de continguts i materials didàctics**: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.ca)
+- **Models de veu**: **Barcelona Supercomputing Center (BSC-LT)**, **Universitat Politècnica de Catalunya (UPC)** i **Projecte AINA**.
+
+### 🤖 Ús d'Intel·ligència Artificial i verificació humana
+
+Aquesta aplicació s'ha desenvolupat mitjançant programació guiada per intencions (*vibe coding*) amb **Google Antigravity**, sota el disseny, direcció i supervisió de **Miquel Àngel Fuentes**.
+
+En compliment de les directrius de desenvolupament educatiu responsable (guia VCER), la persona autora ha realitzat personalment les següents **comprovacions i validacions manuals**:
+1. **Revisió lingüística i dialectal**: validació de tots els guions educatius d'exemple, les mostres de veu i la [Guia d'opcions SSML i fonètica en català](docs/GUIA_SSML_CATALA.md) d'acord amb la normativa de l'Institut d'Estudis Catalans (IEC) i els corpus del Projecte AINA i la UPC.
+2. **Validació acústica i d'àudio**: escolta exhaustiva i control de qualitat de les 18 veus neuronals (16 de Matxa-TTS v2 i 2 d'UPC FestCat), comprovació de l'encadenament suau (*cross-fade*) de la música de fons i verificació dels paràmetres de normalització EBU R128 (-16 LUFS) per evitar distorsions o artefactes acústics.
+3. **Bateria de proves automatitzada**: disseny i execució de la suite de proves de regressió (`test_features.py`) que audita la integritat dels models ONNX, la síntesi autònoma per CPU, el mesclador de pistes i l'exportació MP3.
+4. **Comprovació d'instal·lació i funcionament autònom**: proves manuals de l'executable i de l'entorn tant en sistemes Windows com Linux, verificant especialment el funcionament en mode avió (sense cap mena d'accés a internet).
+
