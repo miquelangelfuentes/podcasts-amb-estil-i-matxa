@@ -98,6 +98,22 @@ class SystemChecker:
                     avail_gb = round(stat.ullAvailPhys / (1024 ** 3), 2)
             except Exception:
                 pass
+        elif os.path.exists("/proc/meminfo"):
+            try:
+                meminfo = {}
+                with open("/proc/meminfo", "r", encoding="utf-8") as f:
+                    for line in f:
+                        parts = line.split(":")
+                        if len(parts) == 2:
+                            meminfo[parts[0].strip()] = parts[1].strip()
+                if "MemTotal" in meminfo:
+                    kb_total = float(meminfo["MemTotal"].split()[0])
+                    total_gb = round(kb_total / (1024 ** 2), 2)
+                if "MemAvailable" in meminfo:
+                    kb_avail = float(meminfo["MemAvailable"].split()[0])
+                    avail_gb = round(kb_avail / (1024 ** 2), 2)
+            except Exception:
+                pass
 
         if total_gb == 0.0:
             try:

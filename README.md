@@ -87,9 +87,11 @@ Per utilitzar l'aplicació a Windows **sense necessitat d'instal·lar Python ni 
 │   ├── 📄 plantilla_2veus.txt    # Plantilla de 2 veus (diàleg sense presentador)
 │   └── 📄 plantilla_3veus.txt    # Plantilla de 3 veus (tertúlia amb Veu presentadora)
 ├── 📁 assets/                    # Icona cerimonial de te matxa i bàner oficial
-├── 📄 build_exe.py               # Script de compilació a .exe amb PyInstaller
+├── 📄 build_exe.py               # Script de compilació a .exe amb PyInstaller (Windows)
 ├── 📄 build_exe.bat              # Fitxer per compilar amb un sol clic a Windows
-├── 📄 run_app.bat                # Llançador directe de l'aplicació
+├── 📄 build_linux.py             # Script de compilació per a Linux (x86_64)
+├── 📄 run_app.bat                # Llançador directe de l'aplicació per a Windows
+├── 📄 run_app.sh                 # Llançador directe de l'aplicació per a Linux
 └── 📄 requirements.txt           # Dependències de Python
 ```
 
@@ -97,18 +99,35 @@ Per utilitzar l'aplicació a Windows **sense necessitat d'instal·lar Python ni 
 
 ## 🚀 Com executar l'aplicació
 
-### Opció 1: llançament directe (Python)
-Fes doble clic a `run_app.bat` o obre una consola PowerShell i executa:
-```powershell
-py app.py
-```
+### 🪟 A Windows
+- **Llançament directe (Python)**: fes doble clic a `run_app.bat` o obre una consola PowerShell i executa `py app.py`.
+- **Compilació a executable (.exe)**: fes doble clic a `build_exe.bat` o executa `py build_exe.py`. L'executable autònom es generarà a `dist/PodcastsAmbEstilIMatxa/PodcastsAmbEstilIMatxa.exe` i es comprimirà automàticament a `dist/PodcastsAmbEstilIMatxa-v1.1.0-Windows.zip`.
 
-### Opció 2: compilació a executable Windows (.exe)
-Fes doble clic a `build_exe.bat` o executa:
-```powershell
-py build_exe.py
-```
-L'executable autònom es generarà a la carpeta `dist/PodcastsAmbEstilIMatxa/PodcastsAmbEstilIMatxa.exe`.
+### 🐧 A Linux (Ubuntu, Debian, Linkat, Fedora, Arch, Linux Mint)
+1. **Instal·la les dependències de sistema necessàries**:
+   - A Debian / Ubuntu / Linkat / Linux Mint:
+     ```bash
+     sudo apt update && sudo apt install -y python3-tk libsndfile1 espeak-ng python3-venv
+     ```
+   - A Fedora:
+     ```bash
+     sudo dnf install python3-tkinter libsndfile espeak-ng
+     ```
+   - A Arch Linux:
+     ```bash
+     sudo pacman -S tk libsndfile espeak-ng
+     ```
+2. **Llançament directe amb l'script**:
+   ```bash
+   chmod +x run_app.sh
+   ./run_app.sh
+   ```
+   L'script crea automàticament l'entorn virtual `.venv`, instal·la totes les dependències de Python i engega l'aplicació.
+3. **Compilació a paquet autònom per a Linux**:
+   ```bash
+   python3 build_linux.py
+   ```
+   Es generarà el binari autònom i el paquet comprimit `dist/PodcastsAmbEstilIMatxa-v1.1.0-Linux-x86_64.tar.gz`.
 
 ---
 
