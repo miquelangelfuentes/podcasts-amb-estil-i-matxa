@@ -16,6 +16,15 @@ Tots els canvis rellevants, correccions (*fixes*) i novetats del projecte **Pòd
   * Consulta l'API oficial de GitHub (`miquelangelfuentes/podcasts-amb-estil-i-matxa`) per contrastar la versió local amb l'últim commit o release disponible.
   * Mostra el resum dels darrers canvis introduïts al projecte.
   * Permet descarregar l'actualització i reiniciar automàticament l'aplicació amb el botó **«Actualitza l'aplicació»**.
+* **Integració de suport oficial per a Linux:**
+  * S'ha creat l'script llançador autònom `run_app.sh` que crea l'entorn virtual `.venv`, instal·la dependències i inicia l'aplicació en un sol pas.
+  * S'ha afegit el script de compilació `build_linux.py` per generar paquets binaris autònoms en arxiu comprimit (`PodcastsAmbEstilIMatxa-v1.1.0-Linux-x86_64.tar.gz`).
+  * S'ha integrat un flux de treball automatitzat de CI/CD amb GitHub Actions (`.github/workflows/build-linux.yml`) que compila la versió per a Linux sobre servidors Ubuntu a cada release.
+  * Lectura nativa de memòria RAM des de `/proc/meminfo` al mòdul de comprovació de maquinari (`SystemChecker`).
+* **Visualitzador de novetats millorat i identificació de versió:**
+  * S'ha substituït l'etiqueta d'una sola línia del modal de versions per un component `CTkTextbox` amb ajust automàtic de paraules (`wrap="word"`), evitant que cap missatge de commit o actualització surti retallat.
+  * S'ha incorporat el distintiu visual `v1.1.0` a la capçalera de l'aplicació i s'ha actualitzat el títol de la finestra amb la versió instal·lada.
+  * Nomenclatura oficial del paquet comprimit per a Windows amb el número de versió corresponent: `PodcastsAmbEstilIMatxa-v1.1.0-Windows.zip`.
 * **Previsualitzacions d'àudio integrades per a la veu UPC Ona:**
   * S'han generat i empaquetat mostres d'àudio WAV (`preview_upc_ona.wav`) a `assets/previews/` per permetre l'escolta instantània (0 ms) de la nova veu de la UPC.
 * **Gestor de descàrrega de models actualitzat:**

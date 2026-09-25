@@ -2,9 +2,11 @@
 
 Aquesta guia detalla les possibilitats del **Speech Synthesis Markup Language (SSML)**, el control prosòdic i el tractament fonètic de les diferents varietats dialectals catalanes a l'aplicació «Pòdcasts amb Estil i Matxa».
 
-L'aplicació integra els models oficials desenvolupats pel **Barcelona Supercomputing Center (BSC-LT)** i el **Projecte AINA**:
+L'aplicació integra els models oficials desenvolupats pel **Barcelona Supercomputing Center (BSC-LT)**, la **Universitat Politècnica de Catalunya (UPC)** i el **Projecte AINA**:
+- **BSC-LT/matxa-tts-v2-ca-multiaccent-graphemes**: model basat en *Optimal-Transport Conditional Flow Matching* (OT-CFM) i vocoder WaveNeXt, amb 16 veus autèntiques que cobreixen tots els dialectes catalans (100% offline, motor predeterminat).
+- **UPC Ona FestCat (Piper Neural)**: model acústic neuronal d'alta definició a 22.050 Hz del corpus FestCat de la UPC (100% offline, 63 MB).
+- **Microsoft Neural ca-ES (Edge TTS)**: servei al núvol alternatiu amb veus Joana i Enric.
 - **BSC-LT/styletts2-catalan-multispeaker**: model basat en difusió d'estil neuronal, representacions WavLM i PL-BERT en català, i clonació de veu zero-shot.
-- **BSC-LT/matxa-tts-v2-ca-multiaccent-graphemes**: model basat en *Optimal-Transport Conditional Flow Matching* (OT-CFM) i vocoder WaveNeXt, amb 16 veus autèntiques que cobreixen tots els dialectes catalans.
 - **projecte-aina/alvocat-vocos-22khz**: vocoder d'alta fidelitat acústica a 22.050 Hz i mòdul de normalització fonètica i ortogràfica del català.
 
 ---
@@ -42,7 +44,7 @@ El sistema no es limita al català central, sinó que reprodueix de forma genuï
 
 ## 2. La puntuació escrita com a prosòdia natural
 
-Tant StyleTTS 2 com Matxa-TTS v2 extreuen la intenció prosòdica directament dels signes de puntuació:
+Els motors neuronals de l'aplicació (Matxa-TTS v2, UPC Ona i StyleTTS 2) extreuen la intenció prosòdica directament dels signes de puntuació:
 - **La coma `,`**: introdueix una corba melòdica ascendent suau i una pausa respiratòria d'entre 150 i 250 ms.
 - **El punt i seguit `.`**: aplica una cadència descendent declarativa conclusiva.
 - **L'interrogant `?`**: genera una elevació melòdica final característica de la pregunta en català.

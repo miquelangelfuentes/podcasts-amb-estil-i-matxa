@@ -11,7 +11,7 @@ Aquest document és una **guia completa de context i indicacions de referència*
 | Paràmetre | Detall |
 | :--- | :--- |
 | **Nom de l'eina** | Pòdcasts amb Estil i Matxa |
-| **Tipus de programari** | Aplicació d'escriptori autònoma per a Windows (sense dependències externes) |
+| **Tipus de programari** | Aplicació d'escriptori autònoma per a Windows i Linux (sense dependències externes) |
 | **Finalitat principal** | Creació àgil, intuïtiva i professional de pòdcasts educatius i institucionals en català mitjançant intel·ligència artificial neuronal |
 | **Públic destinatari** | Docents de Primària, Secundària, Batxillerat, FP, Escoles Oficials d'Idiomes, Universitats, centres de formació d'adults (CFA) i creadors de contingut pedagògic |
 | **Llengua i varietats** | Català en totes les seves variants territorials (central, balear, valencià, nord-occidental i septentrional/rossellonès) |
@@ -107,9 +107,9 @@ Aquest document és una **guia completa de context i indicacions de referència*
 
 ## 5. Limitacions tècniques i recomanacions d'ús
 
-- **Requisits de maquinari:** funciona en qualsevol ordinador amb Windows 10 o Windows 11. No requereix targeta gràfica dedicada (GPU); els models ONNX estan optimitzats per a processadors estàndard (Intel o AMD). Es recomanen 4 GB de memòria RAM (òptim 8 GB) i espai lliure al disc (mínim 500 MB per a Matxa-TTS; 2,5 GB si es descarrega el checkpoint complet de StyleTTS 2).
+- **Requisits de maquinari:** funciona en qualsevol ordinador amb Windows 10 o Windows 11 i en distribucions Linux (Ubuntu, Debian, Linkat, Fedora, Arch o Linux Mint). No requereix targeta gràfica dedicada (GPU); els models ONNX estan optimitzats per a processadors estàndard (Intel o AMD). Es recomanen 4 GB de memòria RAM (òptim 8 GB) i espai lliure al disc (mínim 500 MB per a Matxa-TTS; 2,5 GB si es descarrega el checkpoint complet de StyleTTS 2).
 - **Format del guió:** l'eina processa els guions a partir de signes de puntuació (. ! ? ;). Per a una prosòdia excel·lent, es recomana redactar frases d'una extensió equilibrada (entre 10 i 25 paraules) evitant paràgrafs densos sense punts.
-- **Mode núvol vs. mode offline:** per a ús amb menors d'edat i en entorns escolars, es recomana prioritzar sempre els motors offline (StyleTTS 2 o Matxa-TTS) per garantir la privadesa absoluta de les dades.
+- **Mode núvol vs. mode offline:** per a ús amb menors d'edat i en entorns escolars, es recomana prioritzar sempre els motors offline (Matxa-TTS v2 o UPC Ona) per garantir la privadesa absoluta de les dades.
 
 ---
 
@@ -176,5 +176,5 @@ Inclou indicacions de text visual i el text del peu de foto (caption) amb hashta
 ### Prompt 4: circular o butlletí pedagògic per a claustres i coordinadors
 ```text
 Redacta un text informatiu breu (300-400 paraules) per a un butlletí pedagògic escolar o correu de coordinació digital adreçat a tot el claustre de professors, presentant «Pòdcasts amb Estil i Matxa» com a eina recomanada per al nou curs:
-- Explica què és, com s'instal·la (executable per a Windows), quins avantatges té per a l'atenció a la diversitat, com permet ambientar sonors amb música de fons i com respecta la protecció de dades dels estudiants.
+- Explica què és, com s'instal·la (executable autònom per a Windows o paquet per a Linux), quins avantatges té per a l'atenció a la diversitat, com permet ambientar sonors amb música de fons i com respecta la protecció de dades dels estudiants.
 ```

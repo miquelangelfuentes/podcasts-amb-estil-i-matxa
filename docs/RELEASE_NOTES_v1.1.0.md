@@ -1,6 +1,6 @@
 # Pòdcasts amb Estil i Matxa v1.1.0 🎙️🍵
 
-Versió oficial actualitzada de **Pòdcasts amb Estil i Matxa**, l'estudi d'escriptori autònom per a la creació i locució de guions de pòdcast en català amb intel·ligència artificial. Aquesta compilació incorpora les noves funcionalitats de veu neural, ambientació sonora i comprovació de versions.
+Versió oficial actualitzada de **Pòdcasts amb Estil i Matxa**, l'estudi d'escriptori autònom per a la creació i locució de guions de pòdcast en català amb intel·ligència artificial. Aquesta compilació incorpora les noves funcionalitats de veu neural, ambientació sonora, suport per a Linux i comprovació integrada de versions.
 
 ### ✨ Novetats destacades de la versió 1.1.0
 - **Nou motor de veu neural UPC Ona FestCat (100% offline)**:
@@ -16,7 +16,13 @@ Versió oficial actualitzada de **Pòdcasts amb Estil i Matxa**, l'estudi d'escr
 - **Comprovador d'actualitzacions i identificació de versió**:
   - Número de versió `v1.1.0` visible tant a la barra de títol de la finestra com al distintiu de la capçalera principal.
   - Botó d'accés ràpid **`🔄 Comprova versió`** a la capçalera per verificar actualitzacions contra el repositori de GitHub (`miquelangelfuentes/podcasts-amb-estil-i-matxa`).
+  - Visualitzador de novetats amb `CTkTextbox` i ajust automàtic de línia (`wrap="word"`), evitant caràcters retallats a les descripcions de commits.
   - Diàleg informatiu amb historial de canvis i botó per descarregar i reiniciar automàticament.
+- **Suport unificat per a Linux**:
+  - Script llançador directe `run_app.sh` que crea l'entorn virtual `.venv`, instal·la dependències i inicia l'aplicació en un sol clic a distribucions com Ubuntu, Debian, Linkat, Fedora, Arch o Linux Mint.
+  - Script de compilació `build_linux.py` per empaquetar binaris autònoms en fitxers `.tar.gz`.
+  - Flux de treball CI/CD amb GitHub Actions (`.github/workflows/build-linux.yml`) per a compilació automàtica sobre servidors Ubuntu.
+  - Diagnòstic de memòria RAM natiu mitjançant `/proc/meminfo`.
 - **Distribució oficial amb nom de versió**:
   - El paquet binari autònom per a Windows es distribueix amb el nom de fitxer corresponent a la versió: `PodcastsAmbEstilIMatxa-v1.1.0-Windows.zip`.
 - **Motors de veu integrats**:

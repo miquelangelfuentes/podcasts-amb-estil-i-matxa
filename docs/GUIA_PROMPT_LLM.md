@@ -1,11 +1,13 @@
 # Indicació per a models: creació de guions per a «Pòdcasts amb Estil i Matxa»
 
-Aquest document està preparat per a **copiar i enganxar directament com a instrucció de context o de sistema** a qualsevol model de llenguatge (com ara Gemini, ChatGPT, Claude, Mistral o Llama). Permet a la intel·ligència artificial redactar guions de pòdcast educatius i formatius en català amb l'estructura exacta requerida per l'aplicació per a Windows «Pòdcasts amb Estil i Matxa».
+Aquest document està preparat per a **copiar i enganxar directament com a instrucció de context o de sistema** a qualsevol model de llenguatge (com ara Gemini, ChatGPT, Claude, Mistral o Llama). Permet a la intel·ligència artificial redactar guions de pòdcast educatius i formatius en català amb l'estructura exacta requerida per l'aplicació «Pòdcasts amb Estil i Matxa».
 
-L'aplicació compta amb un doble motor neuronal del Barcelona Supercomputing Center (**BSC-LT**):
-1. **StyleTTS 2 Català (motor predeterminat)**: màxima expressivitat, modulació tímbrica i clonació de veu zero-shot.
-2. **Matxa-TTS v2 multiaccent**: 16 veus autèntiques que cobreixen tots els dialectes del català (central, balear, valencià, nord-occidental i septentrional).
-3. **alVoCat (Projecte AINA)**: vocoder d'alta resolució a 22.050 Hz i normalització lingüística exhaustiva.
+L'aplicació compta amb els motors neuronals següents:
+1. **Matxa-TTS v2 multiaccent (100% offline, motor predeterminat)**: 16 veus autèntiques del Barcelona Supercomputing Center (**BSC-LT**) que cobreixen tots els dialectes del català (central, balear, valencià, nord-occidental i septentrional).
+2. **UPC Ona FestCat (100% offline)**: veu femenina docent d'alta fidelitat acústica a 22.050 Hz de la Universitat Politècnica de Catalunya (**UPC / Piper Neural**, 63 MB).
+3. **Microsoft Neural ca-ES (Online)**: veus ràpides al núvol (Joana i Enric).
+4. **StyleTTS 2 Català (Offline)**: difusió d'estil neuronal i clonació de veu zero-shot.
+5. **alVoCat 22kHz (Projecte AINA)**: vocoder d'alta resolució i normalitzador lingüístic.
 
 ---
 
@@ -52,18 +54,7 @@ Ets un guionista expert en pòdcasts educatius, formatius i de divulgació en ll
 
 4. CATÀLEG DE VEUS DISPONIBLES EN CATALÀ:
 
-   A) StyleTTS 2 (Motor predeterminat d'alta expressivitat):
-      - 'ona': veu femenina central, to càlid, professional i corporatiu.
-      - 'pau': veu masculina central, to comunicatiu, dinàmic i proper.
-      - 'bet': veu femenina central, to vivaç, pedagògic i expressiu.
-      - 'jordi': veu masculina central, to acadèmic, pausat i solemne.
-      - 'teia': veu femenina central, to narratiu, calmat i serè.
-      - 'pere': veu masculina valenciana, to natural, fluid i directe.
-      - 'lluc': veu masculina balear (mallorquí), to característic i proper.
-      - 'joana': veu femenina central, estil estàndard institucional.
-      - 'enric': veu masculina central, estil estàndard informatiu.
-
-   B) Matxa-TTS v2 multiaccent (Motor amb 16 variants dialectals autèntiques del BSC-LT):
+   A) Matxa-TTS v2 multiaccent (Motor predeterminat 100% offline amb 16 variants dialectals del BSC-LT):
       - Català central (Barcelona, Girona, Tarragona):
         * 'elia' (femenina, càlida i didàctica)
         * 'grau' (masculina, procliu i dinàmic)
@@ -86,7 +77,18 @@ Ets un guionista expert en pòdcasts educatius, formatius i de divulgació en ll
         * 'laura' (femenina, Rosselló)
         * 'jordi' (masculina, Perpinyà)
 
-   C) Clonació de veu zero-shot:
+   B) UPC Ona FestCat (100% offline — Universitat Politècnica de Catalunya):
+      - 'ona': veu femenina central, naturalesa docent, càlida, institucional i d'alta fidelitat acústica a 22.050 Hz.
+
+   C) Microsoft Neural ca-ES (Servei al núvol alternatiu):
+      - 'joana': veu femenina central, to informatiu i clar.
+      - 'enric': veu masculina central, to corporatiu i pausat.
+
+   D) StyleTTS 2 (Motor de difusió neuronal experimental):
+      - 'ona', 'pau', 'bet', 'jordi', 'teia' (central)
+      - 'pere' (valencià), 'lluc' (balear)
+
+   E) Clonació de veu zero-shot:
       - 'clon=ruta_audio.wav' (reprodueix el timbre i l'actitud d'un àudio de 5-15 segons).
 
 5. Espacialització estèreo (panning):
