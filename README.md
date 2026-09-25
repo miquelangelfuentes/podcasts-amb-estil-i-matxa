@@ -19,7 +19,7 @@ Per utilitzar l'aplicació a Windows **sense necessitat d'instal·lar Python ni 
 4. A la barra superior, fes clic a **`📦 Models`** per descarregar els models de síntesi de veu des d'Hugging Face amb un sol clic.
 
 > [!NOTE]
-> **Versió actual v1.1.0**: l'arxiu descarregat s'anomena amb el nom i número de la versió actualitzada (`PodcastsAmbMatxa-v1.1.0-Windows.zip`) i inclou el nou motor UPC Ona FestCat, la pista de música de fons amb bucle i control de volum, el comprovador de versió i el número de versió visible tant a la barra de títol com a la capçalera de l'aplicació.
+> **Versió actual v1.1.0**: l'arxiu descarregat s'anomena amb el nom i número de la versió actualitzada (`PodcastsAmbMatxa-v1.1.0-Windows.zip`) i inclou el nou motor UPC FestCat (Ona i Pau), la pista de música de fons amb bucle i control de volum, el comprovador de versió i el número de versió visible tant a la barra de títol com a la capçalera de l'aplicació.
 
 ---
 
@@ -62,7 +62,7 @@ Per utilitzar l'aplicació a Windows **sense necessitat d'instal·lar Python ni 
 │   ├── 📄 script_parser.py       # Analitzador sintàctic del guió .txt
 │   ├── 📄 text_normalizer.py     # Normalitzador lingüístic en català (alVoCat)
 │   ├── 📄 matxa_tts_engine.py    # Motor Matxa-TTS v2 multiaccent (BSC-LT)
-│   ├── 📄 upc_ona_engine.py      # Motor UPC Ona FestCat (Piper Neural 100% offline)
+│   ├── 📄 upc_ona_engine.py      # Motor UPC FestCat — Ona i Pau (Piper Neural 100% offline)
 │   ├── 📄 tts_engine.py          # Motor al núvol Microsoft Neural (Edge TTS)
 │   ├── 📄 vocoder_alvocat.py     # Vocoder neural Vocos 22kHz (AINA)
 │   ├── 📄 voice_preview.py       # Gestor de mostres i memòria cau d'àudio

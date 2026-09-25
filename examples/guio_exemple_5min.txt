@@ -1,5 +1,5 @@
 [TITOL: Pòdcasts amb Matxa: com funciona i com s'ha construït]
-[DESCRIPCIO: episodi especial de 5 minuts on la Veu presentadora, la Veu 1 i la Veu 2 expliquen el funcionament de l'aplicació pas a pas, les seves opcions d'una, dues o tres veus, i l'arquitectura tecnològica oberta amb Matxa-TTS v2 multiaccent, UPC Ona FestCat i alVoCat.]
+[DESCRIPCIO: episodi especial de 5 minuts on la Veu presentadora, la Veu 1 i la Veu 2 expliquen el funcionament de l'aplicació pas a pas, les seves opcions d'una, dues o tres veus, i l'arquitectura tecnològica oberta amb Matxa-TTS v2 multiaccent, UPC FestCat (Ona i Pau) i alVoCat.]
 [FORMAT: estèreo 160 kbps]
 [PAUSA_DEFECTE: 350ms]
 [PAUSA_INTERLOCUTOR: 700ms]
@@ -40,11 +40,11 @@ Veu 2: I ara de ben segur que molts companys i companyes es demanen: com s'ha co
 
 [PAUSA: 750ms]
 
-Veu 1: El sistema ofereix motors de síntesi d'alta fidelitat que podem alternar lliurement segons les nostres necessitats: Matxa-TTS versió dos i UPC Ona FestCat. El primer, Matxa-TTS v2, és un model acústic desenvolupat pel Barcelona Supercomputing Center, el BSC-LT. Es basa en la tècnica de flow matching i transport òptim, entrenat amb centenars d'hores de veu catalana procedents de corpus oberts com LaFresCat, ReFresCat i EnVeuAlta. Això és el que li permet capturar amb tanta precisió les peculiaritats fonètiques de cada variant dialectal.
+Veu 1: El sistema ofereix motors de síntesi d'alta fidelitat que podem alternar lliurement segons les nostres necessitats: Matxa-TTS versió dos i UPC FestCat. El primer, Matxa-TTS v2, és un model acústic desenvolupat pel Barcelona Supercomputing Center, el BSC-LT. Es basa en la tècnica de flow matching i transport òptim, entrenat amb centenars d'hores de veu catalana procedents de corpus oberts com LaFresCat, ReFresCat i EnVeuAlta. Això és el que li permet capturar amb tanta precisió les peculiaritats fonètiques de cada variant dialectal.
 
 [PAUSA: 500ms]
 
-Veu 2: I d'altra banda, disposem també de la veu neuronal UPC Ona! Ona és un model de síntesi neuronal basat en el corpus obert FestCat de la Universitat Politècnica de Catalunya. Destaca per la seva gran claredat articulatòria i alta definició vocal. A més, és un model molt compacte de només seixanta-tres megabytes en format ONNX, cosa que permet executar-lo de forma cent per cent autònoma i ràpida en qualsevol ordinador d'escola o institut!
+Veu 2: I d'altra banda, disposem també de les veus neuronals de la UPC: Ona i Pau! UPC Ona és un model de síntesi neuronal basat en el corpus obert FestCat de la Universitat Politècnica de Catalunya, complementat per la veu d'en Pau. Destaquen per la seva gran claredat articulatòria i alta definició vocal. A més, són models molt compactes de només seixanta-tres i vint-i-set megabytes en format ONNX, cosa que permet executar-los de forma cent per cent autònoma i ràpida en qualsevol ordinador d'escola o institut!
 
 [PAUSA: 600ms]
 

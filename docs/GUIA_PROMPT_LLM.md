@@ -4,7 +4,7 @@ Aquest document està preparat per a **copiar i enganxar directament com a instr
 
 L'aplicació compta amb els motors neuronals següents:
 1. **Matxa-TTS v2 multiaccent (100% offline, motor predeterminat)**: 16 veus autèntiques del Barcelona Supercomputing Center (**BSC-LT**) que cobreixen tots els dialectes del català (central, balear, valencià, nord-occidental i septentrional).
-2. **UPC Ona FestCat (100% offline)**: veu femenina docent d'alta fidelitat acústica a 22.050 Hz de la Universitat Politècnica de Catalunya (**UPC / Piper Neural**, 63 MB).
+2. **UPC FestCat — Ona i Pau (100% offline)**: veus femenina (Ona, 63 MB) i masculina (Pau, 27 MB) d'alta fidelitat acústica a 22.050 Hz de la Universitat Politècnica de Catalunya (**UPC / Piper Neural**).
 3. **Microsoft Neural / Veus expressives ca-ES (Online)**: veus ràpides al núvol (Joana, Enric, Ona, Pau, etc.).
 4. **alVoCat 22kHz (Projecte AINA)**: vocoder d'alta resolució i normalitzador lingüístic.
 

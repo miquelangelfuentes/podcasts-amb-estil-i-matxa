@@ -43,7 +43,7 @@ El sistema no es limita al català central, sinó que reprodueix de forma genuï
 
 ## 2. La puntuació escrita com a prosòdia natural
 
-Els motors neuronals de l'aplicació (Matxa-TTS v2, UPC Ona i les veus expressives) extreuen la intenció prosòdica directament dels signes de puntuació:
+Els motors neuronals de l'aplicació (Matxa-TTS v2, UPC FestCat i les veus expressives) extreuen la intenció prosòdica directament dels signes de puntuació:
 - **La coma `,`**: introdueix una corba melòdica ascendent suau i una pausa respiratòria d'entre 150 i 250 ms.
 - **El punt i seguit `.`**: aplica una cadència descendent declarativa conclusiva.
 - **L'interrogant `?`**: genera una elevació melòdica final característica de la pregunta en català.

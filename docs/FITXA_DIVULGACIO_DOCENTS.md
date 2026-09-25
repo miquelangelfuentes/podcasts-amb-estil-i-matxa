@@ -15,8 +15,8 @@ Aquest document és una **guia completa de context i indicacions de referència*
 | **Finalitat principal** | Creació àgil, intuïtiva i professional de pòdcasts educatius i institucionals en català mitjançant intel·ligència artificial neuronal |
 | **Públic destinatari** | Docents de Primària, Secundària, Batxillerat, FP, Escoles Oficials d'Idiomes, Universitats, centres de formació d'adults (CFA) i creadors de contingut pedagògic |
 | **Llengua i varietats** | Català en totes les seves variants territorials (central, balear, valencià, nord-occidental i septentrional/rossellonès) |
-| **Motors de veu** | 1. **Matxa-TTS v2 multiaccent** (BSC-LT, 16 veus territorials en format ONNX, 100% offline, motor predeterminat)<br>2. **UPC Ona FestCat** (UPC / Piper Neural, veu FestCat de 63 MB, 100% offline d'alta definició)<br>3. **Microsoft Neural ca-ES** (servei al núvol alternatiu amb connexió a internet)<br>4. **alVoCat 22kHz** (Projecte AINA, vocoder i normalitzador lingüístic) |
-| **Privadesa** | **100% local i confidencial** amb els models Matxa-TTS v2 i UPC Ona (cap text ni àudio surt de l'equip; apte per a la normativa RGPD) |
+| **Motors de veu** | 1. **Matxa-TTS v2 multiaccent** (BSC-LT, 16 veus territorials en format ONNX, 100% offline, motor predeterminat)<br>2. **UPC FestCat — Ona i Pau** (UPC / Piper Neural, veus femenina de 63 MB i masculina de 27 MB, 100% offline d'alta definició)<br>3. **Microsoft Neural ca-ES** (servei al núvol alternatiu amb connexió a internet)<br>4. **alVoCat 22kHz** (Projecte AINA, vocoder i normalitzador lingüístic) |
+| **Privadesa** | **100% local i confidencial** amb els models Matxa-TTS v2 i UPC FestCat (cap text ni àudio surt de l'equip; apte per a la normativa RGPD) |
 | **Actualitzacions** | Botó integrat «Comprova versió» que contrasta directament amb el repositori GitHub i permet actualitzar l'aplicació en un clic |
 | **Música i ambient de fons** | Pista d'acompanyament (MP3, WAV, OGG, FLAC) en bucle continu (*loop*), control de volum dinàmic, prova instantània i transicions suaus (*fade-in*/*fade-out*) |
 | **Cost i llicència** | Gratuït, lliure i de codi obert (fons públics del Projecte AINA, la UPC i el BSC-LT) |
@@ -62,11 +62,12 @@ Aquest document és una **guia completa de context i indicacions de referència*
   - **Nord-occidental:** Emma (Fem, Lleida), Pere (Masc, Lleida), Estel (Fem, Pirineu).
   - **Septentrional / Rossellonès:** Laura (Fem, Rosselló), Jordi (Masc, Perpinyà).
 
-### Motor 2: 🎙️ UPC Ona FestCat (100% offline)
-- **Model:** Model neuronal en format Piper ONNX (~63 MB) basat en les gravacions del corpus **FestCat** de la **Universitat Politècnica de Catalunya (UPC)**.
-- **Característiques:** Qualitat i calidesa de locució humana excepcionals, pes molt reduït (63 MB), funcionament 100% autònom sense internet i gran naturalitat pedagògica.
-- **Veu integrades:**
+### Motor 2: 🎙️ UPC FestCat — Ona i Pau (100% offline)
+- **Model:** Models neuronals en format Piper ONNX (Ona: ~63 MB, Pau: ~27 MB) basats en les gravacions del corpus **FestCat** de la **Universitat Politècnica de Catalunya (UPC)**.
+- **Característiques:** Qualitat i calidesa de locució humana excepcionals, pes molt reduït, funcionament 100% autònom sense internet i gran naturalitat pedagògica.
+- **Veus integrades:**
   - **Ona (UPC FestCat):** veu femenina central, càlida, didàctica i institucional.
+  - **Pau (UPC FestCat):** veu masculina central, naturalesa divulgativa, propera i clara.
 
 ### Motor 3: ☁️ Microsoft Neural ca-ES (Online)
 - **Model:** Servei de connexió al núvol mitjançant Edge TTS.
@@ -105,7 +106,7 @@ Aquest document és una **guia completa de context i indicacions de referència*
 
 - **Requisits de maquinari:** funciona en qualsevol ordinador amb Windows 10 o Windows 11 i en distribucions Linux (Ubuntu, Debian, Linkat, Fedora, Arch o Linux Mint). No requereix targeta gràfica dedicada (GPU); els models ONNX estan optimitzats per a processadors estàndard (Intel o AMD). Es recomanen 4 GB de memòria RAM (òptim 8 GB) i espai lliure al disc (mínim 400-500 MB per als models ONNX offline).
 - **Format del guió:** l'eina processa els guions a partir de signes de puntuació (. ! ? ;). Per a una prosòdia excel·lent, es recomana redactar frases d'una extensió equilibrada (entre 10 i 25 paraules) evitant paràgrafs densos sense punts.
-- **Mode núvol vs. mode offline:** per a ús amb menors d'edat i en entorns escolars, es recomana prioritzar sempre els motors offline (Matxa-TTS v2 o UPC Ona) per garantir la privadesa absoluta de les dades.
+- **Mode núvol vs. mode offline:** per a ús amb menors d'edat i en entorns escolars, es recomana prioritzar sempre els motors offline (Matxa-TTS v2 o UPC FestCat) per garantir la privadesa absoluta de les dades.
 
 ---
 
@@ -140,7 +141,7 @@ A continuació es detallen plantilles d'instrucció que pots copiar i enganxar d
 Actua com a especialista en comunicació educativa i tecnologia en català. A partir de la fitxa adjunta de «Pòdcasts amb Matxa», escriu un fil de Twitter/X de 5 a 6 piulades:
 - Piulada 1 (Ganxo): destaca la fita de tenir una eina d'estudi de ràdio en català, gratuïta, 100% offline i creada amb els models del BSC-LT i Projecte AINA.
 - Piulada 2: explica com ajuda els docents (creació de pòdcasts a 1, 2 o 3 veus en minuts, música de fons en bucle amb volum regulable i sense haver d'editar so externament).
-- Piulada 3: parla de la riquesa dialectal (16 veus: central, balear, valencià, lleidatà, rossellonès) i la claredat d'UPC Ona.
+- Piulada 3: parla de la riquesa dialectal (16 veus: central, balear, valencià, lleidatà, rossellonès) i la claredat d'UPC FestCat (Ona i Pau).
 - Piulada 4: emfatitza la privadesa (0% dades al núvol, ideal per a escoles i instituts, compleix el RGPD).
 - Piulada 5: usos pedagògics concrets (DUA, dislèxia, microlearning, ràdio escolar, audiocontes immersius).
 - Piulada 6 (Crida a l'acció): enllaç al projecte a GitHub i invitació a provar-ho.

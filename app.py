@@ -2,7 +2,7 @@
 Punt d'entrada principal: Pòdcasts amb Matxa.
 Síntesi de pòdcasts en català d'1, 2 o 3 veus sense límit de durada.
 Desenvolupat per a materials educatius, formatius i divulgatius.
-Models: BSC-LT Matxa-TTS v2 multiaccent, UPC Ona FestCat & alVoCat 22kHz (Projecte AINA).
+Models: BSC-LT Matxa-TTS v2 multiaccent, UPC FestCat (Ona i Pau) & alVoCat 22kHz (Projecte AINA).
 """
 
 import os
