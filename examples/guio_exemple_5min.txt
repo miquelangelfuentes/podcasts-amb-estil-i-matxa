@@ -1,6 +1,6 @@
 [TITOL: Pòdcasts amb Estil i Matxa: com funciona i com s'ha construït]
 [DESCRIPCIO: episodi especial de 5 minuts on la Veu presentadora, la Veu 1 i la Veu 2 expliquen el funcionament de l'aplicació pas a pas, les seves opcions d'una, dues o tres veus, i l'arquitectura tecnològica oberta amb StyleTTS 2, Matxa-TTS v2 multiaccent i alVoCat.]
-[FORMAT: Stereo 160kbps]
+[FORMAT: estèreo 160 kbps]
 [PAUSA_DEFECTE: 350ms]
 [PAUSA_INTERLOCUTOR: 700ms]
 

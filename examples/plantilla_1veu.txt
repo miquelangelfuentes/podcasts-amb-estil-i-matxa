@@ -1,6 +1,6 @@
 [TITOL: com funciona el format d'una veu a l'aplicació]
 [DESCRIPCIO: monòleg explicatiu on la Veu presentadora descriu com funciona l'aplicació en format d'una sola veu per a càpsules formatives.]
-[FORMAT: Stereo 160kbps]
+[FORMAT: estèreo 160 kbps]
 [PAUSA_DEFECTE: 350ms]
 
 [LOCUTORS]

@@ -1,6 +1,6 @@
 [TITOL: com funciona el format de dues veus a l'aplicació]
 [DESCRIPCIO: diàleg formatiu on la Veu 1 i la Veu 2 expliquen com funciona l'aplicació en el format de dues veus sense presentador.]
-[FORMAT: Stereo 160kbps]
+[FORMAT: estèreo 160 kbps]
 [PAUSA_DEFECTE: 350ms]
 [PAUSA_INTERLOCUTOR: 600ms]
 

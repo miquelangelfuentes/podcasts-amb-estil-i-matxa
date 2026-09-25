@@ -141,41 +141,41 @@ Aquest document és una **guia completa de context i indicacions de referència*
 
 A continuació es detallen plantilles d'instrucció que pots copiar i enganxar directament a un model de llenguatge (com ara ChatGPT, Claude o Gemini) juntament amb aquesta fitxa per crear continguts divulgatius:
 
-### Prompt 1: Fil divulgatiu per a Twitter / X
+### Prompt 1: fil divulgatiu per a Twitter / X
 ```text
 Actua com a especialista en comunicació educativa i tecnologia en català. A partir de la fitxa adjunta de «Pòdcasts amb Estil i Matxa», escriu un fil de Twitter/X de 5 a 6 piulades:
-- Piulada 1 (Ganxo): Destaca la fita de tenir una eina d'estudi de ràdio en català, gratuïta, 100% offline i creada amb els models del BSC-LT i Projecte AINA.
-- Piulada 2: Explica com ajuda els docents (creació de pòdcasts a 1, 2 o 3 veus en minuts, música de fons en bucle amb volum regulable i sense haver d'editar so externament).
-- Piulada 3: Parla de la riquesa dialectal (16 veus: central, balear, valencià, lleidatà, rossellonès) i StyleTTS 2.
-- Piulada 4: Emfatitza la privadesa (0% dades al núvol, ideal per a escoles i instituts, compleix el RGPD).
-- Piulada 5: Usos pedagògics concrets (DUA, dislèxia, microlearning, ràdio escolar, audiocontes immersius).
-- Piulada 6 (Crida a l'acció): Enllaç al projecte a GitHub i invitació a provar-ho.
+- Piulada 1 (Ganxo): destaca la fita de tenir una eina d'estudi de ràdio en català, gratuïta, 100% offline i creada amb els models del BSC-LT i Projecte AINA.
+- Piulada 2: explica com ajuda els docents (creació de pòdcasts a 1, 2 o 3 veus en minuts, música de fons en bucle amb volum regulable i sense haver d'editar so externament).
+- Piulada 3: parla de la riquesa dialectal (16 veus: central, balear, valencià, lleidatà, rossellonès) i StyleTTS 2.
+- Piulada 4: emfatitza la privadesa (0% dades al núvol, ideal per a escoles i instituts, compleix el RGPD).
+- Piulada 5: usos pedagògics concrets (DUA, dislèxia, microlearning, ràdio escolar, audiocontes immersius).
+- Piulada 6 (Crida a l'acció): enllaç al projecte a GitHub i invitació a provar-ho.
 To: engrescador, divulgatiu, rigorós i proper. Fes servir icones i hashtags com #EducaCat #ProjecteAINA #BSCLT #IAenCatala. Recorda que en català no va majúscula després dels dos punts.
 ```
 
-### Prompt 2: Publicació professional per a LinkedIn
+### Prompt 2: publicació professional per a LinkedIn
 ```text
 Actua com a docent innovador i assessor pedagògic en competència digital docent. Escriu una publicació per a LinkedIn sobre l'aplicació «Pòdcasts amb Estil i Matxa»:
-- Enfocament: Innovació educativa, sobirania tecnològica i aplicació real a l'aula (DUA, comprensió oral, situacions d'aprenentatge, expressió radiofònica).
+- Enfocament: innovació educativa, sobirania tecnològica i aplicació real a l'aula (DUA, comprensió oral, situacions d'aprenentatge, expressió radiofònica).
 - Explica per què és rellevant per a equips directius, coordinadors digitals i professorat de llengua o d'altres matèries.
 - Destaca que no envia dades a cap servidor (privadesa dels centres), que incorpora música i ambientació de fons automàtica i que és una tecnologia d'accés obert creada pel BSC-LT i Projecte AINA.
 - Estructura amb punts clau, to professional i reflexiu, i crida a la reflexió per als docents.
 Recorda aplicar la normativa del català (minúscula després dels dos punts).
 ```
 
-### Prompt 3: Guió visual per a carrusel d'Instagram
+### Prompt 3: guió visual per a carrusel d'Instagram
 ```text
 Dissenya el contingut d'un carrusel d'Instagram de 6 diapositives per a docents sobre «Pòdcasts amb Estil i Matxa»:
-- Diapositiva 1 (Portada): Títol impactant sobre com crear pòdcasts educatius en català amb IA en 1 minut.
-- Diapositiva 2: El problema (la manca de temps dels docents per editar àudio i la manca de veus catalanes de qualitat).
-- Diapositiva 3: La solució (com funciona l'eina: escrius el guió, tries les veus, afegeixes música de fons i generes l'episodi).
-- Diapositiva 4: Característiques clau (100% offline, 16 accents territorials, música de fons en bucle amb volum calibrat, privadesa per a menors).
+- Diapositiva 1 (Portada): títol impactant sobre com crear pòdcasts educatius en català amb IA en 1 minut.
+- Diapositiva 2: el problema (la manca de temps dels docents per editar àudio i la manca de veus catalanes de qualitat).
+- Diapositiva 3: la solució (com funciona l'eina: escrius el guió, tries les veus, afegeixes música de fons i generes l'episodi).
+- Diapositiva 4: característiques clau (100% offline, 16 accents territorials, música de fons en bucle amb volum calibrat, privadesa per a menors).
 - Diapositiva 5: 3 idees per a l'aula demà mateix (càpsules de repàs, entrevistes històriques, audiocontes sonoritzats, suport DUA a la lectura).
-- Diapositiva 6: Com descarregar-la gratuïtament i crida a compartir amb el claustre.
+- Diapositiva 6: com descarregar-la gratuïtament i crida a compartir amb el claustre.
 Inclou indicacions de text visual i el text del peu de foto (caption) amb hashtags rellevants.
 ```
 
-### Prompt 4: Circular o butlletí pedagògic per a claustres i coordinadors
+### Prompt 4: circular o butlletí pedagògic per a claustres i coordinadors
 ```text
 Redacta un text informatiu breu (300-400 paraules) per a un butlletí pedagògic escolar o correu de coordinació digital adreçat a tot el claustre de professors, presentant «Pòdcasts amb Estil i Matxa» com a eina recomanada per al nou curs:
 - Explica què és, com s'instal·la (executable per a Windows), quins avantatges té per a l'atenció a la diversitat, com permet ambientar sonors amb música de fons i com respecta la protecció de dades dels estudiants.
