@@ -194,7 +194,11 @@ def test_default_model_and_naming():
     src = inspect.getsource(MainWindow)
     assert "self.tts_engine = self.matxa_engine" in src or "self.tts_engine = self.styletts_engine" in src, "El motor per defecte ha d'estar definit correctament"
     assert 'self.title(f"Pòdcasts amb Estil i Matxa v{APP_VERSION}")' in src or 'self.title("Pòdcasts amb Estil i Matxa")' in src, "El títol ha de ser 'Pòdcasts amb Estil i Matxa'"
-    print("[OK] Motor predeterminat configurat i nom oficial actualitzat.")
+    assert "StyleTTS 2 Català" in src, "El motor StyleTTS 2 Català ha de figurar al desplegable de motors"
+    assert "Matxa-TTS v2" in src, "El motor Matxa-TTS v2 ha de figurar al desplegable de motors"
+    assert "UPC Ona FestCat" in src, "El motor UPC Ona FestCat ha de figurar al desplegable de motors"
+    assert "Microsoft Neural ca-ES" in src, "El motor Microsoft Neural ca-ES ha de figurar al desplegable de motors"
+    print("[OK] Motors de síntesi (Matxa, StyleTTS 2, UPC Ona, Microsoft) i nom oficial verificats.")
 
 
 def test_components_manager():

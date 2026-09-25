@@ -160,6 +160,11 @@ def build():
                 dest_zip_downloads = os.path.join(user_downloads, zip_name)
                 shutil.copy2(zip_path, dest_zip_downloads)
                 print(f"  [OK] Còpia de descàrrega sincronitzada a: {dest_zip_downloads}")
+                # Sincronitzar també la carpeta extreta per a execució immediata
+                unzipped_target = os.path.join(user_downloads, f"PodcastsAmbEstilIMatxa-v{APP_VERSION}-Windows", "PodcastsAmbEstilIMatxa")
+                if os.path.exists(os.path.dirname(unzipped_target)):
+                    robust_copy(new_dist, unzipped_target)
+                    print(f"  [OK] Carpeta d'execució extreta actualitzada a: {unzipped_target}")
             except Exception as e:
                 print(f"  [AVÍS] No s'ha pogut copiar a Downloads: {e}")
 

@@ -656,6 +656,7 @@ class MainWindow(ctk.CTk):
             engine_row,
             values=[
                 "🍵 Matxa-TTS v2 (100% Offline — 16 veus BSC-LT)",
+                "🎙️ StyleTTS 2 Català (BSC-LT / Neural — 9 veus d'estil)",
                 "🎙️ UPC Ona FestCat (100% Offline — Veu neuronal 63 MB)",
                 "☁️ Microsoft Neural ca-ES (Online — Joana i Enric)"
             ],
@@ -1295,6 +1296,8 @@ class MainWindow(ctk.CTk):
                     spk_cfg.voice_id = "ona"
                 elif is_matxa:
                     spk_cfg.voice_id = available_ids[min(i, len(available_ids) - 1)]
+                elif "StyleTTS" in engine_choice:
+                    spk_cfg.voice_id = available_ids[min(i, len(available_ids) - 1)]
                 elif "Microsoft" in engine_choice:
                     is_masc = any(m in spk_name.lower() for m in ["masc", "home", "enric", "pau", "jordi", "pere", "noi", "veu 2"])
                     spk_cfg.voice_id = "enric" if is_masc else "joana"
@@ -1390,6 +1393,9 @@ class MainWindow(ctk.CTk):
         elif "Matxa" in choice:
             self.tts_engine = self.matxa_engine
             self.badge.configure(text="BSC-LT Matxa-TTS v2 (100% Offline) & alVoCat 22kHz")
+        elif "StyleTTS" in choice:
+            self.tts_engine = self.styletts_engine
+            self.badge.configure(text="BSC-LT StyleTTS 2 Català (Neural — 9 veus d'estil) & alVoCat 22kHz")
         elif "Microsoft" in choice:
             self.tts_engine = self.styletts_engine
             self.badge.configure(text="Microsoft Neural ca-ES (Online — Joana i Enric) & alVoCat 22kHz")
