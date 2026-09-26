@@ -127,3 +127,28 @@ En finalitzar la síntesi de totes les intervencions, l'aplicació aplica un pro
 - **Normalització de sonoritat EBU R128**: ajusta el volum integrat a **-16 LUFS** (l'estàndard internacional per a pòdcasts i plataformes digitals) amb un sostre de pic màxim de **-1 dBTP**.
 - **Respiració entre intervencions**: intercala un respir natural de 650 ms (`PAUSA_INTERLOCUCIO`) entre canvis de veu per evitar talls sobtats.
 - **Format d'exportació**: **MP3 a 160 kbps CBR estèreo**, que garanteix la màxima claredat en freqüències vocals mantenint fitxers lleugers i àgils per distribuir.
+
+---
+
+## 6. Dreceres de teclat i accessibilitat
+
+L'aplicació incorpora dreceres de teclat globals per facilitar l'accessibilitat i agilitzar el flux de treball:
+
+| Drecera | Acció |
+| :--- | :--- |
+| `Ctrl+G` o `Ctrl+Intro` | Generar el pòdcast complet |
+| `Ctrl+S` | Desar el guió actual |
+| `Ctrl+O` | Obrir un fitxer de guió |
+| `F1` | Obrir aquesta guia SSML |
+| `Escape` | Cancel·lar la generació en curs |
+
+---
+
+## 7. Mode escola (100% offline — RGPD)
+
+Prement el botó **🏫 Mode escola** a la capçalera de l'aplicació:
+- El motor ☁️ de veus al núvol (Edge TTS) desapareix del desplegable de selecció.
+- Apareix la insígnia **🛡️ Mode escola: 0% dades a internet (RGPD protegit)**.
+- Tot el text introduït al guió es processa exclusivament als models ONNX locals (Matxa-TTS v2 o UPC FestCat), garantint la privadesa total de les dades.
+
+Premeu de nou el botó per tornar al mode estàndard amb tots els motors disponibles.

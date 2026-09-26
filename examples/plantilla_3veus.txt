@@ -32,7 +32,7 @@ Veu 1: L'aplicació disposa d'un mode de guió net on només cal escriure qui pa
 
 [PAUSA: 500ms]
 
-Veu 2: A més, l'aplicació integra motors neuronals d'alta tecnologia desenvolupats en el marc del Projecte AINA i institucions catalanes: Matxa-TTS versió dos, del Barcelona Supercomputing Center, que ofereix setze veus en diferents varietats dialectals del català, i les veus neuronals UPC FestCat (Ona i Pau) d'alta fidelitat. Tot plegat recolzat pel normalitzador lingüístic alVoCat.
+Veu 2: A més, l'aplicació integra motors neuronals d'alta tecnologia desenvolupats en el marc del Projecte AINA i institucions catalanes: Matxa-TTS versió dos, del Barcelona Supercomputing Center, que ofereix setze veus en diferents varietats dialectals del català, i les veus neuronals UPC FestCat (Ona i Pau) d'alta fidelitat. Tot plegat recolzat pel normalitzador lingüístic alVoCat. A més, el «Mode escola» de la capçalera garanteix que totes les síntesis es fan al cent per cent en local, sense enviar cap text a internet.
 
 [PAUSA: 500ms]
 

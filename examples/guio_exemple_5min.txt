@@ -34,9 +34,11 @@ Veu 2: I el control sobre l'àudio és totalment intuïtiu. Per a cada veu podem
 
 [PAUSA: 600ms]
 
-Veu 1: Un altre aspecte essencial és que l'aplicació funciona de manera cent per cent local, al teu propi ordinador Windows, sense enviar cap text ni enregistrament a internet. Això garanteix una privadesa absoluta de les dades de docents i alumnes, sense quotes de subscripció i sense cap límit de durada. Podem generar des d'una càpsula breu de dos minuts fins a una lliçó magistral d'una hora sencera.
+Veu 1: Un altre aspecte essencial és que l'aplicació funciona de manera cent per cent local, al teu propi ordinador, sense enviar cap text ni enregistrament a internet. Això garanteix una privadesa absoluta de les dades de docents i alumnes, sense quotes de subscripció i sense cap límit de durada. Podem generar des d'una càpsula breu de dos minuts fins a una lliçó magistral d'una hora sencera.
 
-Veu 2: I ara de ben segur que molts companys i companyes es demanen: com s'ha construït aquesta aplicació? Quina tecnologia hi ha al darrere d'aquesta naturalitat? Doncs és el resultat d'aprofitar el millor de la recerca oberta en intel·ligència artificial feta a Catalunya.
+Veu 2: I amb el nou botó de «Mode escola» a la capçalera, podem desactivar qualsevol connexió externa amb un sol clic i blindar la privadesa de les aules sota la normativa RGPD. A més, podem controlar-ho tot àgilment amb dreceres de teclat, com ara Control més G per generar el pòdcast sense tocar el ratolí!
+
+Veu 1: I ara de ben segur que molts companys i companyes es demanen: com s'ha construït aquesta aplicació? Quina tecnologia hi ha al darrere d'aquesta naturalitat? Doncs és el resultat d'aprofitar el millor de la recerca oberta en intel·ligència artificial feta a Catalunya.
 
 [PAUSA: 750ms]
 

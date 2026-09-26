@@ -16,7 +16,8 @@ Aquest document és una **guia completa de context i indicacions de referència*
 | **Públic destinatari** | Docents de Primària, Secundària, Batxillerat, FP, Escoles Oficials d'Idiomes, Universitats, centres de formació d'adults (CFA) i creadors de contingut pedagògic |
 | **Llengua i varietats** | Català en totes les seves variants territorials (central, balear, valencià, nord-occidental i septentrional/rossellonès) |
 | **Motors de veu** | 1. **Matxa-TTS v2 multiaccent** (BSC-LT, 16 veus territorials en format ONNX, 100% offline, motor predeterminat)<br>2. **UPC FestCat — Ona i Pau** (UPC / Piper Neural, veus femenina de 63 MB i masculina de 27 MB, 100% offline d'alta definició)<br>3. **Microsoft Neural ca-ES** (servei al núvol alternatiu amb connexió a internet)<br>4. **alVoCat 22kHz** (Projecte AINA, vocoder i normalitzador lingüístic) |
-| **Privadesa** | **100% local i confidencial** amb els models Matxa-TTS v2 i UPC FestCat (cap text ni àudio surt de l'equip; apte per a la normativa RGPD) |
+| **Privadesa** | **100% local i confidencial** amb els models Matxa-TTS v2 i UPC FestCat (cap text ni àudio surt de l'equip). Inclou l'interruptor **🏫 Mode escola** a la capçalera per desactivar qualsevol opció al núvol (protecció RGPD per a menors) |
+| **Accessibilitat** | Dreceres de teclat globals (`Ctrl+G`, `Ctrl+S`, `Ctrl+O`, `F1`, `Escape`) per a un ús àgil i accessible sense ratolí |
 | **Actualitzacions** | Botó integrat «Comprova versió» que contrasta directament amb el repositori GitHub i permet actualitzar l'aplicació en un clic |
 | **Música i ambient de fons** | Pista d'acompanyament (MP3, WAV, OGG, FLAC) en bucle continu (*loop*), control de volum dinàmic, prova instantània i transicions suaus (*fade-in*/*fade-out*) |
 | **Cost i llicència** | Gratuït, lliure i de codi obert (fons públics del Projecte AINA, la UPC i el BSC-LT) |
@@ -33,6 +34,7 @@ Aquest document és una **guia completa de context i indicacions de referència*
 2. **Funcionament autònom (100% offline):**
    - No requereix connexió a internet ni dependència de serveis al núvol després de la descàrrega inicial.
    - Es pot utilitzar a les aules, en ordinadors portàtils sense Wi-Fi o en zones sense cobertura amb total seguretat.
+   - El nou **Mode escola** (botó 🏫 a la capçalera) desactiva en un clic el motor al núvol i garanteix el mode 100% offline amb insígnia visual **🛡️ RGPD protegit**, ideal per a aules amb menors d'edat.
 
 3. **Arquitectura multilocutor integrada (1, 2 o 3 veus):**
    - Permet crear des d'un monòleg o càpsula formativa breu (1 veu) fins a entrevistes simulades (2 veus) o tertúlies radiofòniques amb presentador i convitats (3 veus).
@@ -107,6 +109,8 @@ Aquest document és una **guia completa de context i indicacions de referència*
 - **Requisits de maquinari:** funciona en qualsevol ordinador amb Windows 10 o Windows 11 i en distribucions Linux (Ubuntu, Debian, Linkat, Fedora, Arch o Linux Mint). No requereix targeta gràfica dedicada (GPU); els models ONNX estan optimitzats per a processadors estàndard (Intel o AMD). Es recomanen 4 GB de memòria RAM (òptim 8 GB) i espai lliure al disc (mínim 400-500 MB per als models ONNX offline).
 - **Format del guió:** l'eina processa els guions a partir de signes de puntuació (. ! ? ;). Per a una prosòdia excel·lent, es recomana redactar frases d'una extensió equilibrada (entre 10 i 25 paraules) evitant paràgrafs densos sense punts.
 - **Mode núvol vs. mode offline:** per a ús amb menors d'edat i en entorns escolars, es recomana prioritzar sempre els motors offline (Matxa-TTS v2 o UPC FestCat) per garantir la privadesa absoluta de les dades.
+- **Mode escola i privadesa màxima:** prement el botó **🏫 Mode escola** a la capçalera, l'aplicació desactiva automàticament el motor al núvol del desplegable i mostra la insígnia de RGPD protegit. Recomanat per a totes les sessions amb alumnat menor d'edat.
+- **Dreceres de teclat i accessibilitat:** `Ctrl+G` (generar), `Ctrl+S` (desar), `Ctrl+O` (obrir), `F1` (guia SSML) i `Escape` (cancel·lar generació) per a usuaris amb necessitats d'accessibilitat o per agilitzar el treball a l'aula.
 
 ---
 

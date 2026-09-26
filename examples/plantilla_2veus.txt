@@ -32,6 +32,6 @@ Veu 2: A més, podeu canviar les veus de cadascú en qualsevol moment amb el des
 
 [PAUSA: 450ms]
 
-Veu 1: A més, podeu afegir una sintonia o pista d'ambient en bucle amb el volum calibrat al vostre gust. En acabar, premeu «Generar pòdcast complet», i obtindreu el vostre episodi masteritzat a menys setze LUFS i exportable a MP3 a cent seixanta quilobits per segon.
+Veu 1: A més, podeu afegir una sintonia o pista d'ambient en bucle amb el volum calibrat al vostre gust. En acabar, premeu «Generar pòdcast complet» (Ctrl+G), i obtindreu el vostre episodi masteritzat a menys setze LUFS i exportable a MP3 a cent seixanta quilobits per segon.
 
 Veu 2: Una eina intuïtiva, potent i en català per donar vida a qualsevol diàleg pedagògic a l'aula.

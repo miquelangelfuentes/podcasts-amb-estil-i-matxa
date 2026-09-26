@@ -19,7 +19,7 @@ Per utilitzar l'aplicació a Windows **sense necessitat d'instal·lar Python ni 
 4. A la barra superior, fes clic a **`📦 Models`** per descarregar els models de síntesi de veu des d'Hugging Face amb un sol clic.
 
 > [!NOTE]
-> **Versió actual v1.1.0**: l'arxiu descarregat s'anomena amb el nom i número de la versió actualitzada (`PodcastsAmbMatxa-v1.1.0-Windows.zip`) i inclou el nou motor UPC FestCat (Ona i Pau), la pista de música de fons amb bucle i control de volum, el comprovador de versió i el número de versió visible tant a la barra de títol com a la capçalera de l'aplicació.
+> **Versió actual v1.1.0**: l'arxiu descarregat s'anomena amb el nom i número de la versió actualitzada (`PodcastsAmbMatxa-v1.1.0-Windows.zip`) i inclou el nou motor UPC FestCat (Ona i Pau), el Mode escola 100% offline (RGPD), dreceres de teclat globals per a accessibilitat, la pista de música de fons amb bucle i control de volum, el comprovador de versió i el número de versió visible tant a la barra de títol com a la capçalera de l'aplicació.
 
 ---
 
@@ -31,6 +31,8 @@ Per utilitzar l'aplicació a Windows **sense necessitat d'instal·lar Python ni 
   - **3 veus (tertúlia)**: taules rodones amb veu presentadora al centre (`pan=0%`) i dues veus col·laboradores als laterals (`-25%` i `+25%`).
 - **Sense límit de durada**: genera des de càpsules breus de 2 minuts fins a lliçons o debats de 30-60 minuts gràcies a la síntesi per blocs oracionals.
 - **100% local i privat**: no envia cap dada ni text a internet amb els motors autònoms. Apte per a escoles, instituts i universitats (privadesa total per a docents i alumnat).
+- **🏫 Mode escola (100% offline — RGPD)**: botó a la capçalera que elimina d'un clic el motor al núvol del desplegable i mostra la insígnia **🛡️ Mode escola: 0% dades a internet (RGPD protegit)**. Recomanat per a sessions amb alumnat menor d'edat.
+- **Dreceres de teclat globals**: `Ctrl+G` (generar), `Ctrl+S` (desar guió), `Ctrl+O` (obrir guió), `F1` (guia SSML) i `Escape` (cancel·lar generació).
 - **Models de llengua oberts de Catalunya**:
   - **`BSC-LT/Matxa-TTS-v2-Multiaccent`**: model acústic d'última generació basat en transport òptim i flow matching (100% offline), amb 16 variants dialectals del català (central, balear, valencià, nord-occidental i septentrional).
   - **`UPC FestCat Ona i Pau (Piper Neural)`**: veus neuronals femenina (Ona, 63 MB) i masculina (Pau, 27 MB) d'alta definició de la Universitat Politècnica de Catalunya (100% offline).

@@ -24,7 +24,7 @@ Versió inicial de **Pòdcasts amb Matxa**, l'estudi d'escriptori autònom per a
 - **Interfície responsiva**:
   - Resolució adaptativa optimitzada per a escalat DPI de Windows (125% - 150%) amb panell d'àudio permanentment ancorat a la base.
 - **Paquet binari autònom per a Windows**:
-  - Aplicació d'escriptori directa en fitxer ZIP (`PodcastsAmbEstilIMatxa-v1.0.0-Windows.zip`) sense necessitat de configurar entorns de Python.
+  - Aplicació d'escriptori directa en fitxer ZIP (`PodcastsAmbMatxa-v1.0.0-Windows.zip`) sense necessitat de configurar entorns de Python.
 
 ---
 *Creat mitjançant codificació per intencions amb Google Antigravity per Miquel Àngel Fuentes.*

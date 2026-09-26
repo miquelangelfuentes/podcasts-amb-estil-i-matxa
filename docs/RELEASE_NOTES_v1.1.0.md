@@ -35,6 +35,15 @@ Versió oficial actualitzada de **Pòdcasts amb Matxa**, l'estudi d'escriptori a
 - **Control de qualitat**:
   - Bateria completa de proves automatitzades (`test_features.py`) amb 10/10 tests superats.
   - Correcció lingüística estricta en català (minúscula després dels dos punts `:`).
+- **Dreceres de teclat globals (accessibilitat VCER Punt 5)**:
+  - `Ctrl+G` o `Ctrl+Intro`: generar el pòdcast complet sense tocar el ratolí.
+  - `Ctrl+S`: desar el guió; `Ctrl+O`: obrir un guió existent; `F1`: obrir la guia SSML.
+  - `Escape`: cancel·lar la generació en curs.
+- **Mode escola 100% offline (VCER Punts 2 i 4)**:
+  - Botó **🏫 Mode escola** a la capçalera: activa un interruptor que elimina el motor al núvol del desplegable, mostra la insígnia **🛡️ Mode escola: 0% dades a internet (RGPD protegit)** i garanteix que cap text de l'alumnat surti de l'ordinador.
+  - Ideal per a aules sense Wi-Fi, en entorns RGPD estrictes o amb menors d'edat.
+- **Declaració d'ús de IA i verificació humana (VCER Punt 8)**:
+  - Nova secció al README i a la Fitxa docent que documenta les quatre comprovacions manuals de contingut generat per IA: verificació fonètica, lingüística, de contingut i de privadesa.
 
 ---
 *Creat mitjançant codificació per intencions amb Google Antigravity per Miquel Àngel Fuentes.*
